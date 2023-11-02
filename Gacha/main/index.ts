@@ -54,7 +54,8 @@ export class Gacha {
 		this._probability = this.probabilityArrays[this.probabilityArrays.length - 1].probavility
 		return this._probability
 	}
-
+	sp = 0
+	ssr = 0
 	// 抽卡一次的结果,传入true则必定出金
 	getOnceResult(isGolden = false) : resultType {
 		let randomNum = Math.random()
@@ -67,7 +68,7 @@ export class Gacha {
 				currentGachasNumber: this.currentGachasNumber
 			}
 		}
-		if (isGolden) randomNum = 0
+		if (isGolden) randomNum = Math.random() * 0.0125 * probability
 		// 首先判断是否为选定式神
 		if (!this.isSummonedDesignated
 			&& this.summonedDesignated

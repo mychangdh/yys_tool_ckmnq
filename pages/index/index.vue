@@ -133,6 +133,7 @@
 			btnDisabled.value = false
 		}, 500)
 		currentGods.value = myGacha.value.getSomeResult(n)
+		console.log(currentGods.value,4564);
 
 	}
 	const color = {
