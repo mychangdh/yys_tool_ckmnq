@@ -1,3 +1,12 @@
 *{
 	font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
 }
+		.gradient {
+			
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+		}
+body{
+	width: 100vw;
+	overflow: hidden;
+}

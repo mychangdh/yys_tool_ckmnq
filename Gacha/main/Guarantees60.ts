@@ -7,7 +7,7 @@ const { value: { SP, SSR, SR, R } } = computed(() => Store.state.gods)
 
 export class Guarantees60 extends Gacha {
 	// 保底出金数
-	private guaranteesGolden = 60
+	guaranteesGolden = 60
 	// 保底获得当前式神的抽数
 	private prguaranteesCurrent = 450
 	// 保底累计抽数
