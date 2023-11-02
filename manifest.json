@@ -1,5 +1,5 @@
 {
-    "name" : "object",
+    "name" : "阴阳师抽卡模拟器",
     "appid" : "__UNI__BE0C909",
     "description" : "",
     "versionName" : "1.0.0",
@@ -74,11 +74,14 @@
             "port" : 4541,
             "https" : false,
             "proxy" : {
-                "/api" : {
+                "/ckmnqapi" : {
                     "target" : "https://cdhtsl8.cn:8889/",
                     "ws" : false,
                     "secure" : false,
-                    "changeOrigin" : true
+                    "changeOrigin" : true,
+                    "pathRewrite" : {
+                        "^/ckmnqapi" : "/api"
+                    }
                 },
                 "optimization" : {
                     "treeShaking" : {
@@ -86,6 +89,11 @@
                     }
                 }
             }
+        },
+        "title" : "抽卡模拟器",
+        "router" : {
+            "mode" : "hash",
+            "base" : "./"
         }
     }
 }

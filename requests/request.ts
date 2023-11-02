@@ -8,7 +8,7 @@ type configType = {
 const requests = (config : configType) => {
 	return new Promise((resolve, reject) => {
 		uni.request({
-			url: '/api'+config.url, //仅为示例，并非真实接口地址。
+			url: '/ckmnqapi'+config.url, //仅为示例，并非真实接口地址。
 			data: config.data,
 			method: config.method || 'GET',
 			header: {

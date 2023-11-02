@@ -38,7 +38,17 @@ const godsModule : Module<godsModuleTypes, IRootStore> = {
 			// 本地化存储
 			const gods = uni.getStorageSync('Gods');
 			let result : any
-			if (gods) result = JSON.parse(gods)
+			if (gods) {
+				try {
+					result = JSON.parse(gods)
+				}
+				catch {
+					uni.removeStorageSync('Gods')
+					result = await getGodsApi({})
+					uni.setStorageSync('Gods', JSON.stringify(result))
+				}
+			}
+
 			else {
 				result = await getGodsApi({})
 				uni.setStorageSync('Gods', JSON.stringify(result))
