@@ -4,6 +4,10 @@
 			<view class="gacha-information">
 				<view v-if="myGacha">
 					<view class="gacha-information-item">
+						<text class="text">当前卡池：</text>
+						<text class="value" @click="changeCardType">{{myGacha.cardType}}</text>
+					</view>
+					<view class="gacha-information-item">
 						<text class="text">当前概率：</text>
 						<text class="value">{{myGacha.probabilityUP}}倍</text>
 					</view>
@@ -37,7 +41,7 @@
 		</uni-col>
 		<uni-col :xs="24" :sm="18" :md="14">
 			<view class="gods">
-			
+
 				<scroll-view :scroll-y="true" class="gods-list">
 					<uni-grid :column="5" :showBorder="false" :square="false">
 						<uni-grid-item v-for="item,index in currentGods" :key="index">
@@ -117,7 +121,11 @@
 		}
 		popup.value.open()
 	}
-
+	const changeCardType = () => {
+		if (!myGacha.value) return
+		if (myGacha.value.cardType === '旭华召唤') myGacha.value.cardType = '瑶归召唤'
+		else myGacha.value.cardType = '旭华召唤'
+	}
 	const actionCards = (n : number) => {
 		if (!myGacha.value) return
 		btnDisabled.value = true
@@ -135,7 +143,6 @@
 	} as const
 </script>
 <style lang="scss" scoped>
-
 	:deep(.input) {
 		width: 91%;
 		max-width: 600px;
@@ -197,23 +204,23 @@
 		text-align: center;
 		font-weight: 700;
 		margin-top: 20rpx;
-		
+
 		.gods-list {
-				display: flex;
-				justify-content: center;
-			}
-
-			.image {
-				width: 130rpx;
-				height: 130rpx;
-				margin: auto;
-			}
-
-			.text {
-				font-size: 12px;
-				margin: 10rpx 0;
-			}
+			display: flex;
+			justify-content: center;
 		}
+
+		.image {
+			width: 130rpx;
+			height: 130rpx;
+			margin: auto;
+		}
+
+		.text {
+			font-size: 12px;
+			margin: 10rpx 0;
+		}
+	}
 
 
 	.crumbs {
@@ -260,5 +267,4 @@
 			min-width: 80px;
 		}
 	}
-
 </style>
