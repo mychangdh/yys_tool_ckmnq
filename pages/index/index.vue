@@ -26,10 +26,18 @@
 						<text class="value">{{myGacha.probability * 100}}%</text>
 					</view>
 				</view>
+				<scroll-view :scroll-y="true" class="crumbs">
+					<text class="gradient" v-for="item,index in crumbs" :key="index"
+						:style="`background-image: -webkit-linear-gradient(top, ${color[item.level]});`">
+						<text class="name">{{item.name}}</text>
+						<text class="cards-number">({{item.currentGachasNumber}}) </text>
+					</text>
+				</scroll-view>
 			</view>
 		</uni-col>
 		<uni-col :xs="24" :sm="18" :md="14">
 			<view class="gods">
+			
 				<scroll-view :scroll-y="true" class="gods-list">
 					<uni-grid :column="5" :showBorder="false" :square="false">
 						<uni-grid-item v-for="item,index in currentGods" :key="index">
@@ -41,14 +49,6 @@
 						</uni-grid-item>
 					</uni-grid>
 				</scroll-view>
-				<scroll-view :scroll-y="true" class="crumbs">
-					<text class="gradient" v-for="item,index in crumbs" :key="index"
-						:style="`background-image: -webkit-linear-gradient(top, ${color[item.level]});`">
-						<text class="name">{{item.name}}</text>
-						<text class="cards-number">({{item.currentGachasNumber}}) </text>
-					</text>
-				</scroll-view>
-
 			</view>
 			<view class="operate">
 				<button type="default" :disabled="btnDisabled" @click="actionCards(1)">单抽</button>
@@ -56,11 +56,10 @@
 				<button type="primary" :disabled="btnDisabled" @click="actionCards(n)">{{n}}抽</button>
 			</view>
 			<view class="input">
-				<input v-model="n" type="number" placeholder="自定义抽数" />
+				<uni-number-box v-model="n" :min="0" :step="1" :max="9999"></uni-number-box>
+				<button type="warn" class="resert" @click="resert">重置</button>
 			</view>
-			<view class="input">
-				<button type="warn" @click="resert">重置</button>
-			</view>
+
 		</uni-col>
 	</uni-row>
 	<uni-popup ref="popup" type="center">
@@ -99,6 +98,7 @@
 		}
 
 	}, { deep: true })
+
 	const n = ref(20)
 	const btnDisabled = ref(false)
 	const content = ref('')
@@ -135,22 +135,70 @@
 	} as const
 </script>
 <style lang="scss" scoped>
+
+	:deep(.input) {
+		width: 91%;
+		max-width: 600px;
+		display: flex;
+		margin: auto;
+		justify-content: center;
+
+		.uni-numbox {
+			width: 80%;
+
+			input {
+				margin-top: 50rpx;
+				height: 100rpx;
+				max-height: 50px;
+			}
+		}
+
+		.resert {
+			width: 20%;
+			height: 100rpx;
+			max-height: 50px;
+		}
+
+		.uni-numbox-btns {
+			display: none;
+		}
+
+		.uni-numbox__value {
+			width: 91%;
+			margin: auto;
+			max-width: 2000px;
+			margin-bottom: 50rpx;
+			border: 1px solid #ccc;
+			height: 80rpx;
+			border-radius: 5px;
+
+			input {
+				text-align: center;
+				font-size: 14px;
+			}
+		}
+	}
+
+
+	.resert {
+		width: 91%;
+		margin: auto;
+	}
+
 	.message {
 		position: sticky;
 		top: 50rpx;
 		background-color: #fff;
 		z-index: 2;
+		padding-top: 50rpx;
 	}
 
 	.gods {
 		text-align: center;
 		font-weight: 700;
 		margin-top: 20rpx;
-
+		
 		.gods-list {
-			// max-height: 1000rpx;
-
-			:deep(.uni-grid) {
 				display: flex;
 				justify-content: center;
 			}
@@ -166,10 +214,10 @@
 				margin: 10rpx 0;
 			}
 		}
-	}
+
 
 	.crumbs {
-		max-height: 125rpx;
+		max-height: 100rpx;
 		margin: 20rpx 10rpx;
 		font-size: 12px;
 		margin-left: 10rpx;
@@ -213,18 +261,4 @@
 		}
 	}
 
-	.input {
-		width: 91%;
-		margin: auto;
-		max-width: 850px;
-		margin-bottom: 50rpx;
-
-		input {
-			height: 60rpx;
-			border: 1px solid #ccc;
-			text-align: center;
-			border-radius: 5px;
-			font-size: 14px;
-		}
-	}
 </style>
