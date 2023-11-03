@@ -25,7 +25,7 @@
 							{{item }} :{{crumbs[item]}}
 						</text>
 					</view>
-					<text class="gradient" v-for="item,index in crumbs?.data.slice(0,crumbsScrolltolowerIndex * 5000)"
+					<text class="gradient" v-for="item,index in crumbs?.data.slice(0,crumbsScrolltolowerIndex * 500)"
 						:key="index" :style="`background-image: -webkit-linear-gradient(top, ${color[item.level]});`">
 						<text class="name">{{item.name}}</text>
 						<text class="cards-number">({{item.currentGachasNumber}}) </text>
@@ -69,7 +69,7 @@
 	import { onLoad } from '@dcloudio/uni-app'
 	import { resultType } from '@/Gacha/main';
 
-	import { computed, ref, nextTick } from 'vue'
+	import { watch, ref, nextTick } from 'vue'
 	import { Guarantees60 } from '@/Gacha/main/Guarantees60';
 	const props = defineProps({
 		gacha: {
@@ -88,6 +88,7 @@
 		myGacha.value = new gachaClass()
 		await nextTick(uni.hideLoading)
 		currentGods.value = []
+		crumbs.value.data = []
 	}
 	onLoad(() => {
 		init()
@@ -99,16 +100,8 @@
 	const popup = ref<any>(null)
 	// 需要展示的式神
 	const currentGods = ref<resultType[]>([])
-	const crumbs = computed(() => {
-		const obj = {
-			data: [] as resultType[]
-		}
-		myGacha.value?.result.forEach(item => {
-			if (obj[item.level]) obj[item.level]++
-			else obj[item.level] = 1
-			if (item.level === 'SP' || item.level === 'SSR') obj.data.unshift(item)
-		})
-		return obj
+	const crumbs = ref({
+		data: []
 	})
 	// 弹窗点击确认的事件
 	let confirm = () : void => { }
@@ -124,6 +117,14 @@
 		if (myGacha.value.cardType === '旭华召唤') myGacha.value.cardType = '瑶归召唤'
 		else myGacha.value.cardType = '旭华召唤'
 	}
+	const drawCrambs = (arr : resultType[]) => {
+		arr.forEach(item => {
+			if (crumbs.value[item.level]) crumbs.value[item.level]++
+			else crumbs.value[item.level] = 1
+			if (item.level === 'SP' || item.level === 'SSR') crumbs.value.data.unshift(item)
+		})
+
+	}
 	const actionCards = async (n : number) => {
 
 		if (!myGacha.value) return
@@ -137,14 +138,26 @@
 			let i = 1
 			const isSummonedDesignated = myGacha.value.isSummonedDesignated
 			let timer = setInterval(async () => {
+
 				const step = 4413
 				if (!myGacha.value) return
 				const longs = n / step >= i ? step : n % step
-				if (i === 1) currentGods.value = myGacha.value.getSomeResult(longs)
-				else currentGods.value.unshift(...myGacha.value.getSomeResult(longs))
+				if (i === 1) {
+					currentGods.value = myGacha.value.getSomeResult(longs)
+					drawCrambs(currentGods.value)
+				}
+				else {
+					const res = myGacha.value.getSomeResult(longs)
+					drawCrambs(res)
+					currentGods.value.unshift(...res)
+				}
 				i++
 				if (n / step < i) {
-					if (i !== 2) currentGods.value.unshift(...myGacha.value.getSomeResult(n % step))
+					if (i !== 2) {
+						const res = myGacha.value.getSomeResult(n % step)
+						drawCrambs(res)
+						currentGods.value.unshift(...res)
+					}
 					btnDisabled.value = false
 					clearInterval(timer)
 					await nextTick()
@@ -168,7 +181,7 @@
 		scrolltolowerIndex.value++
 	}
 	const crumbsScrolltolower = () => {
-		if (crumbsScrolltolowerIndex.value >= crumbs.value.data.length / 5000) return
+		if (crumbsScrolltolowerIndex.value >= crumbs.value.data.length / 500) return
 		crumbsScrolltolowerIndex.value++
 	}
 	const color = {
@@ -240,6 +253,7 @@
 		text-align: center;
 		font-weight: 700;
 		margin-top: 20rpx;
+
 		.gods-list {
 			max-height: 45vh;
 			width: 94%;
@@ -280,7 +294,7 @@
 
 		.cards-number {
 			color: red;
-		}	
+		}
 	}
 
 	@media screen and (min-width: 768px) {
