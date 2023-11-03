@@ -2,37 +2,31 @@
 	<uni-row>
 		<uni-col :xs="24" :sm="6" :md="6" class="message">
 			<view class="gacha-information">
-				<view v-if="myGacha">
+				<view>
 					<view class="gacha-information-item">
 						<text class="text">当前卡池：</text>
-						<text class="value" @click="changeCardType">{{myGacha.cardType}}</text>
+						<text class="value" @click="changeCardType">{{myGacha?.cardType}}</text>
 					</view>
 					<view class="gacha-information-item">
-						<text class="text">当前概率：</text>
-						<text class="value">{{myGacha.probabilityUP}}倍</text>
+						<text class="text">概率UP：</text>
+						<text class="value">{{myGacha?.probabilityUP}}倍</text>
 					</view>
 					<view class="gacha-information-item">
-						<text class="text">当前保底：</text>
-						<text class="value">{{myGacha.currentGuaranteesGolden}}/</text>
-						<text class="text">{{myGacha.guaranteesGolden}}</text>
+						<text class="text">总抽数：</text>
+						<text class="value">{{myGacha?.currentGachasNumber}}</text>
 					</view>
-					<view class="gacha-information-item">
-						<text class="text">当前抽数：</text>
-						<text class="value">{{myGacha.currentGachasNumber}}</text>
-					</view>
-					<view class="gacha-information-item">
-						<text class="text">指定式神：</text>
-						<text class="value">{{myGacha.summonedDesignated?.name}}</text>
-						<text class="text">{{myGacha.isSummonedDesignated?'(已召唤出)':''}}</text>
-					</view>
-					<view class="gacha-information-item">
-						<text class="text">当前概率：</text>
-						<text class="value">{{myGacha.probability * 100}}%</text>
-					</view>
+					<slot v-if="myGacha" name="information" :myGacha="myGacha"></slot>
 				</view>
-				<scroll-view :scroll-y="true" class="crumbs">
-					<text class="gradient" v-for="item,index in crumbs" :key="index"
-						:style="`background-image: -webkit-linear-gradient(top, ${color[item.level]});`">
+				<scroll-view :scroll-y="true" class="crumbs" @scrolltolower="crumbsScrolltolower">
+					<view class="statistics">
+						<text class="gradient" v-for="item,index in ['R','SR','SSR','SP']" :key="index"
+							v-show="crumbs[item]"
+							:style="`background-image: -webkit-linear-gradient(top, ${color[item]});`">
+							{{item }} :{{crumbs[item]}}
+						</text>
+					</view>
+					<text class="gradient" v-for="item,index in crumbs?.data.slice(0,crumbsScrolltolowerIndex * 5000)"
+						:key="index" :style="`background-image: -webkit-linear-gradient(top, ${color[item.level]});`">
 						<text class="name">{{item.name}}</text>
 						<text class="cards-number">({{item.currentGachasNumber}}) </text>
 					</text>
@@ -42,8 +36,8 @@
 		<uni-col :xs="24" :sm="18" :md="14">
 			<view class="gods">
 				<scroll-view :scroll-y="true" class="gods-list" @scrolltolower="scrolltolower">
-					<uni-grid  :column="5" :showBorder="false" :square="false">
-						<uni-grid-item v-for="item,index in currentGods.slice(0,scrolltolowerIndex * 100)" :key="index">
+					<uni-grid :column="5" :showBorder="false" :square="false">
+						<uni-grid-item v-for="item,index in currentGods?.slice(0,scrolltolowerIndex * 50)" :key="index">
 							<image class="image"
 								:src="`https://yys.res.netease.com/pc/gw/20180913151832/data/shishen/${item.shishen_id}.png?1`">
 							</image>
@@ -59,7 +53,7 @@
 				<button type="primary" :disabled="btnDisabled" @click="actionCards(n)">{{n}}抽</button>
 			</view>
 			<view class="input">
-				<uni-number-box v-model="n" :min="1" :step="1" :max="9999"></uni-number-box>
+				<uni-number-box v-model="n" :min="1" :step="1" :max="199999"></uni-number-box>
 				<button type="warn" class="resert" @click="resert">重置</button>
 			</view>
 		</uni-col>
@@ -74,8 +68,15 @@
 	import Store from '@/store'
 	import { onLoad } from '@dcloudio/uni-app'
 	import { resultType } from '@/Gacha/main';
-	import { Guarantees60 } from '@/Gacha/main/Guarantees60'
-	import { computed, ref, nextTick, watch } from 'vue'
+
+	import { computed, ref, nextTick } from 'vue'
+	import { Guarantees60 } from '@/Gacha/main/Guarantees60';
+	const props = defineProps({
+		gacha: {
+		}
+	})
+	// 因为所有子类下的格式都是一样的，这个组件主要是用来渲染图像，不参与式神计算，所以只需要随便找一个子类的类型就行了
+	const gachaClass = props.gacha as typeof Guarantees60
 	let myGacha = ref<Guarantees60 | null>(null)
 	// 初始化
 	let init : any = async () => {
@@ -84,23 +85,13 @@
 			mask: true
 		});
 		await Store.dispatch('getGods')
-		myGacha.value = new Guarantees60()
+		myGacha.value = new gachaClass()
 		await nextTick(uni.hideLoading)
 		currentGods.value = []
 	}
 	onLoad(() => {
 		init()
 	})
-	watch(() => myGacha.value?.isSummonedDesignated, async (isSummonedDesignated) => {
-
-		if (isSummonedDesignated) {
-			if (currentGods.value.length >= 800) return
-			content.value = '恭喜你已经成功召唤出' + (myGacha.value?.summonedDesignated?.name || '当期式神') + '!'
-			confirm = () => { }
-			popup.value.open()
-		}
-
-	}, { deep: true })
 
 	const n = ref(20)
 	const btnDisabled = ref(false)
@@ -109,7 +100,15 @@
 	// 需要展示的式神
 	const currentGods = ref<resultType[]>([])
 	const crumbs = computed(() => {
-		return myGacha.value?.result.filter(item => item.level === 'SP' || item.level === 'SSR').reverse()
+		const obj = {
+			data: [] as resultType[]
+		}
+		myGacha.value?.result.forEach(item => {
+			if (obj[item.level]) obj[item.level]++
+			else obj[item.level] = 1
+			if (item.level === 'SP' || item.level === 'SSR') obj.data.unshift(item)
+		})
+		return obj
 	})
 	// 弹窗点击确认的事件
 	let confirm = () : void => { }
@@ -126,20 +125,51 @@
 		else myGacha.value.cardType = '旭华召唤'
 	}
 	const actionCards = async (n : number) => {
-		
+
 		if (!myGacha.value) return
 		btnDisabled.value = true
-		setTimeout(() => {
-			btnDisabled.value = false
-		}, 500)
-		currentGods.value = myGacha.value.getSomeResult(n)
-	
+		if (n >= 1000) uni.showLoading({
+			title: '玩命计算中。',
+			mask: true
+		})
+		nextTick(() => {
+			if (!myGacha.value) return
+			let i = 1
+			const isSummonedDesignated = myGacha.value.isSummonedDesignated
+			let timer = setInterval(async () => {
+				const step = 4413
+				if (!myGacha.value) return
+				const longs = n / step >= i ? step : n % step
+				if (i === 1) currentGods.value = myGacha.value.getSomeResult(longs)
+				else currentGods.value.unshift(...myGacha.value.getSomeResult(longs))
+				i++
+				if (n / step < i) {
+					if (i !== 2) currentGods.value.unshift(...myGacha.value.getSomeResult(n % step))
+					btnDisabled.value = false
+					clearInterval(timer)
+					await nextTick()
+					if (n >= 1000) uni.hideLoading()
+					if (!isSummonedDesignated && myGacha.value.isSummonedDesignated && currentGods.value.length <= 800) {
+						content.value = '恭喜你已经成功召唤出' + (myGacha.value?.summonedDesignated?.name || '当期式神') + '!'
+						confirm = () => { }
+						popup.value.open()
+					}
+
+				}
+			}, 0)
+		})
+
 		scrolltolowerIndex.value = 1
 	}
+	const crumbsScrolltolowerIndex = ref(1)
 	const scrolltolowerIndex = ref(1)
 	const scrolltolower = () => {
-		if (scrolltolowerIndex.value >= currentGods.value.length / 100) return
+		if (scrolltolowerIndex.value >= currentGods.value.length / 50) return
 		scrolltolowerIndex.value++
+	}
+	const crumbsScrolltolower = () => {
+		if (crumbsScrolltolowerIndex.value >= crumbs.value.data.length / 5000) return
+		crumbsScrolltolowerIndex.value++
 	}
 	const color = {
 		SSR: '#db5f13,#e0941c,#f0e321',
@@ -210,7 +240,6 @@
 		text-align: center;
 		font-weight: 700;
 		margin-top: 20rpx;
-
 		.gods-list {
 			max-height: 45vh;
 			width: 94%;
@@ -241,15 +270,22 @@
 		max-height: 10vh;
 		margin: auto;
 		font-size: 12px;
+		padding-bottom: 0rpx;
+
+		.statistics {
+			text {
+				margin-right: 20rpx;
+			}
+		}
 
 		.cards-number {
 			color: red;
-		}
+		}	
 	}
 
 	@media screen and (min-width: 768px) {
 		.crumbs {
-			max-height: 100vh;
+			max-height: 50vh;
 		}
 	}
 
@@ -264,7 +300,7 @@
 		text-align: center;
 		font-weight: 700;
 
-		.gacha-information-item {
+		:deep(.gacha-information-item) {
 			font-size: 18px;
 			margin: 0 20rpx;
 

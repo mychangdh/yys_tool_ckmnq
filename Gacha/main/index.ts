@@ -100,7 +100,7 @@ export class Gacha {
 	getSomeResult(times : number) : resultType[] {
 		const arr : resultType[] = []
 		for (let i = 1; i <= times; i++) {
-			arr.push(this.getOnceResult())
+			arr.unshift(this.getOnceResult())
 		}
 		return arr
 	}
