@@ -7,6 +7,14 @@
 			-webkit-text-fill-color: transparent;
 		}
 body{
-	width: 100vw;
-	overflow-x: hidden;
+	overflow-x: hidden ;
+}
+*::-webkit-scrollbar {
+	display: none;
+}
+* {
+	scrollbar-width: none ;
+}
+* {
+	-ms-overflow-style: none;
 }

@@ -41,11 +41,10 @@
 		</uni-col>
 		<uni-col :xs="24" :sm="18" :md="14">
 			<view class="gods">
-
-				<scroll-view :scroll-y="true" class="gods-list">
-					<uni-grid :column="5" :showBorder="false" :square="false">
-						<uni-grid-item v-for="item,index in currentGods" :key="index">
-							<image v-if="currentGods.length<=800" class="image"
+				<scroll-view :scroll-y="true" class="gods-list" @scrolltolower="scrolltolower">
+					<uni-grid  :column="5" :showBorder="false" :square="false">
+						<uni-grid-item v-for="item,index in currentGods.slice(0,scrolltolowerIndex * 100)" :key="index">
+							<image class="image"
 								:src="`https://yys.res.netease.com/pc/gw/20180913151832/data/shishen/${item.shishen_id}.png?1`">
 							</image>
 							<text class="text gradient"
@@ -60,10 +59,9 @@
 				<button type="primary" :disabled="btnDisabled" @click="actionCards(n)">{{n}}抽</button>
 			</view>
 			<view class="input">
-				<uni-number-box v-model="n" :min="0" :step="1" :max="9999"></uni-number-box>
+				<uni-number-box v-model="n" :min="1" :step="1" :max="9999"></uni-number-box>
 				<button type="warn" class="resert" @click="resert">重置</button>
 			</view>
-
 		</uni-col>
 	</uni-row>
 	<uni-popup ref="popup" type="center">
@@ -96,9 +94,10 @@
 	watch(() => myGacha.value?.isSummonedDesignated, async (isSummonedDesignated) => {
 
 		if (isSummonedDesignated) {
+			if (currentGods.value.length >= 800) return
 			content.value = '恭喜你已经成功召唤出' + (myGacha.value?.summonedDesignated?.name || '当期式神') + '!'
 			confirm = () => { }
-			await popup.value.open()
+			popup.value.open()
 		}
 
 	}, { deep: true })
@@ -126,15 +125,21 @@
 		if (myGacha.value.cardType === '旭华召唤') myGacha.value.cardType = '瑶归召唤'
 		else myGacha.value.cardType = '旭华召唤'
 	}
-	const actionCards = (n : number) => {
+	const actionCards = async (n : number) => {
+		
 		if (!myGacha.value) return
 		btnDisabled.value = true
 		setTimeout(() => {
 			btnDisabled.value = false
 		}, 500)
 		currentGods.value = myGacha.value.getSomeResult(n)
-		console.log(currentGods.value,4564);
-
+	
+		scrolltolowerIndex.value = 1
+	}
+	const scrolltolowerIndex = ref(1)
+	const scrolltolower = () => {
+		if (scrolltolowerIndex.value >= currentGods.value.length / 100) return
+		scrolltolowerIndex.value++
 	}
 	const color = {
 		SSR: '#db5f13,#e0941c,#f0e321',
@@ -207,8 +212,15 @@
 		margin-top: 20rpx;
 
 		.gods-list {
-			display: flex;
-			justify-content: center;
+			max-height: 45vh;
+			width: 94%;
+			margin: auto;
+
+			:deep(.uni-grid) {
+				justify-content: center;
+				overflow-x: hidden;
+
+			}
 		}
 
 		.image {
@@ -225,13 +237,19 @@
 
 
 	.crumbs {
-		max-height: 100rpx;
-		margin: 20rpx 10rpx;
+		width: 94%;
+		max-height: 10vh;
+		margin: auto;
 		font-size: 12px;
-		margin-left: 10rpx;
 
 		.cards-number {
 			color: red;
+		}
+	}
+
+	@media screen and (min-width: 768px) {
+		.crumbs {
+			max-height: 100vh;
 		}
 	}
 
@@ -265,6 +283,7 @@
 
 		button {
 			width: 180rpx;
+			white-space: nowrap;
 			min-width: 80px;
 		}
 	}
