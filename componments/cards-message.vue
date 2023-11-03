@@ -21,7 +21,7 @@
 					<view class="statistics">
 						<text class="gradient" v-for="item,index in ['R','SR','SSR','SP']" :key="index"
 							v-show="crumbs[item]"
-							:style="`background-image: -webkit-linear-gradient(top, ${color[item]});`">
+							:style="`background-image: -webkit-linear-gradient(top, ${COLOR[item]});`">
 							{{item }} :{{crumbs[item]}}
 						</text>
 					</view>
@@ -42,7 +42,7 @@
 								:src="`https://yys.res.netease.com/pc/gw/20180913151832/data/shishen/${item.shishen_id}.png?1`">
 							</image>
 							<text class="text gradient"
-								:style="`background-image: -webkit-linear-gradient(top, ${color[item.level]});`">{{item.name}}</text>
+								:style="`background-image: -webkit-linear-gradient(top, ${COLOR[item.level]});`">{{item.name}}</text>
 						</uni-grid-item>
 					</uni-grid>
 				</scroll-view>
@@ -68,8 +68,8 @@
 	import Store from '@/store'
 	import { onLoad } from '@dcloudio/uni-app'
 	import { resultType } from '@/Gacha/main';
-
-	import { watch, ref, nextTick } from 'vue'
+	import { COLOR , STEP } from '@/config'
+	import { ref, nextTick } from 'vue'
 	import { Guarantees60 } from '@/Gacha/main/Guarantees60';
 	const props = defineProps({
 		gacha: {
@@ -90,18 +90,19 @@
 		currentGods.value = []
 		crumbs.value.data = []
 	}
-	onLoad(() => {
-		init()
-	})
+
 
 	const n = ref(20)
+	// 禁用按钮
 	const btnDisabled = ref(false)
+	// 弹窗内容
 	const content = ref('')
+	// 
 	const popup = ref<any>(null)
 	// 需要展示的式神
 	const currentGods = ref<resultType[]>([])
 	const crumbs = ref({
-		data: []
+		data: [] as resultType[]
 	})
 	// 弹窗点击确认的事件
 	let confirm = () : void => { }
@@ -138,10 +139,9 @@
 			let i = 1
 			const isSummonedDesignated = myGacha.value.isSummonedDesignated
 			let timer = setInterval(async () => {
-
-				const step = 4413
+				
 				if (!myGacha.value) return
-				const longs = n / step >= i ? step : n % step
+				const longs = n / STEP >= i ? STEP : n % STEP
 				if (i === 1) {
 					currentGods.value = myGacha.value.getSomeResult(longs)
 					drawCrambs(currentGods.value)
@@ -152,9 +152,9 @@
 					currentGods.value.unshift(...res)
 				}
 				i++
-				if (n / step < i) {
+				if (n / STEP < i) {
 					if (i !== 2) {
-						const res = myGacha.value.getSomeResult(n % step)
+						const res = myGacha.value.getSomeResult(n % STEP)
 						drawCrambs(res)
 						currentGods.value.unshift(...res)
 					}
@@ -162,8 +162,12 @@
 					clearInterval(timer)
 					await nextTick()
 					if (n >= 1000) uni.hideLoading()
-					if (!isSummonedDesignated && myGacha.value.isSummonedDesignated && currentGods.value.length <= 800) {
-						content.value = '恭喜你已经成功召唤出' + (myGacha.value?.summonedDesignated?.name || '当期式神') + '!'
+					if (!isSummonedDesignated
+						&& myGacha.value.isSummonedDesignated
+						&& currentGods.value.length <= 800) {
+						content.value =
+							'恭喜你已经成功召唤出' +
+							(myGacha.value?.summonedDesignated?.name || '当期式神') + '!'
 						confirm = () => { }
 						popup.value.open()
 					}
@@ -184,12 +188,11 @@
 		if (crumbsScrolltolowerIndex.value >= crumbs.value.data.length / 500) return
 		crumbsScrolltolowerIndex.value++
 	}
-	const color = {
-		SSR: '#db5f13,#e0941c,#f0e321',
-		SP: '#f8313b,#fd7f8e,#f8aaac',
-		SR: '#9213c0,#cc48dd',
-		R: '#1360aa,#38adf8'
-	} as const
+
+
+	onLoad(() => {
+		init()
+	})
 </script>
 <style lang="scss" scoped>
 	:deep(.input) {
