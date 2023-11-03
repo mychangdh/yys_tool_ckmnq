@@ -26,7 +26,7 @@
 						</text>
 					</view>
 					<text class="gradient" v-for="item,index in crumbs?.data.slice(0,crumbsScrolltolowerIndex * 500)"
-						:key="index" :style="`background-image: -webkit-linear-gradient(top, ${color[item.level]});`">
+						:key="index" :style="`background-image: -webkit-linear-gradient(top, ${COLOR[item.level]});`">
 						<text class="name">{{item.name}}</text>
 						<text class="cards-number">({{item.currentGachasNumber}}) </text>
 					</text>
