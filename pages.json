@@ -1,19 +1,38 @@
 {
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path" : "pages/guarantees60/index",
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "主页",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/guarantees60/index",
+			"style": {
+				"navigationBarTitleText": "60保底模式",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path" : "pages/up3/index",
 			"style" : 
 			{
-				"navigationBarTitleText" : "60保底模式",
+				"navigationBarTitleText" : "",
 				"enablePullDownRefresh" : false
 			}
 		}
+
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "uni-app",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+			"animationType": "fade-in",
+			"animationDuration": 500
+		}
 	},
 	"uniIdRouter": {}
 }

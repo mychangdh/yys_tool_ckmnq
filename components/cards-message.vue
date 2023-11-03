@@ -2,6 +2,11 @@
 	<uni-row>
 		<uni-col :xs="24" :sm="6" :md="6" class="message">
 			<view class="gacha-information">
+				<view class="gacha-information-item">
+					<text class="text">您是尊贵的</text>
+					<text class="value">{{myGacha?.isNotFull?'非':''}}全图鉴玩家</text>
+					<text class="text2"  @click="myGacha.isNotFull = !myGacha.isNotFull" v-if="!myGacha?.result.length">点击修改</text>
+				</view>
 				<view>
 					<view class="gacha-information-item">
 						<text class="text">当前卡池：</text>
@@ -68,13 +73,14 @@
 	import Store from '@/store'
 	import { onLoad } from '@dcloudio/uni-app'
 	import { resultType } from '@/Gacha/main';
-	import { COLOR , STEP } from '@/config'
+	import { COLOR, STEP } from '@/config'
 	import { ref, nextTick } from 'vue'
 	import { Guarantees60 } from '@/Gacha/main/Guarantees60';
 	const props = defineProps({
 		gacha: {
 		}
 	})
+	const emit = defineEmits(['changeCardType'])
 	// 因为所有子类下的格式都是一样的，这个组件主要是用来渲染图像，不参与式神计算，所以只需要随便找一个子类的类型就行了
 	const gachaClass = props.gacha as typeof Guarantees60
 	let myGacha = ref<Guarantees60 | null>(null)
@@ -88,7 +94,10 @@
 		myGacha.value = new gachaClass()
 		await nextTick(uni.hideLoading)
 		currentGods.value = []
-		crumbs.value.data = []
+		crumbs.value = {
+			data: []
+		}
+		changeCardType()
 	}
 
 
@@ -114,9 +123,7 @@
 		popup.value.open()
 	}
 	const changeCardType = () => {
-		if (!myGacha.value) return
-		if (myGacha.value.cardType === '旭华召唤') myGacha.value.cardType = '瑶归召唤'
-		else myGacha.value.cardType = '旭华召唤'
+		emit('changeCardType', myGacha.value)
 	}
 	const drawCrambs = (arr : resultType[]) => {
 		arr.forEach(item => {
@@ -139,7 +146,7 @@
 			let i = 1
 			const isSummonedDesignated = myGacha.value.isSummonedDesignated
 			let timer = setInterval(async () => {
-				
+
 				if (!myGacha.value) return
 				const longs = n / STEP >= i ? STEP : n % STEP
 				if (i === 1) {
@@ -265,13 +272,14 @@
 			:deep(.uni-grid) {
 				justify-content: center;
 				overflow-x: hidden;
-
 			}
 		}
 
 		.image {
 			width: 130rpx;
 			height: 130rpx;
+			max-width: 130px;
+			max-height: 130px;
 			margin: auto;
 		}
 
@@ -324,6 +332,11 @@
 			.value {
 				font-size: 17px;
 				color: red;
+			}
+			.text2{
+				font-size: 12px;
+				padding-left: 4px;
+				padding-top: 3.5px;
 			}
 		}
 	}

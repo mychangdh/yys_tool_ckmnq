@@ -26,8 +26,8 @@ export class Gacha {
 	// 当期式神的定向概率数组
 	private _probabilityArrays : probabilityType[] = []
 	private _probability : number = 0
-	// 是否不进行当期式神的计算
-	isSummonedDesignated = false
+	// 当期式神是否已经出了，没有选择当期式神的话则为true不进行当期式神的计算
+	isSummonedDesignated:boolean
 	// 当期式神，不传就没有定向计算
 	summonedDesignated : godsType | undefined
 	// 抽卡结果
@@ -40,7 +40,7 @@ export class Gacha {
 		this.gods = gods
 		this.baseGods = JSON.parse(JSON.stringify(gods))
 		this.isSummonedDesignated = !summonedDesignated
-		this.cardType = '旭华召唤'
+		this.cardType = '全部卡池'
 	}
 	// 获得当期式神的定向概率
 	get probability() {
@@ -73,7 +73,7 @@ export class Gacha {
 		if (!this.isSummonedDesignated
 			&& this.summonedDesignated
 			&& (randomNum <= probability * 0.0125)) {
-			// 获取概率
+			// 确定是当期式神
 			if (this.probability >= Math.random()) {
 				this.isSummonedDesignated = true
 				// 抽到就放回卡池
@@ -117,7 +117,6 @@ export class Gacha {
 				break
 			case "旭华召唤":
 				this.gods.SP = SP.filter(item => item.sort > 155)
-
 				this.gods.SSR = SSR.filter(item => item.sort > 155)
 				break
 			case "瑶归召唤":
@@ -127,7 +126,7 @@ export class Gacha {
 		if (!this.isSummonedDesignated && this.summonedDesignated) {
 			// 分卡池后如果还未召唤出当期式神，就把当期式神踢了，因为他的出现是用定向up去计算的
 			const level = this.summonedDesignated.level
-			this.gods[level] = this.gods[level].filter(item => item.shishen_id !== this.summonedDesignated.shishen_id)
+			this.gods[level] = this.gods[level].filter(item => item.shishen_id !== this.summonedDesignated?.shishen_id)
 		}
 		this._cardType = value
 	}

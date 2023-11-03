@@ -1,12 +1,6 @@
 <template>
-	<cardMessage :gacha="Guarantees60" @changeCardType="changeCardType">
+	<cardMessage :gacha="UP_3" @changeCardType="changeCardType">
 		<template v-slot:information="{myGacha}">
-			<view class="gacha-information-item">
-				<text class="text">当前保底：</text>
-				<text class="value">{{myGacha?.currentGuaranteesGolden}}/</text>
-				<text class="text">{{myGacha?.guaranteesGolden}}</text>
-			</view>
-
 			<view class="gacha-information-item">
 				<text class="text">指定式神：</text>
 				<text class="value">{{myGacha?.summonedDesignated?.name}}</text>
@@ -21,8 +15,8 @@
 </template>
 <script lang="ts" setup>
 	import cardMessage from '@/components/cards-message.vue'
-	import { Guarantees60 } from '@/Gacha/main/Guarantees60'
-	const changeCardType = (myGacha : Guarantees60) => {
+	import { UP_3 } from '@/Gacha/main/UP_3'
+	const changeCardType = (myGacha : UP_3) => {
 		if (myGacha.cardType === '旭华召唤') myGacha.cardType = '瑶归召唤'
 		else myGacha.cardType = '旭华召唤'
 	}
