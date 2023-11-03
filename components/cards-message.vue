@@ -5,7 +5,8 @@
 				<view class="gacha-information-item">
 					<text class="text">您是尊贵的</text>
 					<text class="value">{{myGacha?.isNotFull?'非':''}}全图鉴玩家</text>
-					<text class="text2"  @click="myGacha.isNotFull = !myGacha.isNotFull" v-if="!myGacha?.result.length">点击修改</text>
+					<text class="text2" @click="myGacha.isNotFull = !myGacha.isNotFull"
+						v-if="!myGacha?.result.length">点击修改</text>
 				</view>
 				<view>
 					<view class="gacha-information-item">
@@ -110,7 +111,7 @@
 	const popup = ref<any>(null)
 	// 需要展示的式神
 	const currentGods = ref<resultType[]>([])
-	const crumbs = ref({
+	const crumbs = ref<any>({
 		data: [] as resultType[]
 	})
 	// 弹窗点击确认的事件
@@ -126,7 +127,7 @@
 		emit('changeCardType', myGacha.value)
 	}
 	const drawCrambs = (arr : resultType[]) => {
-		arr.forEach(item => {
+		arr.reverse().forEach(item => {
 			if (crumbs.value[item.level]) crumbs.value[item.level]++
 			else crumbs.value[item.level] = 1
 			if (item.level === 'SP' || item.level === 'SSR') crumbs.value.data.unshift(item)
@@ -333,7 +334,8 @@
 				font-size: 17px;
 				color: red;
 			}
-			.text2{
+
+			.text2 {
 				font-size: 12px;
 				padding-left: 4px;
 				padding-top: 3.5px;

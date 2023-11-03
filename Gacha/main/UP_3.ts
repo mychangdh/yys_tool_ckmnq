@@ -21,9 +21,11 @@ export class UP_3 extends Gacha {
 
 	}
 	getOnceResult() {
-		this.probabilityUP = this.goldsNumber >= 3 ? 1 : 2.5
 		const res = super.getOnceResult(!this.isSummonedDesignated && this.currentGachasNumber === this.prguaranteesCurrent)
-		if (res.level === 'SP' || res.level === 'SSR') this.goldsNumber++
+		if ((res.level === 'SP' || res.level === 'SSR') && this.goldsNumber < 3) {
+			this.goldsNumber++
+			if (this.goldsNumber === 3) this.probabilityUP = 1
+		}
 		return res
 	}
 
