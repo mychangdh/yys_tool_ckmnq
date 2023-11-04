@@ -4,26 +4,26 @@
 			<view class="gacha-information">
 				<view class="gacha-information-item">
 					<text class="text">您是尊贵的</text>
-					<text class="value">{{myGacha?.isNotFull?'非':''}}全图鉴玩家</text>
-					<text class="text2" @click="myGacha.isNotFull = !myGacha.isNotFull"
-						v-if="!myGacha?.result.length"><uni-icons type="refreshempty"></uni-icons></text>
+					<text class="value">{{myGacha.isNotFull?'非':''}}全图鉴</text>
+					<text class="text">玩家</text>
+					<uni-icons @click="myGacha.isNotFull = !myGacha.isNotFull" v-if="!myGacha.currentGachasNumber"
+						type="refreshempty"></uni-icons>
 				</view>
 				<view>
 					<view class="gacha-information-item">
 						<text class="text">当前卡池：</text>
-						<text class="value">{{myGacha?.cardType}}</text>
-						<text class="text" @click="changeCardType"><uni-icons type="refreshempty"
-								style="top:0px"></uni-icons></text>
-					</view>
-					<view class="gacha-information-item">
-						<text class="text">概率UP：</text>
-						<text class="value">{{myGacha?.probabilityUP}}倍</text>
+						<text class="value">{{myGacha.cardType}}</text>
+						<uni-icons class="text" @click="emit('changeCardType', myGacha)"
+							type="refreshempty"></uni-icons>
 					</view>
 					<view class="gacha-information-item">
 						<text class="text">总抽数：</text>
-						<text class="value">{{myGacha?.currentGachasNumber}}</text>
+						<text class="value">{{myGacha.currentGachasNumber}}</text>
 					</view>
-					<slot v-if="myGacha" name="information" :myGacha="myGacha"></slot>
+				</view>
+				<view>
+					<slot v-if="myGacha" name="information" :myGacha="myGacha" :currentGodNumber="currentGodNumber">
+					</slot>
 				</view>
 				<scroll-view :scroll-y="true" class="crumbs" @scrolltolower="crumbsScrolltolower">
 					<view class="statistics">
@@ -59,12 +59,13 @@
 			</view>
 			<view class="operate">
 				<button type="default" :disabled="btnDisabled" @click="actionCards(1)">单抽</button>
-				<button type="primary" :disabled="btnDisabled" @click="actionCards(10)">十抽</button>
 				<button type="primary" :disabled="btnDisabled" @click="actionCards(n)">{{n}}抽</button>
 			</view>
 			<view class="input">
+				<text>自定义抽数</text>
 				<uni-number-box v-model="n" :min="1" :step="1" :max="199999"></uni-number-box>
-				<button type="warn" class="resert" @click="resert">重置</button>
+				<button v-if="myGacha.currentGachasNumber" type="warn" class="resert" @click="resert">重置</button>
+				<button v-if="myGacha.currentGachasNumber" type="primary" class="resert" @click="exports">导出xls</button>
 			</view>
 		</uni-col>
 	</uni-row>
@@ -75,35 +76,21 @@
 </template>
 
 <script lang="ts" setup>
-	import { onLoad } from '@dcloudio/uni-app'
 	import { resultType } from '@/Gacha/main';
 	import { COLOR, STEP } from '@/config'
-	import { ref, nextTick } from 'vue'
+	import { ref } from 'vue'
+	import dayjs from 'dayjs'
+	import { JSONToExcelConvertor } from '@/function/exportExcel'
 	import { Guarantees60 } from '@/Gacha/main/Guarantees60';
 	const props = defineProps({
 		gacha: {
 		}
 	})
-
-	const myContent = {
-
-	}
 	const emit = defineEmits(['changeCardType'])
 	// 因为所有子类下的格式都是一样的，这个组件主要是用来渲染图像，不参与式神计算，所以只需要随便找一个子类的类型就行了
 	const gachaClass = props.gacha as typeof Guarantees60
 	let myGacha = ref<Guarantees60 | null>(null)
-	// 初始化
-	let init : any = async () => {
-		myGacha.value = new gachaClass()
-
-		currentGods.value = []
-		crumbs.value = {
-			data: []
-		}
-	}
-
-
-	const n = ref(20)
+	const n = ref(10)
 	// 禁用按钮
 	const btnDisabled = ref(false)
 	// 弹窗内容
@@ -112,6 +99,7 @@
 	const popup = ref<any>(null)
 	// 需要展示的式神
 	const currentGods = ref<resultType[]>([])
+	// 面包屑
 	const crumbs = ref<any>({
 		data: [] as resultType[]
 	})
@@ -124,68 +112,90 @@
 		}
 		popup.value.open()
 	}
-	const changeCardType = () => {
-		emit('changeCardType', myGacha.value)
-	}
-	const drawCrambs = (arr : resultType[]) => {
-		arr.reverse().forEach(item => {
+	// 出金抽数
+	let currentGodNumber = ref(0)
+	// 绘制当前式神和面包屑
+	const drawCrambs = (arr : resultType[], isOne = false) => {
+		if (isOne) currentGods.value = arr
+		else currentGods.value.push(...arr)
+		arr.forEach(item => {
+			if (item.isCurrent) currentGodNumber.value = item.currentGachasNumber
 			if (crumbs.value[item.level]) crumbs.value[item.level]++
 			else crumbs.value[item.level] = 1
 			if (item.level === 'SP' || item.level === 'SSR') crumbs.value.data.unshift(item)
 		})
 
 	}
-	const actionCards = async (n : number) => {
-
+	// n为抽卡数量
+	const actionCards = (n : number) => {
 		if (!myGacha.value) return
 		btnDisabled.value = true
 		if (n >= 1000) uni.showLoading({
 			title: '玩命计算中。',
 			mask: true
 		})
-		nextTick(() => {
+		let i = 1
+		const oldIsSummonedDesignated = myGacha.value.isSummonedDesignated
+		let timer = setInterval(() => {
 			if (!myGacha.value) return
-			let i = 1
-			const isSummonedDesignated = myGacha.value.isSummonedDesignated
-			let timer = setInterval(async () => {
+			// 是不是最后一个
+			const isLast = n / STEP < i
+			drawCrambs(myGacha.value.getSomeResult(isLast ? n % STEP : STEP), i === 1)
+			// 如果剩最后一个那一定是最后的余数
+			if (!isLast) return i++
+			clearInterval(timer)
+			if (n >= 1000) uni.hideLoading()
+			setTimeout(() => {
+				btnDisabled.value = false
+			}, 300)
+			if (!oldIsSummonedDesignated
+				&& myGacha.value.isSummonedDesignated
+				&& currentGods.value.length <= 800) {
+				content.value =
+					'恭喜你已经成功召唤出' +
+					(myGacha.value?.summonedDesignated?.name || '当期式神') + '总共' + currentGodNumber.value + '抽!'
+				confirm = () => { }
+				popup.value.open()
 
-				if (!myGacha.value) return
-				const longs = n / STEP >= i ? STEP : n % STEP
-				let res = myGacha.value.getSomeResult(longs).reverse()
-				if (i === 1) {
-					currentGods.value = res
-					drawCrambs(currentGods.value)
-				}
-				else {
-					drawCrambs(res)
-					currentGods.value.unshift(...res)
-				}
-				i++
-				if (n / STEP < i) {
-					if (i !== 2) {
-						const res = myGacha.value.getSomeResult(n % STEP)
-						drawCrambs(res)
-						currentGods.value.unshift(...res)
-					}
-					btnDisabled.value = false
-					clearInterval(timer)
-					await nextTick()
-					if (n >= 1000) uni.hideLoading()
-					if (!isSummonedDesignated
-						&& myGacha.value.isSummonedDesignated
-						&& currentGods.value.length <= 800) {
-						content.value =
-							'恭喜你已经成功召唤出' +
-							(myGacha.value?.summonedDesignated?.name || '当期式神') + '!'
-						confirm = () => { }
-						popup.value.open()
-					}
+			}
 
-				}
-			}, 0)
-		})
-
+		}, 0)
 		scrolltolowerIndex.value = 1
+	}
+
+	// 初始化
+	let init = async () => {
+		myGacha.value = new gachaClass()
+		currentGods.value = []
+		currentGodNumber.value = 0
+		crumbs.value = {
+			data: []
+		}
+	}
+	init()
+	// 导出excel
+	const exports = () => {
+		if (!myGacha.value) return
+		const arr = myGacha.value.result.map(item => {
+			return {
+				currentGachasNumber: item.currentGachasNumber,
+				shishen_id: item.shishen_id,
+				name: item.name,
+				level: item.level,
+			}
+		})
+		const header = {
+			currentGachasNumber: '抽数',
+			shishen_id: '式神编号',
+			name: '名字',
+			level: '等级'
+		}
+		const time = dayjs().format('YYYY-MM-DD HH:mm:ss')
+		// #ifdef H5
+		JSONToExcelConvertor(arr, header, `${time}抽卡统计`)
+		// #endif
+
+
 	}
 	const crumbsScrolltolowerIndex = ref(1)
 	const scrolltolowerIndex = ref(1)
@@ -197,32 +207,32 @@
 		if (crumbsScrolltolowerIndex.value >= crumbs.value.data.length / 500) return
 		crumbsScrolltolowerIndex.value++
 	}
-	onLoad(() => {
-		init()
-	})
 </script>
 <style lang="scss" scoped>
-
-
 	:deep(.input) {
-		width: 91%;
-		max-width: 600px;
-		display: flex;
+		padding: 10rpx;
+		width: 100%;
+		max-width: 800px;
+		text-align: center;
 		margin: auto;
-		justify-content: center;
+		margin-top: 50rpx;
+
+		text {
+			font-size: 12px;
+			font-weight: 700;
+		}
 
 		.uni-numbox {
-			width: 80%;
+			margin: 20rpx 0;
 
 			input {
-				margin-top: 50rpx;
-				height: 100rpx;
+				height: 70rpx;
 				max-height: 50px;
 			}
 		}
 
 		.resert {
-			width: 20%;
+			width: 100%;
 			height: 100rpx;
 			max-height: 50px;
 		}
@@ -232,11 +242,8 @@
 		}
 
 		.uni-numbox__value {
-			width: 91%;
-			margin: auto;
-			max-width: 2000px;
-			margin-bottom: 50rpx;
-			border: 1px solid #ccc;
+			width: 100%;
+			border: 1px solid rgba(0, 0, 0, 0.1);
 			height: 80rpx;
 			border-radius: 5px;
 
@@ -251,6 +258,7 @@
 	.resert {
 		width: 91%;
 		margin: auto;
+		margin-bottom: 20rpx;
 	}
 
 	.message {
@@ -328,27 +336,18 @@
 		font-weight: 700;
 
 		:deep(.gacha-information-item) {
-			:deep(.uni-icons) {
-				cursor: pointer;
-				position: relative;
-				font-size: 16px;
-				top: -3px;
-				margin-left: 2px;
-			}
-			font-size: 18px;
+			font-size: 14px;
 			margin: 0 20rpx;
 
+			.uni-icons {
+				cursor: pointer;
+				margin-left: 2px;
+			}
+
 			.value {
-				font-size: 17px;
 				color: red;
 			}
 
-			.text2 {
-				font-size: 12px;
-				padding-left: 4px;
-				padding-top: 3.5px;
-
-			}
 		}
 	}
 
@@ -359,7 +358,7 @@
 		display: flex;
 
 		button {
-			width: 180rpx;
+			width: 350rpx;
 			white-space: nowrap;
 			min-width: 80px;
 		}

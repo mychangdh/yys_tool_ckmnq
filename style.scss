@@ -1,5 +1,14 @@
 *{
-	font-family: "lucida grande", "lucida sans unicode", lucida, helvetica, "Hiragino Sans GB", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+	font-family: "lucida grande", 
+	"lucida sans unicode", 
+	lucida, helvetica, 
+	"Hiragino Sans GB", 
+	"Microsoft YaHei",
+	"WenQuanYi Micro Hei",
+	 sans-serif;
+	-ms-overflow-style: none;
+scrollbar-width: none ;
+box-sizing: border-box;
 }
 		.gradient {
 			
@@ -12,10 +21,3 @@ body{
 *::-webkit-scrollbar {
 	display: none;
 }
-* {
-	scrollbar-width: none ;
-}
-* {
-	-ms-overflow-style: none;
-}
-

@@ -26,7 +26,7 @@ export class Gacha {
 	private _probabilityArrays : probabilityType[] = []
 	private _probability : number = 0
 	// 当期式神是否已经出了，没有选择当期式神的话则为true不进行当期式神的计算
-	isSummonedDesignated:boolean
+	isSummonedDesignated : boolean
 	// 当期式神，不传就没有定向计算
 	summonedDesignated : godsType | undefined
 	// 抽卡结果
@@ -41,17 +41,23 @@ export class Gacha {
 		this.isSummonedDesignated = !summonedDesignated
 		this.cardType = '全部卡池'
 	}
-	// 获得当期式神的定向概率
-	get probability() {
+	// 展示概率和实际概率，因为展示的概率要比实际的多1抽
+	getProbability(isShow = false) :number{
 		if (this.isSummonedDesignated) return this._probability
-		for (let i = 1; i < this.probabilityArrays.length; i++) {
-			if (this.probabilityArrays[i].value >= this.currentGachasNumber) {
-				this._probability = this.probabilityArrays[i - 1].probavility
-				return this._probability
+		for (let i = 0; i < this.probabilityArrays.length; i++) {
+			if (this.probabilityArrays[i + 1].value >= (this.currentGachasNumber + +isShow)) {
+				return this.probabilityArrays[i].probavility
 			}
 		}
-		this._probability = this.probabilityArrays[this.probabilityArrays.length - 1].probavility
+	}
+	// 获得当期式神真正的的定向概率
+	get probability() {
+		this._probability = this.getProbability()
 		return this._probability
+	}
+	// 只是为了展示的概率
+	get showProbability() {
+		return this.getProbability(true)
 	}
 	sp = 0
 	ssr = 0
@@ -99,7 +105,7 @@ export class Gacha {
 	getSomeResult(times : number) : resultType[] {
 		const arr : resultType[] = []
 		for (let i = 1; i <= times; i++) {
-			arr.unshift(this.getOnceResult())
+			arr.push(this.getOnceResult())
 		}
 		return arr
 	}

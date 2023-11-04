@@ -7,7 +7,7 @@
 		mask: true
 	});
 	(async () => {
-		if(uni.getStorageSync('time'))  uni.removeStorageSync('time')
+		if (uni.getStorageSync('time')) uni.removeStorageSync('time')
 		const oldtime = uni.getStorageSync('saveTime')
 		// 2天后清除
 		if (!oldtime || (dayjs().valueOf() - +oldtime >= 2880000)) {
