@@ -43,7 +43,16 @@
 		margin: 50rpx 10rpx;
 
 		.group-item {
-			margin-bottom: 20rpx;
+			height: 50px;
+			display: flex;
+			align-items: center;
+			
+			:deep(.uni-tag){
+				height: 60rpx;
+				line-height: 40rpx;
+				font-size: 15px;
+				font-weight: 700;
+			}
 		}
 	}
 </style>
