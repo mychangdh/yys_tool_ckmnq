@@ -84,6 +84,10 @@
 		gacha: {
 		}
 	})
+
+	const myContent = {
+
+	}
 	const emit = defineEmits(['changeCardType'])
 	// 因为所有子类下的格式都是一样的，这个组件主要是用来渲染图像，不参与式神计算，所以只需要随便找一个子类的类型就行了
 	const gachaClass = props.gacha as typeof Guarantees60
@@ -198,6 +202,8 @@
 	})
 </script>
 <style lang="scss" scoped>
+
+
 	:deep(.input) {
 		width: 91%;
 		max-width: 600px;
@@ -322,6 +328,13 @@
 		font-weight: 700;
 
 		:deep(.gacha-information-item) {
+			:deep(.uni-icons) {
+				cursor: pointer;
+				position: relative;
+				font-size: 16px;
+				top: -3px;
+				margin-left: 2px;
+			}
 			font-size: 18px;
 			margin: 0 20rpx;
 

@@ -7,10 +7,11 @@
 		mask: true
 	});
 	(async () => {
-		const oldtime = uni.getStorageSync('time')
+		if(uni.getStorageSync('time'))  uni.removeStorageSync('time')
+		const oldtime = uni.getStorageSync('saveTime')
 		// 2天后清除
 		if (!oldtime || (dayjs().valueOf() - +oldtime >= 2880000)) {
-			uni.setStorageSync('time', dayjs().valueOf())
+			uni.setStorageSync('saveTime', dayjs().valueOf())
 			uni.removeStorageSync('Gods')
 		}
 		await Store.dispatch('getGods')
