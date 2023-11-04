@@ -17,6 +17,7 @@ export class UP_3 extends Gacha {
 		else newGods = [...SSR, ...SP].sort((x, y) => y.sort - x.sort)[0]
 		super({ SP, SSR, SR, R }, [], newGods)
 		this.isNotFull = isNotFull
+		this.cardType = '全部卡池'
 		this.probabilityUP = 2.5
 
 	}

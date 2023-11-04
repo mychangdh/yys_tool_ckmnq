@@ -6,12 +6,14 @@
 					<text class="text">您是尊贵的</text>
 					<text class="value">{{myGacha?.isNotFull?'非':''}}全图鉴玩家</text>
 					<text class="text2" @click="myGacha.isNotFull = !myGacha.isNotFull"
-						v-if="!myGacha?.result.length">点击修改</text>
+						v-if="!myGacha?.result.length"><uni-icons type="refreshempty"></uni-icons></text>
 				</view>
 				<view>
 					<view class="gacha-information-item">
 						<text class="text">当前卡池：</text>
-						<text class="value" @click="changeCardType">{{myGacha?.cardType}}</text>
+						<text class="value">{{myGacha?.cardType}}</text>
+						<text class="text" @click="changeCardType"><uni-icons type="refreshempty"
+								style="top:0px"></uni-icons></text>
 					</view>
 					<view class="gacha-information-item">
 						<text class="text">概率UP：</text>
@@ -73,7 +75,6 @@
 </template>
 
 <script lang="ts" setup>
-
 	import { onLoad } from '@dcloudio/uni-app'
 	import { resultType } from '@/Gacha/main';
 	import { COLOR, STEP } from '@/config'
@@ -90,12 +91,11 @@
 	// 初始化
 	let init : any = async () => {
 		myGacha.value = new gachaClass()
-	
+
 		currentGods.value = []
 		crumbs.value = {
 			data: []
 		}
-		changeCardType()
 	}
 
 
@@ -147,12 +147,12 @@
 
 				if (!myGacha.value) return
 				const longs = n / STEP >= i ? STEP : n % STEP
+				let res = myGacha.value.getSomeResult(longs).reverse()
 				if (i === 1) {
-					currentGods.value = myGacha.value.getSomeResult(longs)
+					currentGods.value = res
 					drawCrambs(currentGods.value)
 				}
 				else {
-					const res = myGacha.value.getSomeResult(longs)
 					drawCrambs(res)
 					currentGods.value.unshift(...res)
 				}
@@ -334,6 +334,7 @@
 				font-size: 12px;
 				padding-left: 4px;
 				padding-top: 3.5px;
+
 			}
 		}
 	}

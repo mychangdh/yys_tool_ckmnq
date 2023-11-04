@@ -17,8 +17,16 @@
 	import cardMessage from '@/components/cards-message.vue'
 	import { UP_3 } from '@/Gacha/main/UP_3'
 	const changeCardType = (myGacha : UP_3) => {
-		if (myGacha.cardType === '旭华召唤') myGacha.cardType = '瑶归召唤'
-		else myGacha.cardType = '旭华召唤'
+		switch (myGacha.cardType) {
+			case '全部卡池':
+				myGacha.cardType = '旭华召唤'
+				break
+			case '旭华召唤':
+				myGacha.cardType = '瑶归召唤'
+				break
+			case '瑶归召唤':
+				myGacha.cardType = '全部卡池'
+				break
+		}
 	}
-
 </script>

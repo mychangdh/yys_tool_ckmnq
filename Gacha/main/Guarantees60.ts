@@ -21,6 +21,7 @@ export class Guarantees60 extends Gacha {
 		else newGods = [...SSR, ...SP].sort((x, y) => y.sort - x.sort)[0]
 		super({ SP, SSR, SR, R }, [], newGods)
 		this.isNotFull = isNotFull
+		this.cardType = '旭华召唤'
 	}
 	// 重写
 	getOnceResult() {

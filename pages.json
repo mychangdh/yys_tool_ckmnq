@@ -11,7 +11,7 @@
 			"path": "pages/guarantees60/index",
 			"style": {
 				"navigationBarTitleText": "60保底模式",
-				"enablePullDownRefresh": true
+				"enablePullDownRefresh": false
 			}
 		},
 		{
