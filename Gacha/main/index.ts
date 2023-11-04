@@ -1,7 +1,6 @@
 import type { godsType } from '@/store/modules/gods'
 import { getRandomElement } from '@/Gacha/function'
 import type { probabilityType } from './config'
-import store from '../../store'
 export type myGodsType = { [key in levelType]: godsType[] }
 export type levelType = 'R' | 'SR' | 'SSR' | 'SP'
 export type resultType = {

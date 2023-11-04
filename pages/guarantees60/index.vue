@@ -14,7 +14,7 @@
 			</view>
 			<view class="gacha-information-item">
 				<text class="text">当前定向概率：</text>
-				<text class="value">{{myGacha.probability * 100}}%</text>
+				<text class="value">{{Math.floor(myGacha.probability * 100)}}%</text>
 			</view>
 		</template>
 	</cardMessage>

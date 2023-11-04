@@ -3,10 +3,9 @@
     </view>
 </template>
 <script lang="ts"  setup>
-import { PropType } from 'vue';
 const props = defineProps({
     name: {
-        type: String as PropType<levelType>,
+        type: String ,
         default: 'SP'
     },
     width: {

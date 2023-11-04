@@ -8,7 +8,7 @@
 			</view>
 			<view class="gacha-information-item">
 				<text class="text">当前定向概率：</text>
-				<text class="value">{{myGacha.probability * 100}}%</text>
+				<text class="value">{{Math.floor(myGacha.probability * 100)}}%</text>
 			</view>
 		</template>
 	</cardMessage>
@@ -20,4 +20,5 @@
 		if (myGacha.cardType === '旭华召唤') myGacha.cardType = '瑶归召唤'
 		else myGacha.cardType = '旭华召唤'
 	}
+
 </script>

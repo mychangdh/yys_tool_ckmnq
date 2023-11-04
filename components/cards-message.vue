@@ -44,8 +44,10 @@
 				<scroll-view :scroll-y="true" class="gods-list" @scrolltolower="scrolltolower">
 					<uni-grid :column="5" :showBorder="false" :square="false">
 						<uni-grid-item v-for="item,index in currentGods?.slice(0,scrolltolowerIndex * 50)" :key="index">
-							<image class="image"
+							<image v-if="item.shishen_id !== myGacha?.summonedDesignated?.shishen_id" class="image"
 								:src="`https://yys.res.netease.com/pc/gw/20180913151832/data/shishen/${item.shishen_id}.png?1`">
+							</image>
+							<image v-else class="image" src="/assets/summonedDesignated.png">
 							</image>
 							<text class="text gradient"
 								:style="`background-image: -webkit-linear-gradient(top, ${COLOR[item.level]});`">{{item.name}}</text>
@@ -71,7 +73,7 @@
 </template>
 
 <script lang="ts" setup>
-	import Store from '@/store'
+
 	import { onLoad } from '@dcloudio/uni-app'
 	import { resultType } from '@/Gacha/main';
 	import { COLOR, STEP } from '@/config'
@@ -87,13 +89,8 @@
 	let myGacha = ref<Guarantees60 | null>(null)
 	// 初始化
 	let init : any = async () => {
-		uni.showLoading({
-			title: "正在获取式神信息。。",
-			mask: true
-		});
-		await Store.dispatch('getGods')
 		myGacha.value = new gachaClass()
-		await nextTick(uni.hideLoading)
+	
 		currentGods.value = []
 		crumbs.value = {
 			data: []
@@ -196,8 +193,6 @@
 		if (crumbsScrolltolowerIndex.value >= crumbs.value.data.length / 500) return
 		crumbsScrolltolowerIndex.value++
 	}
-
-
 	onLoad(() => {
 		init()
 	})

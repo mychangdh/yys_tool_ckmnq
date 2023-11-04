@@ -26,6 +26,7 @@ const godsModule : Module<godsModuleTypes, IRootStore> = {
 	},
 	mutations: {
 		GETGODS(state, res : godsType[]) {
+			console.log(res ,345346);
 			res.forEach(item => {
 				if (item.level === 'N' as never) return
 				if (!item.in_card_pool) return
@@ -35,9 +36,9 @@ const godsModule : Module<godsModuleTypes, IRootStore> = {
 	},
 	actions: {
 		async getGods({ commit }) {
+			let result : any 
 			// 本地化存储
 			const gods = uni.getStorageSync('Gods');
-			let result : any
 			if (gods) {
 				try {
 					result = JSON.parse(gods)
