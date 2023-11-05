@@ -4,7 +4,7 @@
 </template>
 <script lang="ts"  setup>
 const props = defineProps({
-    name: {
+    title: {
         type: String ,
         default: 'SP'
     },
@@ -34,9 +34,10 @@ const coordinate: {
 .icon {
     margin: auto;
     width: 80px;
+	transform-origin: 0 0;
     height: 49px;
     transform: scale(v-bind(scaleWidth), v-bind(scaleHeight));
-    background: url(@/assets/pages.png) no-repeat;
-    background-position: v-bind('coordinate[props.name][0]') v-bind('coordinate[props.name][1]');
+    background: url(@/static/pages.png) no-repeat;
+    background-position: v-bind('coordinate[props.title][0]') v-bind('coordinate[props.title][1]');
 }
 </style>

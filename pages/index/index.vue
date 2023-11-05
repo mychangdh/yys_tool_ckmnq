@@ -3,20 +3,28 @@
 		<view class="title">
 			<uni-title type="h1" title="阴阳师抽卡模拟器v2.0.0" align="center"></uni-title>
 		</view>
-		<uni-row class="group">
-			<uni-col :sm="24" :md="12">
-				<uni-group title="抽卡模拟" mode="card">
-					<view class="group-item" @click="goPath('/pages/guarantees60/index')"><uni-tag text="60保底模式"
-							type="primary" /></view>
-					<view class="group-item" @click="goPath('/pages/up3/index')"><uni-tag text="3up模式" type="primary" /></view>
-				</uni-group>
-			</uni-col>
-			<uni-col :sm="24" :md="12">
-				<uni-group title="敬请期待" mode="card">
-					<view>敬请期待</view>
-				</uni-group>
-			</uni-col>
-		</uni-row>
+		<view class="groups">
+			<uni-row>
+				<uni-col :sm="24" :md="12">
+					<uni-group title="抽卡模拟" mode="card">
+						<view class="group-item" @click="goPath('/pages/guarantees60/index')"><uni-tag text="60保底模式"
+								type="primary" /></view>
+						<view class="group-item" @click="goPath('/pages/up3/index')"><uni-tag text="3up模式"
+								type="primary" /></view>
+					</uni-group>
+				</uni-col><uni-col :sm="24" :md="12">
+					<uni-group title="数据分析" mode="card">
+						<view class="group-item" @click="goPath('/pages/illustrated/illustrated')"><uni-tag text="查看图鉴"
+								type="primary" /></view>
+					</uni-group>
+				</uni-col>
+				<uni-col :sm="24" :md="12">
+					<uni-group title="敬请期待" mode="card">
+						<view>敬请期待</view>
+					</uni-group>
+				</uni-col>
+			</uni-row>
+		</view>
 	</view>
 </template>
 
@@ -25,7 +33,7 @@
 		uni.navigateTo({
 			url,
 			animationType: 'pop-in',
-				animationDuration: 200
+			animationDuration: 200
 		})
 	}
 </script>
@@ -39,17 +47,17 @@
 		margin-top: 50rpx;
 	}
 
-	.group {
+	.groups {
 		margin: 50rpx 10rpx;
 
 		.group-item {
 			height: 50px;
 			display: flex;
 			align-items: center;
-			
-			:deep(.uni-tag){
-				height: 60rpx;
-				line-height: 40rpx;
+
+			:deep(.uni-tag) {
+				height: 40px;
+				line-height: 30px;
 				font-size: 15px;
 				font-weight: 700;
 			}

@@ -2,7 +2,7 @@
     "name" : "阴阳师抽卡模拟器",
     "appid" : "__UNI__BE0C909",
     "description" : "",
-    "versionName" : "1.0.0",
+    "versionName" : "2.0.1",
     "versionCode" : "100",
     "transformPx" : false,
     /* 5+App特有相关 */
@@ -38,12 +38,22 @@
                     "<uses-permission android:name=\"android.permission.FLASHLIGHT\"/>",
                     "<uses-feature android:name=\"android.hardware.camera\"/>",
                     "<uses-permission android:name=\"android.permission.WRITE_SETTINGS\"/>"
-                ]
+                ],
+                "minSdkVersion" : 21
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            },
+            "icons" : {
+                "android" : {
+                    "hdpi" : "D:/Desktop/tool/favicon.png"
+                }
+            }
         }
     },
     /* 快应用特有相关 */
@@ -54,7 +64,10 @@
         "setting" : {
             "urlCheck" : false
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "options" : {
+            "styleIsolation" : "shared"
+        }
     },
     "mp-alipay" : {
         "usingComponents" : true

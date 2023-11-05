@@ -30,6 +30,7 @@ export class UP_3 extends Gacha {
 		return res
 	}
 
+// 重写get，set
 	get isNotFull() {
 		return this._isNotFull
 	}

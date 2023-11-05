@@ -18,8 +18,18 @@
 			"path" : "pages/up3/index",
 			"style" : 
 			{
-				"navigationBarTitleText" : "",
+				"navigationBarTitleText" : "3UP模式",
 				"enablePullDownRefresh" : false
+			}
+		},
+		{
+			"path" : "pages/illustrated/illustrated",
+			"style" : 
+			{
+				"navigationBarTitleText" : "图鉴",
+				"enablePullDownRefresh" : false,
+				"navigationStyle":"custom"
+				
 			}
 		}
 

@@ -7,8 +7,14 @@ type configType = {
 }
 const requests = (config : configType) => {
 	return new Promise((resolve, reject) => {
+
 		uni.request({
-			url: '/ckmnqapi'+config.url, //仅为示例，并非真实接口地址。
+			// #ifndef H5
+			url: 'https://cdhtsl8.cn:8889/ckmnqapi' + config.url, 
+			// #endif
+			// #ifdef  H5
+			url: '/ckmnqapi' + config.url, 
+			// #endif
 			data: config.data,
 			method: config.method || 'GET',
 			header: {

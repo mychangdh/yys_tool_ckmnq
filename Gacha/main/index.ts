@@ -12,8 +12,12 @@ export type resultType = {
 	isCurrent ?: boolean,
 	currentGachasNumber : number
 }
+
+
 // 抽卡类
 export class Gacha {
+	// 是否为非玩家全图玩家
+	_isNotFull : boolean = false
 	// 式神
 	gods : myGodsType
 	// 复制一份，也是全部式神但是只读
@@ -39,16 +43,16 @@ export class Gacha {
 		this.gods = gods
 		this.baseGods = JSON.parse(JSON.stringify(gods))
 		this.isSummonedDesignated = !summonedDesignated
-		this.cardType = '全部卡池'
 	}
 	// 展示概率和实际概率，因为展示的概率要比实际的多1抽
-	getProbability(isShow = false) :number{
+	getProbability(isShow = false) {
 		if (this.isSummonedDesignated) return this._probability
-		for (let i = 0; i < this.probabilityArrays.length; i++) {
+		for (let i = 0; i < this.probabilityArrays.length - 1; i++) {
 			if (this.probabilityArrays[i + 1].value >= (this.currentGachasNumber + +isShow)) {
 				return this.probabilityArrays[i].probavility
 			}
 		}
+		return this.probabilityArrays[this.probabilityArrays.length - 1].probavility
 	}
 	// 获得当期式神真正的的定向概率
 	get probability() {
@@ -59,11 +63,10 @@ export class Gacha {
 	get showProbability() {
 		return this.getProbability(true)
 	}
-	sp = 0
-	ssr = 0
 	// 抽卡一次的结果,传入true则必定出金
 	getOnceResult(isGolden = false) : resultType {
 		let randomNum = Math.random()
+		// 获取概率up
 		const probability = this.probabilityUP
 		this.currentGachasNumber++
 		let result = {} as resultType
@@ -108,6 +111,13 @@ export class Gacha {
 			arr.push(this.getOnceResult())
 		}
 		return arr
+	}
+
+	get isNotFull() {
+		return this._isNotFull
+	}
+	set isNotFull(value) {
+		this._isNotFull = value
 	}
 	// 卡池类型
 	get cardType() {

@@ -1,11 +1,7 @@
-*{
-	font-family: "lucida grande", 
-	"lucida sans unicode", 
-	lucida, helvetica, 
-	"Hiragino Sans GB", 
-	"Microsoft YaHei",
-	"WenQuanYi Micro Hei",
-	 sans-serif;
+view,
+text
+{
+	font-family: "Microsoft YaHei";
 	-ms-overflow-style: none;
 scrollbar-width: none ;
 box-sizing: border-box;
@@ -18,6 +14,8 @@ box-sizing: border-box;
 body{
 	overflow-x: hidden ;
 }
+/* #ifdef H5 */
 *::-webkit-scrollbar {
 	display: none;
 }
+/* #endif */
