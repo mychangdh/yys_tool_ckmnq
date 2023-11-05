@@ -20,7 +20,7 @@
 	import yysIcon from '@/components/yys-icon.vue'
 	import store from '@/store';
 	import godsAvatar from '@/components/gods-avatar.vue'
-	import { ref } from 'vue'
+	import { computed, ref } from 'vue'
 	const back = () => {
 		uni.navigateTo({
 			url: '/pages/index/index'
@@ -36,16 +36,17 @@
 		uni.hideLoading()
 		isReloadGod.value = true
 	}
-	const { SP, SSR } = store.state.gods
-	const godsMessage = [
+	const SP = computed(() => store.state.gods.SP.concat([]).reverse())
+	const SSR = computed(() => store.state.gods.SSR.concat([]).reverse())
+	const godsMessage = ref([
 		{
 			name: 'SP',
-			value: SP.reverse()
+			value: SP
 		}, {
 			name: 'SSR',
-			value: SSR.reverse()
+			value: SSR
 		},
-	]
+	])
 </script>
 
 <style lang="scss" scoped>
