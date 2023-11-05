@@ -7,10 +7,9 @@
 		mask: true
 	});
 	(async () => {
-		if (uni.getStorageSync('time')) uni.removeStorageSync('time')
 		const oldtime = uni.getStorageSync('saveTime')
-		// 10分钟后清除
-		if (!oldtime || (dayjs().valueOf() - +oldtime >= 60000)) {
+		// 1000分钟后清除
+		if (!oldtime || (dayjs().valueOf() - +oldtime >= 6000000)) {
 			uni.setStorageSync('saveTime', dayjs().valueOf())
 			uni.removeStorageSync('Gods')
 		}
