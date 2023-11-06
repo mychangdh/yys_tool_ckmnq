@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 	import { nextTick } from "vue"
 	import Store from '@/store'
-	import dayjs from 'dayjs'
 	uni.showLoading({
 		title: "正在获取式神信息。。",
 		mask: true
@@ -9,8 +8,8 @@
 	(async () => {
 		const oldtime = uni.getStorageSync('saveTime')
 		// 1000分钟后清除
-		if (!oldtime || (dayjs().valueOf() - +oldtime >= 6000000)) {
-			uni.setStorageSync('saveTime', dayjs().valueOf())
+		if (!oldtime || (new Date().getTime() - +oldtime >= 6000000)) {
+			uni.setStorageSync('saveTime', new Date().getTime())
 			uni.removeStorageSync('Gods')
 		}
 		await Store.dispatch('getGods')
