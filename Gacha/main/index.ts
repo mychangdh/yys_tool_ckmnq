@@ -24,6 +24,8 @@ export class Gacha {
 	readonly baseGods : myGodsType
 	// 概率up
 	probabilityUP : 2.5 | 1 = 1
+	// 卡池分界式神编号
+	readonly demarcationGodSort = 166
 	// 当前抽数
 	currentGachasNumber = 0
 	// 当期式神的定向概率数组
@@ -131,12 +133,12 @@ export class Gacha {
 				this.gods.SSR = SSR
 				break
 			case "旭华召唤":
-				this.gods.SP = SP.filter(item => item.sort > 155)
-				this.gods.SSR = SSR.filter(item => item.sort > 155)
+				this.gods.SP = SP.filter(item => item.sort > this.demarcationGodSort)
+				this.gods.SSR = SSR.filter(item => item.sort > this.demarcationGodSort)
 				break
 			case "瑶归召唤":
-				this.gods.SP = SP.filter(item => item.sort <= 155)
-				this.gods.SSR = SSR.filter(item => item.sort <= 155)
+				this.gods.SP = SP.filter(item => item.sort <= this.demarcationGodSort)
+				this.gods.SSR = SSR.filter(item => item.sort <= this.demarcationGodSort)
 		}
 		if (!this.isSummonedDesignated && this.summonedDesignated) {
 			// 分卡池后如果还未召唤出当期式神，就把当期式神踢了，因为他的出现是用定向up去计算的

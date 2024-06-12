@@ -17,6 +17,10 @@
 						<view class="group-item" @click="goPath('/pages/illustrated/illustrated')"><uni-tag text="查看图鉴"
 								type="primary" /></view>
 					</uni-group>
+					<uni-group title="萌新养成推荐" mode="card">
+						<view class="group-item" @click="goPath('/pages/godsRecommend/godsRecommend')"><uni-tag text="式神推荐"
+								type="primary" /></view>
+					</uni-group>
 				</uni-col>
 				<uni-col :sm="24" :md="12">
 					<uni-group title="敬请期待" mode="card">
@@ -38,10 +42,7 @@
 	}
 </script>
 <style lang="scss" scoped>
-	.bg {
-		max-width: 800px;
-		margin: auto;
-	}
+
 
 	.title {
 		margin-top: 50rpx;

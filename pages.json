@@ -31,6 +31,14 @@
 				"navigationStyle":"custom"
 				
 			}
+		},
+		{
+			"path" : "pages/godsRecommend/godsRecommend",
+			"style" : 
+			{
+				"navigationBarTitleText" : "",
+				"enablePullDownRefresh" : false
+			}
 		}
 
 	],

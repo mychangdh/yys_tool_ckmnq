@@ -3,7 +3,7 @@
 		<image class="image show"
 			:src="`https://yys.res.netease.com/pc/gw/20180913151832/data/shishen/${god.shishen_id}.png?1`">
 		</image>
-		<image v-if="god.sort>225" class="image" :src="`/static/${god.shishen_id}.png`">
+		<image  class="image" :src="`/static/${god.shishen_id}.png`">
 		</image>
 	</view>
 	<text class="text gradient"
