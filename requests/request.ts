@@ -20,10 +20,12 @@ const requests = (config : configType) => {
 			header: {
 				...config.header || {}
 			},
+			timeout:100000,
 			success: (res) => {
 				resolve(res.data)
 			},
 			fail: (err) => {
+				console.log(err,2435);
 				reject(err)
 			}
 		});

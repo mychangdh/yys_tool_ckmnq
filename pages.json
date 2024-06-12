@@ -36,7 +36,7 @@
 			"path" : "pages/godsRecommend/godsRecommend",
 			"style" : 
 			{
-				"navigationBarTitleText" : "",
+				"navigationBarTitleText" : "式神推荐",
 				"enablePullDownRefresh" : false
 			}
 		}
