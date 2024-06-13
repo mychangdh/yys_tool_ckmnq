@@ -32,7 +32,7 @@
 							PVE指数：
 						</view>
 						<view class="content-value">
-							<uni-rate v-model="item.pve_score" :touchable="false" :disabled="!editMoudle"
+							<uni-rate v-model="item.pve_score"  :disabled="!editMoudle"
 								disabledColor="#ffca3e" :max="10" @change="editGod('pve_score',item)" />
 						</view>
 					</view>
@@ -53,7 +53,7 @@
 							PVP指数：
 						</view>
 						<view class="content-value">
-							<uni-rate v-model=" item.pvp_score" :touchable="false" :disabled="!editMoudle"
+							<uni-rate v-model=" item.pvp_score"  :disabled="!editMoudle"
 								disabledColor="#ffca3e" :max="10" @change="editGod('pvp_score',item)" />
 						</view>
 					</view>
