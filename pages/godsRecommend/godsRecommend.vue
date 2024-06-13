@@ -186,7 +186,7 @@
 			});
 			updateGodsRecommendApi({
 				type,
-				value: data.value,
+				value: item[type],
 				id: item.id
 			}).then(res => {
 				editConfig.value[item.name][type] = undefined
