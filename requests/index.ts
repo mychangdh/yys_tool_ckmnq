@@ -17,8 +17,10 @@ export const updateGodsRecommendApi = (data : any) => request({
 	method:'POST',
 	data
 })
-export const deleteGodsRecommendApi = (data : any) => request({
+export const deleteGodsRecommendApi = (id) => request({
 	url: '/deleteGodsRecommend',
 	method:'POST',
-	data
+	data:{
+		id
+	}
 })
