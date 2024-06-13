@@ -13,8 +13,8 @@
 					<view class="card-title">
 						<text @dblclick="getFocus('name',item)"
 							v-if="canIEdit('name',item)">{{index+1}}.{{item.name}}</text>
-						<uni-data-select v-else v-model="editConfig[item.name].name.value" :localdata="GODS"
-							@change="changeGodName(item , editConfig[item.name].name.value)"></uni-data-select>
+						<uni-data-select v-else v-model="item.name" :localdata="GODS"
+							@change="changeGodName(item , item.name)"></uni-data-select>
 						<uni-icons v-if="editMoudle" style="cursor: pointer;" @click="deleteGods(item)" type="trash" size="30"></uni-icons>
 					</view>
 				</template>
@@ -44,7 +44,7 @@
 							<view v-if="canIEdit('pve_content',item)" @dblclick="getFocus('pve_content',item)">
 								{{item.pve_content}}
 							</view>
-							<textarea v-else focus v-model="editConfig[item.name].pve_content.value"
+							<textarea v-else focus v-model="item.pve_content"
 								@blur="editGod('pve_content',item)" placeholder="" />
 						</view>
 					</view>
@@ -65,7 +65,7 @@
 							<view v-if="canIEdit('pvp_content',item)" @dblclick="getFocus('pvp_content',item)">
 								{{item.pvp_content}}
 							</view>
-							<textarea v-else focus v-model="editConfig[item.name].pvp_content.value"
+							<textarea v-else focus v-model="item.pvp_content"
 								@blur="editGod('pvp_content',item)" placeholder="" />
 						</view>
 					</view>
@@ -90,12 +90,12 @@
 					<uni-data-select v-model="formData.name" :localdata="GODS"></uni-data-select>
 				</uni-forms-item>
 				<uni-forms-item required label="PVE评分" name="pve_score">
-					<uni-rate v-model="formData.pve_score" :touchable="false" :max="10" />
+					<uni-rate v-model="formData.pve_score" :size="18" :touchable="false" :max="10" />
 				</uni-forms-item>
 				<uni-forms-item required name="pve_content" label="PVE说明">
 					<textarea v-model="formData.pve_content" placeholder="" />
 				</uni-forms-item><uni-forms-item required label="PVP评分" name="pvp_score">
-					<uni-rate v-model="formData.pvp_score" :touchable="false" :max="10" />
+					<uni-rate v-model="formData.pvp_score":size="18"  :touchable="false" :max="10" />
 				</uni-forms-item>
 				<uni-forms-item required name="pvp_content" label="PVP说明">
 					<textarea v-model="formData.pvp_content" placeholder="" />
@@ -168,7 +168,10 @@
 		}
 		editConfig.value[item.name][type].show = true
 	}
+	let flag = false
 	function editGod(type, item) {
+		if(flag) return 
+		flag = true
 		if (!editConfig.value[item.name]) editConfig.value[item.name] = {}
 		if (!editConfig.value[item.name][type]) editConfig.value[item.name][type] = {
 			value: item[type],
@@ -187,10 +190,11 @@
 				id: item.id
 			}).then(res => {
 				editConfig.value[item.name][type] = undefined
-				getData()
 				uni.hideLoading();
+				flag = false
 			})
 		}
+		
 	}
 	function sortChange(item) {
 		item.sort = parseFloat(item.sort)
@@ -203,7 +207,6 @@
 			value: item.sort,
 			id: item.id
 		}).then(res => {
-			getData()
 			uni.hideLoading();
 		})
 	}
@@ -395,12 +398,12 @@
 	}
 
 	:deep(.uni-popup__wrapper) {
-		width: 420px;
+		width: 800rpx;
 		padding: 10px;
 		background-color: #fff !important;
 
 		.uni-forms-item {
-			width: 383px;
+			width: 500rpx;
 		}
 	}
 
@@ -416,10 +419,20 @@
 	}
 
 	:deep(.popup) {
+		
+			padding: 10px;
+		.uni-popup__wrapper{
+			max-height: 80%;
+			max-width: 80%;
+			border-radius: 5px;
+			overflow-y: auto;
+			overflow-x: hidden;
+		}
+	
 		.uni-textarea-textarea {
 			padding: 10px;
 			border: 1px solid #e5e5e5;
-			width: 260px;
+			width: 300rpx;
 			height: 121px;
 			border-radius: 5px;
 		}
