@@ -25,7 +25,7 @@ export class Gacha {
 	// 概率up
 	probabilityUP : 2.5 | 1 = 1
 	// 卡池分界式神编号
-	readonly demarcationGodSort = 166
+	readonly demarcationGodSort = 126
 	// 当前抽数
 	currentGachasNumber = 0
 	// 当期式神的定向概率数组
