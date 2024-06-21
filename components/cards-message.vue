@@ -286,7 +286,9 @@
 		}
 
 		:deep(.uni-numbox__value) {
-			width: 100%;
+			width: 100% !important;
+			max-width: 500px;
+			margin: auto;
 			border: 1px solid rgba(0, 0, 0, 0.1);
 			height: 80rpx;
 			border-radius: 5px;
