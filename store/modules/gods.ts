@@ -26,7 +26,7 @@ const godsModule : Module<godsModuleTypes, IRootStore> = {
 	},
 	mutations: {
 		GETGODS(state, res : godsType[]) {
-			res.forEach(item => {
+			res.sort((x, y) => (x.sort - y.sort)).forEach(item => {
 				if (item.level === 'N' as never) return
 				if (!item.in_card_pool) return
 				state[item.level].push(item)
