@@ -422,7 +422,7 @@
 		
 			padding: 10px;
 		.uni-popup__wrapper{
-			max-height: 80%;
+			max-height: 60%;
 			max-width: 80%;
 			border-radius: 5px;
 			overflow-y: auto;
