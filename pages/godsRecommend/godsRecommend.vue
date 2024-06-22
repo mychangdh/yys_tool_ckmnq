@@ -1,9 +1,10 @@
 <template>
 	<view class="bg">
 		<h1>最新式神养成推荐 </h1>
-		<view class="setting" @click="editMoudle=!editMoudle" :style="`color:${editMoudle?'red':'black'}`">
+		<view class="setting"><text @click="draw">点击生成图片</text></view>
+		<!-- <view class="setting" @click="editMoudle=!editMoudle" :style="`color:${editMoudle?'red':'black'}`">
 			点击此处后{{editMoudle?'退出':'开启'}}编辑模式{{editMoudle?'':'，双击可编辑内容'}}
-		</view>
+		</view> -->
 		<view class="tip">
 			注：PVP指斗技结界突破相关场景，PVE指除PVP外的其他场景。
 		</view>
@@ -15,7 +16,8 @@
 							v-if="canIEdit('name',item)">{{index+1}}.{{item.name}}</text>
 						<uni-data-select v-else v-model="item.name" :localdata="GODS"
 							@change="changeGodName(item , item.name)"></uni-data-select>
-						<uni-icons v-if="editMoudle" style="cursor: pointer;" @click="deleteGods(item)" type="trash" size="30"></uni-icons>
+						<uni-icons v-if="editMoudle" style="cursor: pointer;" @click="deleteGods(item)" type="trash"
+							size="30"></uni-icons>
 					</view>
 				</template>
 				<view class="title">
@@ -44,8 +46,8 @@
 							<view v-if="canIEdit('pve_content',item)" @dblclick="getFocus('pve_content',item)">
 								{{item.pve_content}}
 							</view>
-							<textarea v-else focus v-model="item.pve_content"
-								@blur="editGod('pve_content',item)" placeholder="" />
+							<textarea v-else focus v-model="item.pve_content" @blur="editGod('pve_content',item)"
+								placeholder="" />
 						</view>
 					</view>
 					<view class="content-column">
@@ -65,8 +67,8 @@
 							<view v-if="canIEdit('pvp_content',item)" @dblclick="getFocus('pvp_content',item)">
 								{{item.pvp_content}}
 							</view>
-							<textarea v-else focus v-model="item.pvp_content"
-								@blur="editGod('pvp_content',item)" placeholder="" />
+							<textarea v-else focus v-model="item.pvp_content" @blur="editGod('pvp_content',item)"
+								placeholder="" />
 						</view>
 					</view>
 					<view class="content-column" v-if="editMoudle">
@@ -95,7 +97,7 @@
 				<uni-forms-item required name="pve_content" label="PVE说明">
 					<textarea v-model="formData.pve_content" placeholder="" />
 				</uni-forms-item><uni-forms-item required label="PVP评分" name="pvp_score">
-					<uni-rate v-model="formData.pvp_score":size="18"  :touchable="false" :max="10" />
+					<uni-rate v-model="formData.pvp_score" :size="18" :touchable="false" :max="10" />
 				</uni-forms-item>
 				<uni-forms-item required name="pvp_content" label="PVP说明">
 					<textarea v-model="formData.pvp_content" placeholder="" />
@@ -106,16 +108,21 @@
 			<button @click="submitForm" type="primary">添加</button>
 			<button @click="popup.close" type="warn" style="margin-top:10px">取消</button>
 		</uni-popup>
-	
+
+	</view>
+	<view class="draw-table" id="table-4314712" v-if="showTable">
+		<drawTable :data="godsData" />
 	</view>
 </template>
 
 <script lang="ts" setup>
 	import store from '@/store'
-	import { ref } from 'vue';
+	import { ref, nextTick } from 'vue';
+	import drawTable from './drawTable'
 	import { onLoad } from '@dcloudio/uni-app'
 	import yysIcon from '@/components/yys-icon.vue'
 	import { addGodsRecommendApi, deleteGodsRecommendApi, getGodsRecommendApi, updateGodsRecommendApi } from '../../requests';
+	import { drwDOM } from '../../Gacha/function';
 	const godsData = ref<any>([])
 	const GODS = ref([...store.state.gods.SSR, ...store.state.gods.SP,].reverse().map(item => ({
 		text: item.name,
@@ -125,9 +132,14 @@
 		shishen_id: item.shishen_id
 	})))
 	function getData() {
+		uni.showLoading({
+			title:'加载中。。。'
+		})
 		getGodsRecommendApi({}).then(res => {
 			godsData.value = res.sort((x, y) => x.sort - y.sort)
+		uni.hideLoading()
 		})
+		
 	}
 	const editMoudle = ref(false)
 	onLoad(() => {
@@ -170,7 +182,7 @@
 	}
 	let flag = false
 	function editGod(type, item) {
-		if(flag) return 
+		if (flag) return
 		flag = true
 		if (!editConfig.value[item.name]) editConfig.value[item.name] = {}
 		if (!editConfig.value[item.name][type]) editConfig.value[item.name][type] = {
@@ -194,7 +206,7 @@
 				flag = false
 			})
 		}
-		
+
 	}
 	function sortChange(item) {
 		item.sort = parseFloat(item.sort)
@@ -248,28 +260,50 @@
 		sort: { rules: [{ required: true, errorMessage: '请填写排序' }] },
 	}
 	const deletePopup = ref(null)
-	const deleteGods = ({id})=>{
+	const deleteGods = ({ id }) => {
 		uni.showModal({
 			title: '提示',
 			content: '确认要删除吗',
 			success: function (res) {
 				uni.showLoading({
-					title:'删除中'
+					title: '删除中'
 				})
 				if (res.confirm) {
-				deleteGodsRecommendApi(id).then(res=>{
-					uni.showToast({
-						title:'删除成功'
+					deleteGodsRecommendApi(id).then(res => {
+						uni.showToast({
+							title: '删除成功'
+						})
+						getData()
 					})
-					getData()
-				})
-				} 
+				}
 			}
 		});
+	}
+
+	const showTable = ref(false)
+	function draw() {
+		uni.showLoading({
+			title: '正在生成图片，请稍后',
+			mask: false
+		});
+		setTimeout(async ()=>{
+			showTable.value = true
+			await nextTick()
+			setTimeout(() => {
+				drwDOM(document.querySelector('#table-4314712'))
+				showTable.value = false
+			}, 0)
+		},500)
+
 	}
 </script>
 
 <style lang="scss" scoped>
+	.draw-table {
+		width: 1500px;
+		overflow: auto;
+	}
+
 	.bg {
 		max-width: 1800px;
 
@@ -381,12 +415,21 @@
 	}
 
 	.setting {
+		height: 22px;
 		margin-top: 10px;
 		font-size: 12px;
 		display: flex;
 		justify-content: center;
 		cursor: pointer;
-		
+
+		text {
+			font-size: 16px;
+
+			&:hover {
+				border-bottom: 1px solid #000;
+			}
+		}
+
 	}
 
 	:deep(.card-title) {
@@ -419,16 +462,17 @@
 	}
 
 	:deep(.popup) {
-		
-			padding: 10px;
-		.uni-popup__wrapper{
+
+		padding: 10px;
+
+		.uni-popup__wrapper {
 			max-height: 60%;
 			max-width: 80%;
 			border-radius: 5px;
 			overflow-y: auto;
 			overflow-x: hidden;
 		}
-	
+
 		.uni-textarea-textarea {
 			padding: 10px;
 			border: 1px solid #e5e5e5;

@@ -46,6 +46,7 @@ const godsModule : Module<godsModuleTypes, IRootStore> = {
 				result = await getGodsApi({})
 				uni.setStorageSync('Gods', JSON.stringify(result))
 			}
+			if (!Array.isArray(result)) return
 			const res = (result.map((item : any) => {
 				item.in_card_pool = Boolean(item.in_card_pool)
 				return item

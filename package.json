@@ -2,6 +2,7 @@
   "dependencies": {
     "@types/node": "^20.8.10",
     "dayjs": "^1.11.10",
+    "html2canvas": "^1.4.1",
     "vuex": "^4.1.0"
   }
 }

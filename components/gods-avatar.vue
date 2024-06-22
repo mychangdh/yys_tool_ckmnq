@@ -1,7 +1,7 @@
 <template>
 	<view class="imagebox">
 		<image class="image show"
-			:src="`https://yys.res.netease.com/pc/gw/20180913151832/data/shishen/${god.shishen_id}.png?1`">
+			:src="`https://cbg-yys.res.netease.com/game_res/hero/${god.shishen_id}/${god.shishen_id}.png`">
 		</image>
 		<image  class="image" :src="`/static/${god.shishen_id}.png`">
 		</image>
@@ -24,8 +24,8 @@
 		position: relative;
 		width: 130rpx;
 		height: 130rpx;
-		max-width: 130px;
-		max-height: 130px;
+		max-width: 100px;
+		max-height: 100px;
 		margin: auto;
 
 	}
@@ -36,6 +36,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		border: 2px solid rgb(248,189,52);
 	}
 
 	.show {
