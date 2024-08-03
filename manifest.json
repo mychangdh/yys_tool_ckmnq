@@ -88,13 +88,11 @@
             "https" : false,
             "proxy" : {
                 "/ckmnqapi" : {
-                    "target" : "https://cdhtsl8.cn:8889/",
+                    "target" : "http://www.cdhtsl8.cn/",
                     "ws" : false,
                     "secure" : false,
-                    "changeOrigin" : true,
-                    "pathRewrite" : {
-                        "^/ckmnqapi" : "/api"
-                    }
+                    "changeOrigin" : true
+                    
                 },
                 "optimization" : {
                     "treeShaking" : {
