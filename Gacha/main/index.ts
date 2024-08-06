@@ -18,7 +18,7 @@ export type resultType = {
 export class Gacha {
 	// 是否为非玩家全图玩家
 	_isNotFull : boolean = false
-	// 式神
+	// 全部可抽取式神
 	gods : myGodsType
 	// 复制一份，也是全部式神但是只读
 	readonly baseGods : myGodsType
@@ -69,7 +69,6 @@ export class Gacha {
 	getOnceResult(isGolden = false) : resultType {
 		let randomNum = Math.random()
 		// 获取概率up
-		const probability = this.probabilityUP
 		this.currentGachasNumber++
 		let result = {} as resultType
 		const getResult = (level : levelType) => {
@@ -78,11 +77,11 @@ export class Gacha {
 				currentGachasNumber: this.currentGachasNumber
 			}
 		}
-		if (isGolden) randomNum = Math.random() * 0.0125 * probability
+		if (isGolden) randomNum = Math.random() * 0.0125 * this.probabilityUP
 		// 首先判断是否为选定式神
 		if (!this.isSummonedDesignated
 			&& this.summonedDesignated
-			&& (randomNum <= probability * 0.0125)) {
+			&& (randomNum <= this.probabilityUP * 0.0125)) {
 			// 确定是当期式神
 			if (this.probability >= Math.random()) {
 				this.isSummonedDesignated = true
@@ -98,9 +97,9 @@ export class Gacha {
 			}
 		}
 		// 再去计算概率
-		if (randomNum <= probability * 0.0025) getResult('SP')
-		else if (randomNum <= probability * 0.0125) getResult('SSR')
-		else if (randomNum <= probability * 0.2125) getResult('SR')
+		if (randomNum <= this.probabilityUP * 0.0025) getResult('SP')
+		else if (randomNum <= this.probabilityUP * 0.0125) getResult('SSR')
+		else if (randomNum <= this.probabilityUP * 0.2125) getResult('SR')
 		else getResult('R')
 		this.result.push(result)
 		return result
