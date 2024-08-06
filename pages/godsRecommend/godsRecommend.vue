@@ -2,9 +2,9 @@
 	<view class="bg">
 		<h1>最新式神养成推荐 </h1>
 		<view class="setting"><text @click="draw">点击生成图片</text></view>
-		<!-- <view class="setting" @click="editMoudle=!editMoudle" :style="`color:${editMoudle?'red':'black'}`">
+		<view class="setting" @click="editMoudle=!editMoudle" :style="`color:${editMoudle?'red':'black'}`">
 			点击此处后{{editMoudle?'退出':'开启'}}编辑模式{{editMoudle?'':'，双击可编辑内容'}}
-		</view> -->
+		</view>
 		<view class="tip">
 			注：PVP指斗技结界突破相关场景，PVE指除PVP外的其他场景。
 		</view>

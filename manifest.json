@@ -88,7 +88,7 @@
             "https" : false,
             "proxy" : {
                 "/ckmnqapi" : {
-                    "target" : "https://www.cdhtsl8.cn",
+                    "target" : "http://www.cdhtsl8.cn/",
                     "ws" : false,
                     "secure" : false,
                     "changeOrigin" : true
