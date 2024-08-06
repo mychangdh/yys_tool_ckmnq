@@ -12,14 +12,19 @@
 						<view class="group-item" @click="goPath('/pages/up3/index')"><uni-tag text="3up模式"
 								type="primary" /></view>
 					</uni-group>
-				</uni-col><uni-col :sm="24" :md="12">
+					<uni-group title="御魂模拟" mode="card">
+						<view class="group-item" @click="goPath('/pages/getSpeed18/index')"><uni-tag text="出头模式"
+								type="primary" /></view>
+					</uni-group>
+				</uni-col>
+				<uni-col :sm="24" :md="12">
 					<uni-group title="数据分析" mode="card">
 						<view class="group-item" @click="goPath('/pages/illustrated/illustrated')"><uni-tag text="查看图鉴"
 								type="primary" /></view>
 					</uni-group>
 					<uni-group title="萌新养成推荐" mode="card">
-						<view class="group-item" @click="goPath('/pages/godsRecommend/godsRecommend')"><uni-tag text="式神推荐"
-								type="primary" /></view>
+						<view class="group-item" @click="goPath('/pages/godsRecommend/godsRecommend')"><uni-tag
+								text="式神推荐" type="primary" /></view>
 					</uni-group>
 				</uni-col>
 				<uni-col :sm="24" :md="12">
@@ -42,14 +47,15 @@
 	}
 </script>
 <style lang="scss" scoped>
-
-
 	.title {
 		margin-top: 50rpx;
 	}
 
 	.groups {
+
 		margin: 50rpx 10rpx;
+
+
 
 		.group-item {
 			height: 50px;

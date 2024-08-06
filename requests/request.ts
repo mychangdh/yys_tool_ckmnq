@@ -10,7 +10,7 @@ const requests = (config : configType) => {
 
 		uni.request({
 			// #ifndef H5
-			url: 'https://cdhtsl8.cn:8889/ckmnqapi' + config.url, 
+			url: 'https://www.cdhtsl8.cn/ckmnqapi' + config.url, 
 			// #endif
 			// #ifdef  H5
 			url: '/ckmnqapi' + config.url, 
@@ -22,6 +22,7 @@ const requests = (config : configType) => {
 			},
 			timeout:100000,
 			success: (res) => {
+				console.log(res,224);
 				resolve(res.data)
 			},
 			fail: (err) => {

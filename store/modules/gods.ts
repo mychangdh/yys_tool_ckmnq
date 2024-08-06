@@ -44,13 +44,20 @@ const godsModule : Module<godsModuleTypes, IRootStore> = {
 			const gods = uni.getStorageSync('Gods');
 			try {
 				result = JSON.parse(gods)
+
 			}
 			catch {
 				uni.removeStorageSync('Gods')
 				result = await getGodsApi({})
 				uni.setStorageSync('Gods', JSON.stringify(result))
 			}
-			if (!Array.isArray(result)) return
+			if (!Array.isArray(result)) {
+				result = []
+				return uni.showToast({
+					title: '数据错误，请刷新',
+					duration: 1000
+				});
+			}
 			const res = (result.map((item : any) => {
 				item.in_card_pool = Boolean(item.in_card_pool)
 				return item

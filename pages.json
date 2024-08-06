@@ -39,6 +39,14 @@
 				"navigationBarTitleText" : "式神推荐",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/getSpeed18/index",
+			"style" : 
+			{
+				"navigationBarTitleText" : "出头模拟",
+				"enablePullDownRefresh" : false
+			}
 		}
 
 	],
