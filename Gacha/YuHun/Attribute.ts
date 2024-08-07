@@ -28,7 +28,6 @@ export default class SubAttribute {
 
 	//得到副属性
 	getSubAttributes() {
-		console.log(this.name, 35436);
 		switch (this.name) {
 			case "attack":
 				this.value = randomNum(21.6, 27)

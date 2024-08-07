@@ -2,18 +2,15 @@ import SubAttribute, { allAttributeName } from './Attribute'
 import { attributeNameType, attributeType } from './Attribute'
 import { getRandomElement } from '@/Gacha/function'
 import { nomralAttributes, attackAttributeValues, defenseAttributeValues, functionalAttributes } from './attributesClassify'
-import { log } from 'console'
 type configType = {
-	yuhun_id : number 
+	yuhun_id : number
 	name : string
 	location : 1 | 2 | 3 | 4 | 5 | 6,
-	// 指定主属性
-	MainAttributeName ?: attributeType
 	// 副属性条数
 	subAttributeNum ?: 2 | 3 | 4
 }
 export default class YuHun {
-	yuhun_id:number
+	yuhun_id : number
 	readonly name : string
 	_level : 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | undefined
 	/** 位置  */
@@ -36,9 +33,10 @@ export default class YuHun {
 		this.name = config.name
 		this.location = config.location
 		this.yuhun_id = config.yuhun_id
-		// 指定主属性
-		if (this.MainAttribute) this.MainAttribute = config.MainAttributeName
-		else this.getMainAttribute()
+		this.init(config)
+	}
+	init(config:any) {
+		this.getMainAttribute()
 		this.getSubAttributes()
 		this.level = 0
 	}
@@ -67,8 +65,9 @@ export default class YuHun {
 				break
 		}
 	}
-	getSubAttributes(num ?: 2 | 3 | 4) {
-		let times = num || getRandomElement([2, 3, 4])
+	// 属性数量
+	getSubAttributes(num ?: number) {
+		let times = num ? num : getRandomElement([2, 3, 4])
 		while (this.SubAttributeList.length < times) {
 			const attProbability = Math.random()
 			let probabilityArr : attributeType[] = []

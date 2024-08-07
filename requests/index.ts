@@ -24,3 +24,8 @@ export const deleteGodsRecommendApi = (id) => request({
 		id
 	}
 })
+
+export const getYuHun = () => request({
+	url: '/getYuHun',
+	method:'GET',
+})

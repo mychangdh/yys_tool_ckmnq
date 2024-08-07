@@ -1,63 +1,75 @@
 <template>
+	<view class="setting">
+		<uni-data-checkbox multiple v-model="config" :localdata="configList"></uni-data-checkbox>
+	</view>
+	<view class="yuhunDetail">
+		<yuhunDetail v-for="item in randomYuhunList" :yuhunData="item" :config="config"
+			:location="getRandomElement([1,2,3,4,5,6])" type="Chutou" />
+	</view>
 	<view>
-		<view class="yuhun">
-			<view class="yuhun-message">
-				<view class="icon">
-
-				</view>
-				<view class="name">
-					{{yuhun.name}}+{{yuhun.level}}
-				</view>
-			</view>
-			<view class="main-att">
-				<view>
-					{{yuhun.MainAttributeName}}
-				</view>
-				<view>
-					{{yuhun.showMainAttributeValue}}
-				</view>
-			</view>
-			<view class="sub-att" v-for="item in yuhun.SubAttributeList">
-				<view>
-					{{item.nickname}}
-				</view>
-				<view>
-					{{item.showValue}}
-				</view>
-			</view>
-		</view>
+		<button size="default" type="primary" @click="getRandomYuhun">点击生成随机御魂</button>
 	</view>
 </template>
 
 <script setup lang="ts">
-	import { ref } from 'vue';
-	import YuHun from '@/Gacha/YuHun'
-	const yuhun = ref(new YuHun({
-		name: '破势',
-		location: 2
-	}))
-	console.log(yuhun.value, 22);
+	import { getYuHun } from '@/requests'
+	import yuhunDetail from '@/components/yuhun-detail.vue'
+	import { ref, nextTick } from 'vue';
+	import { onLoad } from '@dcloudio/uni-app'
+	import { getRandomElement } from '@/Gacha/function';
+	const yuhunList = ref([])
+	const randomYuhunList = ref([])
+	const config = ref(['isMaxAtt', 'isTwo'])
+	const configList = [{
+		text: '必定满条',
+		value: 'isMaxAtt'
+	}, {
+		text: '必为二号位',
+		value: 'isTwo'
+	}, {
+		text: '二号位主属性必为速度',
+		value: 'isSpeed'
+	},
+	{
+		text: '副属性必带速度',
+		value: 'haveSpeed'
+	}]
+	function getRandomYuhun() {
+		randomYuhunList.value = []
+		nextTick(() => {
+			randomYuhunList.value.push(getRandomElement(yuhunList.value))
+		})
+
+	}
+	onLoad(() => {
+		getYuHun().then((data : any) => {
+			yuhunList.value = data
+		})
+	})
 </script>
 
 <style lang="scss" scoped>
-	.yuhun {
-		width: 200px;
-		height: 220px;
-		background-color: #cbb59c;
-		border: 2px solid #765227;
-		padding: 20px 10px;
-		font-size: 15px;
+	.setting {
+		margin-top: 10px;
+		display: flex;
+		justify-content: center;
 
-		.main-att,
-		.sub-att {
-			width: 100%;
-			margin-bottom: 5px;
+		:deep(.uni-data-checklist) {
 			display: flex;
-			justify-content: space-between;
+			justify-content: center;
 		}
+	}
 
-		.main-att {
-			color: #a72c01;
-		}
+	.yuhunDetail {
+		margin: 20px 0;
+		max-height: 500px;
+		min-height: 350px;
+		display: flex;
+		justify-content: center;
+	}
+
+	button {
+		margin: 20px auto;
+		max-width: 400px;
 	}
 </style>
