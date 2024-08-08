@@ -244,6 +244,7 @@
 </script>
 <style lang="scss" scoped>
 	.page{
+		margin-top: -4vh;
 		overflow: auto;
 	}
 	.configs {
@@ -292,7 +293,6 @@
 
 		:deep(.uni-numbox__value) {
 			width: 100% !important;
-			max-width: 500px;
 			margin: auto;
 			border: 1px solid rgba(0, 0, 0, 0.1);
 			height: 80rpx;
@@ -325,7 +325,7 @@
 		padding-top: 30px;
 		/* #endif */
 		text-align: center;
-		margin-top: 20rpx;
+		margin-top: 42px;
 
 		.gods-list {
 			max-height: 45vh;
