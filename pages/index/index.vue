@@ -47,6 +47,10 @@
 	}
 </script>
 <style lang="scss" scoped>
+	.page{
+		max-width: 800px;
+		margin: auto;
+	}
 	.title {
 		margin-top: 50rpx;
 	}

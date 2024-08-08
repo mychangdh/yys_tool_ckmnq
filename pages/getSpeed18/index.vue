@@ -166,7 +166,7 @@
 			margin: 20px 0;
 			max-width: 1000px;
 			margin: auto;
-			max-height: calc(100vh - 420px);
+			max-height: calc(100vh - 330px);
 			display: flex;
 			justify-content: center;
 			flex-wrap: wrap;
