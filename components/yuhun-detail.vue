@@ -8,7 +8,9 @@
 				</view>
 			</view>
 			<view class="name">
-				{{yuhun.name}}+{{yuhun.level}}
+				<text v-if="!showDetail">
+					{{yuhun.location}}号位
+				</text> {{yuhun.name}}+{{yuhun.level}}
 				<view class="gouyu" v-if="showDetail">
 					<image src="/static/gouyu.png" />
 					<image src="/static/gouyu.png" />
