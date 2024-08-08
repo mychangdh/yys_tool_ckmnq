@@ -1,6 +1,7 @@
 import SubAttribute, { allAttributeName } from './Attribute'
 import { attributeNameType, attributeType } from './Attribute'
 import { getRandomElement } from '@/Gacha/function'
+
 import { nomralAttributes, attackAttributeValues, defenseAttributeValues, functionalAttributes } from './attributesClassify'
 type configType = {
 	yuhun_id : number
@@ -12,7 +13,7 @@ type configType = {
 export default class YuHun {
 	yuhun_id : number
 	readonly name : string
-	_level : 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | undefined
+	_level : number | undefined
 	/** 位置  */
 	private _location : 1 | 2 | 3 | 4 | 5 | 6 = 1
 	/** 主属性  */
@@ -27,15 +28,17 @@ export default class YuHun {
 	showMainAttributeValue : string = ''
 	/** 主属性加成  */
 	MainAttributeAdd : number = 0
-
+	// 副属性列表
 	SubAttributeList : SubAttribute[] = []
+	// 用来展示的副属性列表
+	showSubAttributeList : SubAttribute[] = []
 	constructor(config : configType) {
 		this.name = config.name
 		this.location = config.location
 		this.yuhun_id = config.yuhun_id
 		this.init(config)
 	}
-	init(config:any) {
+	init(config : any) {
 		this.getMainAttribute()
 		this.getSubAttributes()
 		this.level = 0
@@ -127,8 +130,79 @@ export default class YuHun {
 	set level(level) {
 		if (level === undefined) return
 		if (this.level && (this.level >= level)) return
+		this.aggrandizement(level)
+		this._level = Math.min(level, 15)
+	}
+	// 强化御魂后的返回数据
+	getYuhunData() {
+		return {
+			MainAttribute: {
+				name: this.MainAttributeName,
+				value: this.showMainAttributeValue
+			},
+			SubAttribute: (() => {
+				return this.showSubAttributeList.map(item => {
+					return {
+						name: item.nickname,
+						value: item.showValue,
+						haveChange: false
+					}
+				})
+			})()
+		}
+	}
+	aggrandizementLevel(level : number) {
+		// 记录强化前的数据
+		const oldData = this.getYuhunData()
+		this.level = level
+		const newData = this.getYuhunData()
+		newData.SubAttribute = newData.SubAttribute.map(item => {
+			const res = oldData.SubAttribute.find(ite => ite.name === item.name)
+			item.haveChange = !res || (parseFloat(res.value) <parseFloat(item.value))
+			return item
+		})
+		return {
+			oldData,
+			newData
+		}
+	}
+	aggrandizement(level : number) {
+
+		let temporaryLevel = this.level || 0
 		this.MainAttributeValue = this.MainInitAttributeValue + this.MainAttributeAdd * level
 		this.showMainAttributeValue = String(this.MainAttributeValue) + (this.MainAttributeName.includes('加成') ? '%' : '')
-		this._level = level
+		while (temporaryLevel < level) {
+			temporaryLevel++
+			if (temporaryLevel % 3 === 0) {
+				// 不满条
+				if (this.SubAttributeList.length < 4) {
+					const randAtt = getRandomElement(Object.keys(allAttributeName)) as keyof typeof allAttributeName
+					const att = new SubAttribute(randAtt)
+					const sameAtt = this.SubAttributeList.find(item => item.name === randAtt)
+					if (sameAtt) {
+						sameAtt.value += att.value
+						const haveP = sameAtt.showValue.includes('%') ? '%' : ''
+						sameAtt.showValue = sameAtt.value.toFixed(2) + haveP
+					}
+					else this.SubAttributeList.push(att)
+				}
+				else {
+					const att = getRandomElement(this.SubAttributeList).name
+					this.SubAttributeList.push(new SubAttribute(att))
+				}
+
+			}
+		}
+		this.showSubAttributeList = []
+		this.SubAttributeList.forEach(item => {
+			const sameAtt = this.showSubAttributeList.find(ite => ite.name === item.name)
+			if (sameAtt) {
+				sameAtt.value += item.value
+				const haveP = sameAtt.showValue.includes('%') ? '%' : ''
+				sameAtt.showValue = sameAtt.value.toFixed(2) + haveP
+			}
+			else this.showSubAttributeList.push(Object.assign({}, item))
+		})
+
 	}
 }
