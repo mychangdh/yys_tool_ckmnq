@@ -1,9 +1,10 @@
 <template>
 	<view class="setting">
-		<uni-data-checkbox multiple v-model="config" :localdata="configList"></uni-data-checkbox>
+		<uni-data-checkbox multiple v-model="config" :localdata="configList" @change="change"></uni-data-checkbox>
 	</view>
-	<view class="map" >
+	<view class="map" v-show="yuhunData.length">
 		头数量：{{headYuhuns.length}}
+		<text v-show="headYuhuns.length"> ,最大的头：{{getMaxHeads(headYuhuns)[0]}}</text>
 	</view>
 	<scroll-view v-if="randomYuhunList.length" class="yuhunDetail" :scroll-y="true" @scrolltolower="scrolltolower">
 		<yuhunDetail class="yuhunDetail-item" v-for="item,index in randomYuhunList" :yuhunData="item" :config="config"
@@ -16,7 +17,6 @@
 		<button size="default" type="primary" @click="getRandomYuhun(n)">点击生成{{n}}个随机御魂</button>
 		<button size="default" class="restart" type="primary" v-if="randomYuhunList.length"
 			@click="allAggrandizement">全部强化到15</button>
-		<!-- <button size="default" v-if="randomYuhunList.length" class="restart" type="warn" @click="restart">点击重置</button> -->
 	</view>
 	<view class="customize">
 		<text>自定义数量</text>
@@ -27,10 +27,10 @@
 <script setup lang="ts">
 	import { getYuHun } from '@/requests'
 	import yuhunDetail from '@/components/yuhun-detail.vue'
-	import { ref, nextTick, watch } from 'vue';
+	import { ref, nextTick} from 'vue';
 	import { onLoad } from '@dcloudio/uni-app'
 	import { getRandomElement } from '@/Gacha/function';
-	import YuHun from 'Gacha/YuHun';
+	import YuHun from 'Gacha/YuHun/chutou';
 	import { judgmentHead } from '@/function';
 	const yuhunList = ref([])
 	const randomYuhunList = ref([])
@@ -49,6 +49,10 @@
 	{
 		text: '副属性必带速度',
 		value: 'haveSpeed'
+	},
+	{
+		text: '强化必加速度',
+		value: 'isAddSpeed'
 	}]
 	const current = ref(1)
 	const step = ref(12)
@@ -64,7 +68,24 @@
 
 
 	}
+	function getMaxHeads(yuhuns : YuHun[]) {
+		if (!yuhuns) return 0
+		const arr : number[] = []
+		yuhuns.forEach(item => {
+			const speedList = item.SubAttributeList.filter(ite => ite.name === 'speed').map(ite => ite.value)
+			arr.push(speedList.reduce((a, b) => (a + b)))
+		})
+		return arr.sort((a, b) => b - a)
+	}
 
+	function change(data) {
+		if (data.detail.value.includes('isAddSpeed')) {
+			yuhunData.value.forEach(item => {
+				item.isAddSpeed = true
+			})
+		}
+		else item.isAddSpeed = false
+	}
 	function restart() {
 		current.value = 1
 		randomYuhunList.value = []
@@ -140,7 +161,6 @@
 			margin: 20px 0;
 			max-width: 1000px;
 			margin: auto;
-			height: 450px;
 			max-height: calc(100vh - 240px);
 			display: flex;
 			justify-content: center;
@@ -150,7 +170,7 @@
 
 		.yuhunDetail-item {
 			margin: 5px;
-			height:350px;
+			// height:350 px;
 
 		}
 	}

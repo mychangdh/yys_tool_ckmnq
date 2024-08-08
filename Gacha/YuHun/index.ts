@@ -167,6 +167,18 @@ export default class YuHun {
 			newData
 		}
 	}
+	transShowValue() {
+		this.showSubAttributeList = []
+		this.SubAttributeList.forEach(item => {
+			const sameAtt = this.showSubAttributeList.find(ite => ite.name === item.name)
+			if (sameAtt) {
+				sameAtt.value += item.value
+				const haveP = sameAtt.showValue.includes('%') ? '%' : ''
+				sameAtt.showValue = sameAtt.value.toFixed(2) + haveP
+			}
+			else this.showSubAttributeList.push(Object.assign({}, item))
+		})
+	}
 	aggrandizement(level : number) {
 
 		let temporaryLevel = this.level || 0
@@ -194,16 +206,7 @@ export default class YuHun {
 
 			}
 		}
-		this.showSubAttributeList = []
-		this.SubAttributeList.forEach(item => {
-			const sameAtt = this.showSubAttributeList.find(ite => ite.name === item.name)
-			if (sameAtt) {
-				sameAtt.value += item.value
-				const haveP = sameAtt.showValue.includes('%') ? '%' : ''
-				sameAtt.showValue = sameAtt.value.toFixed(2) + haveP
-			}
-			else this.showSubAttributeList.push(Object.assign({}, item))
-		})
+		this.transShowValue()
 
 	}
 }

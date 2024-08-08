@@ -241,6 +241,7 @@
 			justify-content: center;
 			font-size: 20px;
 			line-height: 28px;
+			margin-top: 20px;
 
 			button {
 				line-height: 29px;
