@@ -1,4 +1,5 @@
-import { attributeType } from "Gacha/YuHun/Attribute";
+import YuHun from "Gacha/YuHun";
+import SubAttribute, { attributeType } from "Gacha/YuHun/Attribute";
 
 //生成从minNum到maxNum的随机数
 export function randomNum(n : number, m : number) {
@@ -18,4 +19,10 @@ export function haveProbability(str : attributeType) {
 		default:
 			return '%'
 	}
+}
+export function judgmentHead(yuhun : YuHun) {
+	const num = yuhun.SubAttributeList.filter(item => {
+		return item.name === 'speed'
+	})
+	return num.length === 6
 }

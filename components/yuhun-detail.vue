@@ -1,7 +1,7 @@
 <template>
-	<view class="yuhun">
+	<view class="yuhun" v-if="!loading">
 		<view class="yuhun-message">
-			<view class="icon">
+			<view class="icon" v-if="showDetail">
 				<image :src="`https://cbg-yys.res.netease.com/game_res/suit/${yuhun.yuhun_id}.png`" mode=""></image>
 				<view class="yuhun-location">
 					<image src="/static/yuhun_location_1.png"></image>
@@ -9,7 +9,7 @@
 			</view>
 			<view class="name">
 				{{yuhun.name}}+{{yuhun.level}}
-				<view class="gouyu">
+				<view class="gouyu" v-if="showDetail">
 					<image src="/static/gouyu.png" />
 					<image src="/static/gouyu.png" />
 					<image src="/static/gouyu.png" />
@@ -75,7 +75,7 @@
 			</view>
 			<view class="hr hr-bottom"></view>
 		</view>
-		<view class="yuhun-effect">
+		<view class="yuhun-effect" v-if="showDetail">
 			<view class="two_piece_effect">
 				2件套属性：{{yuhunData.two_piece_effect}}
 			</view>
@@ -102,16 +102,24 @@
 
 <script setup lang="ts">
 	import { ref, computed } from 'vue';
-	import { haveProbability } from '@/function'
 	import YuHun from '@/Gacha/YuHun'
 	import Chutou from '@/Gacha/YuHun/chutou'
+	const emits = defineEmits(['getYuHun', 'aggrandizement'])
 	const props = defineProps({
 		yuhunData: {
 			type: Object
 		},
+		showDetail: {
+			type: Boolean,
+			default: false
+		},
 		location: {
 			type: Number,
 			default: 1
+		},
+		loading: {
+			type: Boolean,
+			default: false
 		},
 		config: {
 			type: Array,
@@ -134,13 +142,20 @@
 		obj[item] = true
 	})
 	const yuhun = ref((() => {
+		let myYuhun : YuHun
 		switch (props.type) {
-			case 'nomral':
-				return new YuHun(obj)
 			case 'Chutou':
-				return new Chutou(obj)
+				myYuhun = new Chutou(obj)
+				break
+			default:
+				myYuhun = new YuHun(obj)
+				break
 		}
-
+		emits('getYuHun', {
+			myYuhun,
+			aggrandizement
+		})
+		return myYuhun
 	})())
 	const postion = {
 		1: '0deg',
@@ -155,7 +170,7 @@
 	function aggrandizement() {
 		if (!yuhun.value) return
 		changeData.value = yuhun.value.aggrandizementLevel(aggrandizementNum.value)
-		console.log(changeData.value, 21);
+		emits('aggrandizement', yuhun.value)
 	}
 </script>
 
@@ -185,7 +200,7 @@
 
 		.select-level {
 			display: flex;
-			margin-top: 30px;
+			margin-top: 10px;
 			margin-bottom: 7px;
 
 			button {
@@ -217,9 +232,6 @@
 			display: none;
 		}
 
-		.four_piece_effect {
-			height: 70px;
-		}
 
 		.aggrandizement {
 			display: flex;
@@ -264,6 +276,8 @@
 			color: #807263;
 			margin-top: 5px;
 			font-size: 12px;
+			height: 60px;
+			overflow: auto;
 
 			.two_piece_effect {
 				margin-bottom: 2px;

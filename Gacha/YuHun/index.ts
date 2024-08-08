@@ -3,7 +3,7 @@ import { attributeNameType, attributeType } from './Attribute'
 import { getRandomElement } from '@/Gacha/function'
 
 import { nomralAttributes, attackAttributeValues, defenseAttributeValues, functionalAttributes } from './attributesClassify'
-import { haveProbability } from 'function'
+import { haveProbability } from '@/function'
 type configType = {
 	yuhun_id : number
 	name : string
