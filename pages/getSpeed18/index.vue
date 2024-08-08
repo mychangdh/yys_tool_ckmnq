@@ -3,7 +3,7 @@
 		<uni-data-checkbox multiple v-model="config" :localdata="configList"></uni-data-checkbox>
 	</view>
 	<view class="map" >
-		满速数量：{{headYuhuns.length}}
+		头数量：{{headYuhuns.length}}
 	</view>
 	<scroll-view v-if="randomYuhunList.length" class="yuhunDetail" :scroll-y="true" @scrolltolower="scrolltolower">
 		<yuhunDetail class="yuhunDetail-item" v-for="item,index in randomYuhunList" :yuhunData="item" :config="config"

@@ -21,6 +21,7 @@ export function haveProbability(str : attributeType) {
 	}
 }
 export function judgmentHead(yuhun : YuHun) {
+	if (yuhun.MainAttribute !== 'speed') return false
 	const num = yuhun.SubAttributeList.filter(item => {
 		return item.name === 'speed'
 	})
