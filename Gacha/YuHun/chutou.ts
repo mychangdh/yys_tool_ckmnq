@@ -47,6 +47,7 @@ export default class Chutou extends Yuhun {
 	}
 	aggrandizement(level : number) {
 		if (!this.isAddSpeed) return super.aggrandizement(level)
+		if (this.SubAttributeList.every(item => item.name !== 'speed')) return super.aggrandizement(level)
 		let temporaryLevel = this.level || 0
 		this.MainAttributeValue = this.MainInitAttributeValue + this.MainAttributeAdd * level
 		this.showMainAttributeValue = String(this.MainAttributeValue) + haveProbability(this.MainAttribute)
