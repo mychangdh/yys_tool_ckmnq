@@ -141,7 +141,9 @@
 </script>
 
 <style lang="scss" scoped>
-
+.page{
+	overflow: hidden;
+}
 	.setting {
 		margin-top: 20px;
 		display: flex;
