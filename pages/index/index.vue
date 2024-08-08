@@ -1,5 +1,5 @@
 <template>
-	<view class="bg">
+	<view class="page">
 		<view class="title">
 			<uni-title type="h1" title="阴阳师抽卡模拟器v2.0.0" align="center"></uni-title>
 		</view>

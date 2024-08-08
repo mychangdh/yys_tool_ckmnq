@@ -244,7 +244,6 @@
 </script>
 <style lang="scss" scoped>
 	.page{
-		margin-top: -4vh;
 		overflow: auto;
 	}
 	.configs {

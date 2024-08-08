@@ -14,10 +14,11 @@ box-sizing: border-box;
 body{
 	overflow-x: auto ;
 	min-width: 340px;
-}
+} 
 .page{
 	width: 100vw;
 	height:94vh;
+margin-top: -4vh;
 }
 /* #ifdef H5 */
 *::-webkit-scrollbar {
