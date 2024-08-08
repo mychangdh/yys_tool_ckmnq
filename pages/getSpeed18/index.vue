@@ -141,6 +141,9 @@
 </script>
 
 <style lang="scss" scoped>
+	.page{
+		overflow: auto;
+	}
 	.setting {
 		margin-top: 20px;
 		display: flex;
@@ -163,7 +166,7 @@
 			margin: 20px 0;
 			max-width: 1000px;
 			margin: auto;
-			max-height: calc(100vh - 400px);
+			max-height: calc(100vh - 420px);
 			display: flex;
 			justify-content: center;
 			flex-wrap: wrap;
