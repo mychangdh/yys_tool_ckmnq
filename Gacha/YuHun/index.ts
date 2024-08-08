@@ -3,6 +3,7 @@ import { attributeNameType, attributeType } from './Attribute'
 import { getRandomElement } from '@/Gacha/function'
 
 import { nomralAttributes, attackAttributeValues, defenseAttributeValues, functionalAttributes } from './attributesClassify'
+import { haveProbability } from 'function'
 type configType = {
 	yuhun_id : number
 	name : string
@@ -158,7 +159,7 @@ export default class YuHun {
 		const newData = this.getYuhunData()
 		newData.SubAttribute = newData.SubAttribute.map(item => {
 			const res = oldData.SubAttribute.find(ite => ite.name === item.name)
-			item.haveChange = !res || (parseFloat(res.value) <parseFloat(item.value))
+			item.haveChange = !res || (parseFloat(res.value) < parseFloat(item.value))
 			return item
 		})
 		return {
@@ -170,7 +171,7 @@ export default class YuHun {
 
 		let temporaryLevel = this.level || 0
 		this.MainAttributeValue = this.MainInitAttributeValue + this.MainAttributeAdd * level
-		this.showMainAttributeValue = String(this.MainAttributeValue) + (this.MainAttributeName.includes('加成') ? '%' : '')
+		this.showMainAttributeValue = String(this.MainAttributeValue) + haveProbability(this.MainAttribute)
 		while (temporaryLevel < level) {
 			temporaryLevel++
 			if (temporaryLevel % 3 === 0) {

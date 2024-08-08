@@ -61,8 +61,8 @@
 					<view class="old-data">
 						{{
 							changeData.oldData.SubAttribute.length>index?
-						changeData.oldData.SubAttribute[index].value:
-						item.name.includes('加成')?'0%':'0'}}
+						changeData.oldData.SubAttribute[index].value:0
+						}}
 					</view>
 					<view class="point">
 						<image src="/static/point-right.png"></image>
@@ -102,7 +102,7 @@
 
 <script setup lang="ts">
 	import { ref, computed } from 'vue';
-
+	import { haveProbability } from '@/function'
 	import YuHun from '@/Gacha/YuHun'
 	import Chutou from '@/Gacha/YuHun/chutou'
 	const props = defineProps({
@@ -216,9 +216,11 @@
 		:deep(.uni-numbox-btns) {
 			display: none;
 		}
-.four_piece_effect{
-	height: 70px;
-}
+
+		.four_piece_effect {
+			height: 70px;
+		}
+
 		.aggrandizement {
 			display: flex;
 			flex-wrap: wrap;
