@@ -1,26 +1,28 @@
 <template>
-	<view class="setting">
-		<uni-data-checkbox multiple v-model="config" :localdata="configList" @change="change"></uni-data-checkbox>
-	</view>
-	<view class="map" v-show="yuhunData.length">
-		头数量：{{headYuhuns.length}}
-		<text v-show="headYuhuns.length"> ,最大的头：{{getMaxHeads(headYuhuns)[0]}}</text>
-	</view>
-	<scroll-view v-if="randomYuhunList.length" class="yuhunDetail" :scroll-y="true" @scrolltolower="scrolltolower">
-		<yuhunDetail class="yuhunDetail-item" v-for="item,index in randomYuhunList" :yuhunData="item" :config="config"
-			:location="getRandomElement([1,2,3,4,5,6])" :loading="index>=current*step"
-			:showDetail="randomYuhunList.length<=50" type="Chutou" @getYuHun="getMyYuhun"
-			@aggrandizement="aggrandizement" />
-	</scroll-view>
-	<view class="btn">
-		<button size="default" type="primary" @click="getRandomYuhun(1)">点击生成1个随机御魂</button>
-		<button size="default" type="primary" @click="getRandomYuhun(n)">点击生成{{n}}个随机御魂</button>
-		<button size="default" class="restart" type="primary" v-if="randomYuhunList.length"
-			@click="allAggrandizement">全部强化到15</button>
-	</view>
-	<view class="customize">
-		<text>自定义数量</text>
-		<uni-number-box v-model="n" :min="1" :step="1" :max="9999"></uni-number-box>
+	<view class="page">
+		<view class="setting">
+			<uni-data-checkbox multiple v-model="config" :localdata="configList" @change="change"></uni-data-checkbox>
+		</view>
+		<view class="map" v-show="yuhunData.length">
+			头数量：{{headYuhuns.length}}
+			<text v-show="headYuhuns.length"> ,最大的头：{{getMaxHeads(headYuhuns)[0]}}</text>
+		</view>
+		<scroll-view v-if="randomYuhunList.length" class="yuhunDetail" :scroll-y="true" @scrolltolower="scrolltolower">
+			<yuhunDetail class="yuhunDetail-item" v-for="item,index in randomYuhunList" :yuhunData="item" :config="config"
+				:location="getRandomElement([1,2,3,4,5,6])" :loading="index>=current*step"
+				:showDetail="randomYuhunList.length<=50" type="Chutou" @getYuHun="getMyYuhun"
+				@aggrandizement="aggrandizement" />
+		</scroll-view>
+		<view class="btn">
+			<button size="default" type="primary" @click="getRandomYuhun(1)">1个随机御魂</button>
+			<button size="default" type="primary" @click="getRandomYuhun(n)">{{n}}个随机御魂</button>
+			<button size="default" class="restart" type="primary" v-if="randomYuhunList.length"
+				@click="allAggrandizement">全部强化到15</button>
+		</view>
+		<view class="customize">
+			<text>自定义数量</text>
+			<uni-number-box v-model="n" :min="1" :step="1" :max="9999"></uni-number-box>
+		</view>
 	</view>
 </template>
 
@@ -139,8 +141,9 @@
 </script>
 
 <style lang="scss" scoped>
+
 	.setting {
-		margin-top: 10px;
+		margin-top: 20px;
 		display: flex;
 		justify-content: center;
 
@@ -161,7 +164,7 @@
 			margin: 20px 0;
 			max-width: 1000px;
 			margin: auto;
-			max-height: calc(100vh - 240px);
+			max-height: calc(100vh - 400px);
 			display: flex;
 			justify-content: center;
 			flex-wrap: wrap;
@@ -184,14 +187,13 @@
 		padding-top: 10px;
 
 		button {
-			width: 100%;
-			margin: 5px 20px;
-			max-width: 360px;
-			min-width: 250px;
+			width: 44%;
+			margin: 5px ;
 		}
 
 		.restart {
-			width: 100%;
+			margin: 2px 18px;
+			width:  90%;
 			max-width: 100%;
 		}
 	}

@@ -15,8 +15,21 @@ body{
 	overflow-x: auto ;
 	min-width: 340px;
 }
+.page{
+	width: 100vw;
+	height:94vh;
+}
 /* #ifdef H5 */
 *::-webkit-scrollbar {
 	display: none;
 }
 /* #endif */
+/* 禁用水平滚动条 */
+::-webkit-scrollbar {
+    height: 0;
+}
+
+/* 禁用垂直滚动条 */
+::-webkit-scrollbar {
+    width: 0;
+}

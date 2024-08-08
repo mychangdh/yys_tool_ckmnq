@@ -1,85 +1,87 @@
 <template>
-	<uni-row v-if="myGacha">
-		<uni-col :xs="24" :sm="6" :md="6" class="message">
-			<view class="gacha-information">
-				<view class="gacha-information-item">
-					<text class="text">您是尊贵的</text>
-					<text class="value">{{myGacha.isNotFull?'非':''}}全图鉴</text>
-					<text class="text">玩家</text>
-					<uni-icons @click="myGacha.isNotFull = !myGacha.isNotFull" v-if="!myGacha.currentGachasNumber"
-						type="refreshempty"></uni-icons>
-				</view>
-				<view>
+	<view class="page">
+		<uni-row v-if="myGacha">
+			<uni-col :xs="24" :sm="6" :md="6" class="message">
+				<view class="gacha-information">
 					<view class="gacha-information-item">
-						<text class="text">当前卡池：</text>
-						<text class="value">{{myGacha.cardType}}</text>
-						<uni-icons class="text" @click="emit('changeCardType', myGacha)"
+						<text class="text">您是尊贵的</text>
+						<text class="value">{{myGacha.isNotFull?'非':''}}全图鉴</text>
+						<text class="text">玩家</text>
+						<uni-icons @click="myGacha.isNotFull = !myGacha.isNotFull" v-if="!myGacha.currentGachasNumber"
 							type="refreshempty"></uni-icons>
 					</view>
-					<view class="gacha-information-item">
-						<text class="text">总抽数：</text>
-						<text class="value">{{myGacha.currentGachasNumber}}</text>
+					<view>
+						<view class="gacha-information-item">
+							<text class="text">当前卡池：</text>
+							<text class="value">{{myGacha.cardType}}</text>
+							<uni-icons class="text" @click="emit('changeCardType', myGacha)"
+								type="refreshempty"></uni-icons>
+						</view>
+						<view class="gacha-information-item">
+							<text class="text">总抽数：</text>
+							<text class="value">{{myGacha.currentGachasNumber}}</text>
+						</view>
 					</view>
-				</view>
-				<view>
-					<slot v-if="myGacha" name="information" :myGacha="myGacha" :currentGodNumber="currentGodNumber">
-					</slot>
-				</view>
-				<scroll-view :scroll-y="true" class="crumbs" @scrolltolower="crumbsScrolltolower">
-					<view class="statistics">
-						<text class="gradient" v-for="item,index in ['R','SR','SSR','SP']" :key="index"
-							v-show="crumbs[item]"
-							:style="`background-image: -webkit-linear-gradient(top, ${COLOR[item]});`">
-							{{item }} :{{crumbs[item]}}
+					<view>
+						<slot v-if="myGacha" name="information" :myGacha="myGacha" :currentGodNumber="currentGodNumber">
+						</slot>
+					</view>
+					<scroll-view :scroll-y="true" class="crumbs" @scrolltolower="crumbsScrolltolower">
+						<view class="statistics">
+							<text class="gradient" v-for="item,index in ['R','SR','SSR','SP']" :key="index"
+								v-show="crumbs[item]"
+								:style="`background-image: -webkit-linear-gradient(top, ${COLOR[item]});`">
+								{{item }} :{{crumbs[item]}}
+							</text>
+						</view>
+						<text class="gradient" v-for="item,index in crumbs?.data.slice(0,crumbsScrolltolowerIndex * 500)"
+							:key="index" :style="`background-image: -webkit-linear-gradient(top, ${COLOR[item.level]});`">
+							<text class="name">{{item.name}}</text>
+							<text class="cards-number">({{item.currentGachasNumber}}) </text>
 						</text>
-					</view>
-					<text class="gradient" v-for="item,index in crumbs?.data.slice(0,crumbsScrolltolowerIndex * 500)"
-						:key="index" :style="`background-image: -webkit-linear-gradient(top, ${COLOR[item.level]});`">
-						<text class="name">{{item.name}}</text>
-						<text class="cards-number">({{item.currentGachasNumber}}) </text>
-					</text>
-				</scroll-view>
-			</view>
-		</uni-col>
-		<uni-col :xs="24" :sm="18" :md="14">
-			<view class="gods">
-				<scroll-view :scroll-y="true" class="gods-list" @scrolltolower="scrolltolower">
-					<uni-grid :column="5" :showBorder="false" :square="false">
-						<uni-grid-item v-for="item,index in currentGods?.slice(0,scrolltolowerIndex * 50)" :key="index">
-							<gods-avatar :god="item" />
-
-						</uni-grid-item>
-					</uni-grid>
-				</scroll-view>
-			</view>
-			<view class="operate">
-				<button type="default" :disabled="btnDisabled" @click="actionCards(1)">单抽</button>
-				<button type="primary" :disabled="btnDisabled" @click="actionCards(n)">{{n}}抽</button>
-			</view>
-			<view class="configs">
-				<text>自定义抽数</text>
-				<!-- #ifndef MP-WEIXIN -->
-				<uni-number-box v-model="n" :min="1" :step="1" :max="199999"></uni-number-box>
-				<!-- #endif -->
-				<!-- #ifdef MP-WEIXIN -->
-				<input class="my-input" v-model="n" type="number" placeholder="请输入自定义抽数" />
-				<!-- #endif -->
-
-				<button v-if="myGacha.currentGachasNumber" type="warn" class="resert" @click="resert">重置</button>
-				<!-- #ifdef H5 -->
-				<button v-if="myGacha.currentGachasNumber" type="primary" class="resert" @click="exports">导出xls</button>
-				<!-- #endif -->
-
-			</view>
-		</uni-col>
-	</uni-row>
-	<view v-else>
-		加载中
+					</scroll-view>
+				</view>
+			</uni-col>
+			<uni-col :xs="24" :sm="18" :md="14">
+				<view class="gods">
+					<scroll-view :scroll-y="true" class="gods-list" @scrolltolower="scrolltolower">
+						<uni-grid :column="5" :showBorder="false" :square="false">
+							<uni-grid-item v-for="item,index in currentGods?.slice(0,scrolltolowerIndex * 50)" :key="index">
+								<gods-avatar :god="item" />
+		
+							</uni-grid-item>
+						</uni-grid>
+					</scroll-view>
+				</view>
+				<view class="operate">
+					<button type="default" :disabled="btnDisabled" @click="actionCards(1)">单抽</button>
+					<button type="primary" :disabled="btnDisabled" @click="actionCards(n)">{{n}}抽</button>
+				</view>
+				<view class="configs">
+					<text>自定义抽数</text>
+					<!-- #ifndef MP-WEIXIN -->
+					<uni-number-box v-model="n" :min="1" :step="1" :max="199999"></uni-number-box>
+					<!-- #endif -->
+					<!-- #ifdef MP-WEIXIN -->
+					<input class="my-input" v-model="n" type="number" placeholder="请输入自定义抽数" />
+					<!-- #endif -->
+		
+					<button v-if="myGacha.currentGachasNumber" type="warn" class="resert" @click="resert">重置</button>
+					<!-- #ifdef H5 -->
+					<button v-if="myGacha.currentGachasNumber" type="primary" class="resert" @click="exports">导出xls</button>
+					<!-- #endif -->
+		
+				</view>
+			</uni-col>
+		</uni-row>
+		<view v-else>
+			加载中
+		</view>
+		<uni-popup ref="popup" type="center">
+			<uni-popup-dialog type="error" title="提示" :content="content" :duration="500"
+				@confirm="confirm"></uni-popup-dialog>
+		</uni-popup>
 	</view>
-	<uni-popup ref="popup" type="center">
-		<uni-popup-dialog type="error" title="提示" :content="content" :duration="500"
-			@confirm="confirm"></uni-popup-dialog>
-	</uni-popup>
 
 </template>
 
@@ -241,6 +243,9 @@
 	}
 </script>
 <style lang="scss" scoped>
+	.page{
+		overflow: auto;
+	}
 	.configs {
 		padding: 10rpx;
 		width: 100%;
