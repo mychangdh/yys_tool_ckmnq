@@ -33,3 +33,14 @@ body{
 ::-webkit-scrollbar {
     width: 0;
 }
+$topic-color:#043e5a;
+uni-button[type='primary'],
+.uni-tag--primary,
+.uni-data-checklist .checklist-group .checklist-box.is--default.is-checked .checkbox__inner,
+{
+	background-color: $topic-color !important;
+	    border-color: $topic-color !important;
+}
+.uni-data-checklist .checklist-group .checklist-box.is--default.is-checked .checklist-text{
+	color: $topic-color !important;
+}

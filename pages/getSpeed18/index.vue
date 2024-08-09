@@ -14,7 +14,7 @@
 				@aggrandizement="aggrandizement" />
 		</scroll-view>
 		<view class="btn">
-			<button size="default" type="primary" @click="getRandomYuhun(1)">1个随机御魂</button>
+			<button size="default" type="default" @click="getRandomYuhun(1)">1个随机御魂</button>
 			<button size="default" type="primary" @click="getRandomYuhun(n)">{{n}}个随机御魂</button>
 			<button size="default" class="restart" type="primary" v-if="randomYuhunList.length"
 				@click="allAggrandizement">全部强化到15</button>
