@@ -32,15 +32,18 @@ export class Guarantees60 extends Gacha {
 		else this.currentGuaranteesGolden++
 		return result
 	}
-
-	get isNotFull() {
-		return this._isNotFull
-	}
-	set isNotFull(isNotFull) {
+	// 设置概率数组
+	setProbabilityArray(isNotFull : boolean) {
 		if (this.summonedDesignated)
 			this.probabilityArrays =
 				Guarantees60Data[this.summonedDesignated.level as 'SP' | 'SSR'][isNotFull ? 'notFull' : 'full']
 		this.prguaranteesCurrent = isNotFull ? 800 : 450
+	}
+	get isNotFull() {
+		return this._isNotFull
+	}
+	set isNotFull(isNotFull) {
+		this.setProbabilityArray(isNotFull)
 		this._isNotFull = isNotFull
 	}
 	// 对保底450当期的判断，正常来说不用做判断

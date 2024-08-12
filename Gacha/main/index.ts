@@ -66,7 +66,7 @@ export class Gacha {
 		return this.getProbability(true)
 	}
 	// 抽卡一次的结果,传入true则必定出金
-	getOnceResult(isGolden = false) : resultType {
+	getOnceResult(isGolden = false,goldenGods?:godsType[]) : resultType {
 		let randomNum = Math.random()
 		// 获取概率up
 		this.currentGachasNumber++
@@ -142,7 +142,7 @@ export class Gacha {
 		if (!this.isSummonedDesignated && this.summonedDesignated) {
 			// 分卡池后如果还未召唤出当期式神，就把当期式神踢了，因为他的出现是用定向up去计算的
 			const level = this.summonedDesignated.level
-			this.gods[level] = this.gods[level].filter(item => item.shishen_id !== this.summonedDesignated?.shishen_id)
+			this.gods[level] = this.baseGods[level].filter(item => item.shishen_id !== this.summonedDesignated?.shishen_id)
 		}
 		this._cardType = value
 	}

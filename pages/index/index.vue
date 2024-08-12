@@ -7,7 +7,9 @@
 			<uni-row>
 				<uni-col :sm="24" :md="12">
 					<uni-group title="抽卡模拟" mode="card">
-						<view class="group-item" @click="goPath('/pages/guarantees60/index')"><uni-tag text="60保底模式"
+						<view class="group-item" @click="goPath('/pages/godsNotIncluded/index')"><uni-tag text="周年庆模式"
+								type="primary" /></view>	
+								<view class="group-item" @click="goPath('/pages/guarantees60/index')"><uni-tag text="60保底模式"
 								type="primary" /></view>
 						<view class="group-item" @click="goPath('/pages/up3/index')"><uni-tag text="3up模式"
 								type="primary" /></view>

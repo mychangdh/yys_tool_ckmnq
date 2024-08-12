@@ -47,6 +47,14 @@
 				"navigationBarTitleText" : "出头模拟",
 				"enablePullDownRefresh" : false
 			}
+		},
+		{
+			"path" : "pages/godsNotIncluded/index",
+			"style" : 
+			{
+				"enablePullDownRefresh" : false,
+				"navigationBarTitleText" : "周年庆模式"
+			}
 		}
 
 	],
