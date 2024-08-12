@@ -8,8 +8,8 @@
 			<text v-show="headYuhuns.length"> ,最大的头：{{getMaxHeads(headYuhuns)[0]}}</text>
 		</view>
 		<scroll-view v-if="randomYuhunList.length" class="yuhunDetail" :scroll-y="true" @scrolltolower="scrolltolower">
-			<yuhunDetail class="yuhunDetail-item" v-for="item,index in randomYuhunList" :yuhunData="item" :config="config"
-				:location="getRandomElement([1,2,3,4,5,6])" :loading="index>=current*step"
+			<yuhunDetail class="yuhunDetail-item" v-for="item,index in randomYuhunList" :yuhunData="item"
+				:config="config" :location="getRandomElement([1,2,3,4,5,6])" :loading="index>=current*step"
 				:showDetail="randomYuhunList.length<=50" type="Chutou" @getYuHun="getMyYuhun"
 				@aggrandizement="aggrandizement" />
 		</scroll-view>
@@ -29,7 +29,7 @@
 <script setup lang="ts">
 	import { getYuHun } from '@/requests'
 	import yuhunDetail from '@/components/yuhun-detail.vue'
-	import { ref, nextTick} from 'vue';
+	import { ref, nextTick } from 'vue';
 	import { onLoad } from '@dcloudio/uni-app'
 	import { getRandomElement } from '@/Gacha/function';
 	import YuHun from 'Gacha/YuHun/chutou';
@@ -81,12 +81,10 @@
 	}
 
 	function change(data) {
-		if (data.detail.value.includes('isAddSpeed')) {
-			yuhunData.value.forEach(item => {
-				item.isAddSpeed = true
-			})
-		}
-		else item.isAddSpeed = false
+		const havaSpeed = data.detail.value.includes('isAddSpeed')
+		yuhunData.value.forEach(item => {
+			item.isAddSpeed = havaSpeed
+		})
 	}
 	function restart() {
 		current.value = 1
@@ -141,9 +139,10 @@
 </script>
 
 <style lang="scss" scoped>
-	.page{
+	.page {
 		overflow: auto;
 	}
+
 	.setting {
 		margin-top: 40px;
 		display: flex;
@@ -166,7 +165,7 @@
 			margin: 20px 0;
 			max-width: 1000px;
 			margin: auto;
-			max-height: calc(100vh - 330px);
+			max-height: calc(100vh - 420px);
 			display: flex;
 			justify-content: center;
 			flex-wrap: wrap;
@@ -190,12 +189,12 @@
 
 		button {
 			width: 44%;
-			margin: 5px ;
+			margin: 5px;
 		}
 
 		.restart {
 			margin: 2px 18px;
-			width:  90%;
+			width: 90%;
 			max-width: 100%;
 		}
 	}
