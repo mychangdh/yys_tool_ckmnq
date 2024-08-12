@@ -44,13 +44,15 @@ export class noIncluded extends Guarantees60 {
 		this.result.push(result)
 		return result
 	}
-	// 自动选择定向式神
+	// 未收录结束后自动选择定向式神
 	autoSelectGod(res : resultType) {
-		const otherGod = this.newGods.find(item => item.shishen_id !== res.shishen_id)
-		if (otherGod)
-			this.selectGod(otherGod.shishen_id)
 		this.isIncluded = true
+		const otherGod = this.newGods.find(item => item.shishen_id !== res.shishen_id)
+		if (!otherGod) return
+		this.selectGod(otherGod.shishen_id)
+
 	}
+	// 手动选择定向式神
 	selectGod(shishen_id : number) {
 		this.summonedDesignated = this.newGods.find(item => item.shishen_id === shishen_id)
 		if (!this.summonedDesignated) return

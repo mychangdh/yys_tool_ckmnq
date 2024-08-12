@@ -1,18 +1,21 @@
 <template>
-	<cardMessage :gacha="noIncluded"  @changeCardType="changeCardType">
+	<cardMessage :gacha="noIncluded" @changeCardType="changeCardType">
 		<template v-slot:information="{myGacha,currentGodNumber}">
 			<view class="gacha-information-item">
 				<text class="text">当前保底：</text>
 				<text class="value">{{myGacha?.currentGuaranteesGolden}}/</text>
 				<text class="text">{{myGacha?.guaranteesGolden}}</text>
 			</view>
-
-			<view class="gacha-information-item">
+			<view class="gacha-information-item" :class="{
+				active:!myGacha?.isIncluded
+			}">
 				<text class="text">指定式神：</text>
 				<text class="value">{{myGacha?.summonedDesignated?.name}}</text>
 				<text class="text">{{myGacha.isSummonedDesignated?`(${currentGodNumber})`:''}}</text>
 			</view>
-			<view class="gacha-information-item">
+			<view class="gacha-information-item" :class="{
+				active:!myGacha?.isIncluded
+			}">
 				<text class="text">当前定向概率：</text>
 				<text class="value">{{Math.floor(myGacha.showProbability * 100)}}%</text>
 			</view>
@@ -33,3 +36,14 @@
 		}
 	}
 </script>
+<style scoped lang="scss">
+	$fontColor: #ccc;
+
+	.active {
+		color: $fontColor;
+
+		:deep(text) {
+			color: $fontColor !important;
+		}
+	}
+</style>
