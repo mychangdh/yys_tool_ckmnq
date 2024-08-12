@@ -56,11 +56,7 @@ export class noIncluded extends Guarantees60 {
 	selectGod(shishen_id : number) {
 		this.summonedDesignated = this.newGods.find(item => item.shishen_id === shishen_id)
 		if (!this.summonedDesignated) return
-		const level = this.summonedDesignated.level
-		this.gods[level] = this.baseGods[level].filter(item => {
-			if (!this.summonedDesignated) return true
-			return item.shishen_id !== this.summonedDesignated.shishen_id
-		})
+		this.restartCard(this.cardType)
 	}
 	get isIncluded() {
 		return this._isIncluded
