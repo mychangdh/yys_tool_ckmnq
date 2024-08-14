@@ -101,7 +101,7 @@
 		gacha: {
 		}
 	})
-	const emit = defineEmits(['changeCardType', 'init'])
+	const emit = defineEmits(['changeCardType', 'init','resert'])
 	// 因为所有子类下的格式都是一样的，这个组件主要是用来渲染图像，不参与式神计算，所以只需要随便找一个子类的类型就行了
 	const gachaClass = props.gacha as typeof Guarantees60
 	let myGacha = ref<Guarantees60 | null>(null)
@@ -125,7 +125,9 @@
 		content.value = '是否重置'
 		confirm = () => {
 			init()
+			emit('resert')
 		}
+		
 		popup.value.open()
 	}
 	// 出金抽数
@@ -202,7 +204,7 @@
 		const isNotFull = myGacha.value?.isNotFull
 		myGacha.value = new gachaClass()
 		if (isNotFull !== undefined) myGacha.value.isNotFull = isNotFull
-		emit('init', myGacha.value)
+		emit('init', myGacha.value,init)
 		currentGods.value = []
 		currentGodNumber.value = 0
 		crumbs.value = {

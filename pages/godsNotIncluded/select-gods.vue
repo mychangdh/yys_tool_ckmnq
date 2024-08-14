@@ -1,20 +1,34 @@
 <template>
 	<view class="dialog">
 		<view class="select-illustrated">
+			<text>请选择定向式神（如果未收录抽到则自动转换为另一个）</text>
+		</view>
+		<view class="new-gods gods">
+			<uni-grid :column="2" :showBorder="false" :square="false">
+				<uni-grid-item v-for="item in _myGacha.newGods" :key="item.shishen_id" @click="changeUpGod(item)">
+					<gods-avatar :god="item" />
+					<view class="radio">
+						<radio value="1" :checked="_myGacha['summonedDesignated'].shishen_id === item.shishen_id" />
+					</view>
+				</uni-grid-item>
+			</uni-grid>
+
+		</view>
+		<view class="select-illustrated">
 			<text>请设置你的图鉴（修改图鉴会重置抽卡进度）</text>
 		</view>
 		<scroll-view class="select-god-list" scroll-y="true">
 			<view class="gods" v-for="lv in level">
 				<yysIcon :title="lv" class="icon" />
-				<uni-grid :column="5" :showBorder="false" :square="false">
+				<uni-grid :column="5" :showBorder="false" :square="false" >
 					<uni-grid-item v-for="item in getReversed(godsData[lv])" :key="item.shishen_id">
 						<view :class="{
-							active:!form[lv][item.shishen_id]
+							active:!updataFormModel[lv][item.shishen_id].have
 						}" @click="changeHaveGods(item)">
 							<gods-avatar :god="item" />
 							<view class="radio">
-								<radio value="1" :checked="form[lv][item.shishen_id]"
-									:disabled="newGods.some(p=>p.shishen_id === item.shishen_id)" />
+								<radio value="1" :checked="updataFormModel[lv][item.shishen_id].have"
+									:disabled="_myGacha.newGods.some(p=>p.shishen_id === item.shishen_id)" />
 							</view>
 						</view>
 					</uni-grid-item>
@@ -26,18 +40,19 @@
 </template>
 
 <script lang="ts" setup>
-	import { computed, ref, watch } from 'vue';
+	import {		ref, watch
+	} from 'vue';
 	import godsAvatar from '@/components/gods-avatar.vue'
 	import yysIcon from '@/components/yys-icon.vue'
-	import store from '../../store';
-	import { godsType } from 'store/modules/gods';
-	const emits = defineEmits(['close'])
+	import { godsType } from '@/store/modules/gods';
+	import { noIncluded } from '@/Gacha/main/not_included';
+	const emits = defineEmits(['close', 'changeHaveGods', 'getUpGod'])
 	const props = defineProps({
-		newGods: {
-			type: Array,
-			default: () => []
-		}
+		myGacha: {},
+		godsData:{}
 	})
+		const updataFormModel = defineModel()
+	const _myGacha = props.myGacha as noIncluded
 	function closeDialog() {
 		emits('close')
 	}
@@ -49,45 +64,46 @@
 		return newArr
 	}
 	const level = ['SP', 'SSR'] as const
-	type formType = {
-		[key in 'SP' | 'SSR']: {
-			[key in number]: boolean
-		}
-	}
+
 	// 改变图鉴
 	function changeHaveGods(item : godsType) {
-		if (props.newGods.some(ite => ite.shishen_id === item.shishen_id)) return
+		if (_myGacha.newGods.some(ite => ite.shishen_id === item.shishen_id)) return
 		const level = item.level as 'SSR' | 'SP'
-		form.value[level][item.shishen_id] = !form.value[level][item.shishen_id]
+		updataFormModel.value[level][item.shishen_id].have = !updataFormModel.value[level][item.shishen_id].have
+		emits('changeHaveGods', JSON.parse(JSON.stringify(updataFormModel.value)))
 	}
-	const godsData = computed(() => store.state.gods)
-	const form = ref<formType>({
-		SP: {},
-		SSR: {}
-	})
-	watch(godsData, (data) => {
-		[...data.SP, ...data.SSR].forEach(item => {
-			form.value[item.level as 'SP' | 'SSR'][item.shishen_id] = true
-		})
-		props.newGods.forEach((item : any) => {
-			form.value[item.level as 'SP' | 'SSR'][item.shishen_id] = false
-		})
+
+
+
+	// 定向up式神
+	watch(() => _myGacha['summonedDesignated'], (val) => {
+		emits('getUpGod', val)
 	}, {
 		immediate: true,
 		deep: true
 	})
+
+	function changeUpGod(item : godsType) {
+		_myGacha['summonedDesignated'] = item
+	}
 </script>
 
 <style scoped lang="scss">
 	.select-god-list {
 		padding-bottom: 10px;
-		max-height: calc(100vh - 191px);
+		max-height: calc(100vh - 340px);
 
+	}
+
+	.new-gods {
+		:deep(.uni-grid) {
+			justify-content: center;
+		}
 	}
 
 	.close-dialog {
 		margin: 0 5px;
-	
+
 	}
 
 	.dialog {
@@ -117,10 +133,10 @@
 
 	.select-illustrated {
 
-		font-size: 16px;
+		font-size: 14px;
 		text-align: center;
 		font-weight: 700;
-		margin: 20px 0;
+		margin: 10px 0;
 
 	}
 </style>

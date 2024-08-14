@@ -47,8 +47,8 @@ export class noIncluded extends Guarantees60 {
 	// 未收录结束后自动选择定向式神
 	autoSelectGod(res : resultType) {
 		this.isIncluded = true
+		if (this.newGods.every(item => item.shishen_id !== res.shishen_id)) return
 		const otherGod = this.newGods.find(item => item.shishen_id !== res.shishen_id)
-		if (!otherGod) return
 		this.selectGod(otherGod.shishen_id)
 
 	}
