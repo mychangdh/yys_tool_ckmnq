@@ -21,7 +21,7 @@
 </template>
 <script lang="ts" setup>
 	import cardMessage from '@/components/cards-message.vue'
-	import { Guarantees60 } from '@/Gacha/main/Guarantees60'
+	import { Guarantees60 } from '@/Gacha/main/guarantees60'
 	const changeCardType = (myGacha : Guarantees60) => {
 		switch (myGacha.cardType) {
 			case '旭华召唤':

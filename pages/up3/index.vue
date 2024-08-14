@@ -19,7 +19,7 @@
 </template>
 <script lang="ts" setup>
 	import cardMessage from '@/components/cards-message.vue'
-	import { UP_3 } from '@/Gacha/main/UP_3'
+	import { UP_3 } from '@/Gacha/main/up_3'
 	const changeCardType = (myGacha : UP_3) => {
 		switch (myGacha.cardType) {
 			case '全部卡池':

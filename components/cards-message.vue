@@ -1,5 +1,5 @@
 <template>
-	<view class="page">
+	<view>
 		<uni-row v-if="myGacha">
 			<uni-col :xs="24" :sm="6" :md="6" class="message">
 				<view class="gacha-information">
@@ -26,16 +26,17 @@
 						<slot v-if="myGacha" name="information" :myGacha="myGacha" :currentGodNumber="currentGodNumber">
 						</slot>
 					</view>
+					<view class="statistics">
+						<text class="gradient" v-for="item,index in ['R','SR','SSR','SP']" :key="index"
+							v-show="crumbs[item]"
+							:style="`background-image: -webkit-linear-gradient(top, ${COLOR[item]});`">
+							{{item }} :{{crumbs[item]}}
+						</text>
+					</view>
 					<scroll-view :scroll-y="true" class="crumbs" @scrolltolower="crumbsScrolltolower">
-						<view class="statistics">
-							<text class="gradient" v-for="item,index in ['R','SR','SSR','SP']" :key="index"
-								v-show="crumbs[item]"
-								:style="`background-image: -webkit-linear-gradient(top, ${COLOR[item]});`">
-								{{item }} :{{crumbs[item]}}
-							</text>
-						</view>
-						<text class="gradient" v-for="item,index in crumbs?.data.slice(0,crumbsScrolltolowerIndex * 500)"
-							:key="index" :style="`background-image: -webkit-linear-gradient(top, ${COLOR[item.level]});`">
+						<text class="gradient"
+							v-for="item,index in crumbs?.data.slice(0,crumbsScrolltolowerIndex * 500)" :key="index"
+							:style="`background-image: -webkit-linear-gradient(top, ${COLOR[item.level]});`">
 							<text class="name">{{item.name}}</text>
 							<text class="cards-number">({{item.currentGachasNumber}}) </text>
 						</text>
@@ -46,9 +47,9 @@
 				<view class="gods">
 					<scroll-view :scroll-y="true" class="gods-list" @scrolltolower="scrolltolower">
 						<uni-grid :column="5" :showBorder="false" :square="false">
-							<uni-grid-item v-for="item,index in currentGods?.slice(0,scrolltolowerIndex * 50)" :key="index">
+							<uni-grid-item v-for="item,index in currentGods?.slice(0,scrolltolowerIndex * 50)"
+								:key="index">
 								<gods-avatar :god="item" />
-		
 							</uni-grid-item>
 						</uni-grid>
 					</scroll-view>
@@ -65,12 +66,14 @@
 					<!-- #ifdef MP-WEIXIN -->
 					<input class="my-input" v-model="n" type="number" placeholder="请输入自定义抽数" />
 					<!-- #endif -->
-		
+
 					<button v-if="myGacha.currentGachasNumber" type="warn" class="resert" @click="resert">重置</button>
 					<!-- #ifdef H5 -->
-					<button v-if="myGacha.currentGachasNumber" type="primary" class="resert" @click="exports">导出xls</button>
+					<button v-if="myGacha.currentGachasNumber" type="primary" class="resert"
+						@click="exports">导出xls</button>
 					<!-- #endif -->
-		
+					<slot name="otherBtns" :myGacha="myGacha" :currentGodNumber="currentGodNumber">
+					</slot>
 				</view>
 			</uni-col>
 		</uni-row>
@@ -91,7 +94,7 @@
 	import { nextTick, ref, watch } from 'vue'
 	import dayjs from 'dayjs'
 	import { JSONToExcelConvertor } from '@/function/exportExcel'
-	import { Guarantees60 } from '@/Gacha/main/Guarantees60';
+	import { Guarantees60 } from '@/Gacha/main/guarantees60';
 	import store from '../store';
 	import godsAvatar from './gods-avatar.vue'
 	const props = defineProps({
@@ -243,16 +246,16 @@
 	}
 </script>
 <style lang="scss" scoped>
-	.page{
+	.page {
 		overflow: auto;
 	}
+
 	.configs {
 		padding: 10rpx;
 		width: 100%;
 		max-width: 800px;
 		text-align: center;
 		margin: auto;
-		margin-top: 50rpx;
 
 		text {
 			font-size: 12px;
@@ -313,7 +316,6 @@
 
 	.message {
 		position: sticky;
-		top: 50rpx;
 		background-color: #fff;
 		z-index: 4;
 		padding-top: 50rpx;
@@ -324,12 +326,11 @@
 		padding-top: 30px;
 		/* #endif */
 		text-align: center;
-		margin-top: 42px;
 
 		.gods-list {
-			max-height: 45vh;
+			max-height: 300px;
 			width: 94%;
-			margin: auto;
+			margin: 10px auto;
 
 			:deep(.uni-grid) {
 				justify-content: center;
@@ -342,6 +343,13 @@
 
 	}
 
+	.statistics {
+		font-size: 12px;
+
+		text {
+			margin-right: 20rpx;
+		}
+	}
 
 	.crumbs {
 		width: 94%;
@@ -350,11 +358,6 @@
 		font-size: 12px;
 		padding-bottom: 0rpx;
 
-		.statistics {
-			text {
-				margin-right: 20rpx;
-			}
-		}
 
 		.cards-number {
 			color: red;
@@ -368,7 +371,7 @@
 	}
 
 	.gacha-information {
-		padding: 20rpx 0;
+		padding: 5px 0;
 
 		>view {
 			display: flex;

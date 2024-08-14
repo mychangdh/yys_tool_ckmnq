@@ -43,8 +43,6 @@
 	const goPath = (url : string) => {
 		uni.navigateTo({
 			url,
-			animationType: 'pop-in',
-			animationDuration: 200
 		})
 	}
 </script>

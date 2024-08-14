@@ -8,4 +8,4 @@ export const defenseAttributeValues : attributeType[] = ['health', 'healthPercen
 export const functionalAttributes : attributeType[] = ['effectHits', 'effectResistant', 'speed']
 // 普通属性
 export const nomralAttributes : attributeType[] = ['attackPercentage', 'healthPercentage', 'defensePercentage']
-//副属性
+

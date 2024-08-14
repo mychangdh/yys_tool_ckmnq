@@ -1,9 +1,11 @@
 <template>
 	<view class="imagebox">
-		<image class="image show"
+		<image v-if="!haveError" @error="errorImage" class="image show"
+			:style="`border: 2px solid ${COLOR_ONCE[god.level]};`"
 			:src="`https://cbg-yys.res.netease.com/game_res/hero/${god.shishen_id}/${god.shishen_id}.png`">
 		</image>
-		<image  class="image" :src="`/static/${god.shishen_id}.png`">
+		<image v-else  @error="errorImage" :style="`border: 2px solid ${COLOR_ONCE[god.level]};`" class="image new-god"
+			:src="`/static/${god.shishen_id}.png`">
 		</image>
 	</view>
 	<text class="text gradient"
@@ -11,12 +13,18 @@
 </template>
 
 <script setup lang="ts">
-	import { COLOR } from '@/config'
+	import { ref, watch } from 'vue';
+	import { COLOR, COLOR_ONCE } from '@/config'
 	import { godsType } from '@/store/modules/gods';
 	type props = {
 		god : godsType
 	}
 	const { god } = defineProps<props>()
+	const haveError = ref(false)
+	const errorImage = () => {
+		haveError.value = !haveError.value
+	}
+
 </script>
 
 <style lang="scss" scoped>
@@ -36,7 +44,14 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		border: 2px solid rgb(248,189,52);
+		border-radius: 2px;
+	}
+
+	.new-god {
+		image {
+			position: relative;
+			top: 100px;
+		}
 	}
 
 	.show {
