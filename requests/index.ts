@@ -30,7 +30,7 @@ export const getYuHun = () => request({
 	method:'GET',
 })
 
-export const getAnalyzAccount = (url) => request({
+export const getAnalyzAccount = (url:string) => request({
 	url: '/getAnalyzAccount',
 	method:'GET',
 	data:{

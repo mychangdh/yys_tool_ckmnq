@@ -18,10 +18,14 @@
 						<view class="group-item" @click="goPath('/pages/getSpeed18/index')"><uni-tag text="出头模式"
 								type="primary" /></view>
 					</uni-group>
+					<uni-group title="藏宝阁相关" mode="card">
+						<view class="group-item" @click="goPath('/pages/account-details/index')"><uni-tag text="账号御魂分析"
+								type="primary" /></view>	
+					</uni-group>
 				</uni-col>
 				<uni-col :sm="24" :md="12">
-					<uni-group title="数据分析" mode="card">
-						<view class="group-item" @click="goPath('/pages/illustrated/illustrated')"><uni-tag text="查看图鉴"
+					<uni-group title="图鉴" mode="card">
+						<view class="group-item" @click="goPath('/pages/illustrated/illustrated')"><uni-tag text="查看式神图鉴"
 								type="primary" /></view>
 					</uni-group>
 					<uni-group title="萌新养成推荐" mode="card">
