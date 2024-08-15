@@ -29,6 +29,7 @@ export class noIncluded extends Guarantees60 {
 		let randomNum = Math.random()
 		// 获取概率up
 		this.currentGachasNumber++
+		this.currentGuaranteesGolden++
 		let result = {} as resultType
 		const getResult = (level : levelType | 'golen') => {
 			result = {
@@ -46,6 +47,7 @@ export class noIncluded extends Guarantees60 {
 	}
 	// 未收录结束后自动选择定向式神
 	autoSelectGod(res : resultType) {
+		this.currentGuaranteesGolden = 0
 		this.isIncluded = true
 		if (this.newGods.every(item => item.shishen_id !== res.shishen_id)) return
 		const otherGod = this.newGods.find(item => item.shishen_id !== res.shishen_id)

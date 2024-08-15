@@ -1,12 +1,10 @@
 <template>
 	<view class="imagebox">
-		<image v-if="!haveError" @error="errorImage" class="image show"
-			:style="`border: 2px solid ${COLOR_ONCE[god.level]};`"
-			:src="`https://cbg-yys.res.netease.com/game_res/hero/${god.shishen_id}/${god.shishen_id}.png`">
+		<image @error="errorImage" class="image show" :style="`border: 2px solid ${COLOR_ONCE[god.level]};`" :src="src">
 		</image>
-		<image v-else  @error="errorImage" :style="`border: 2px solid ${COLOR_ONCE[god.level]};`" class="image new-god"
+		<!-- 	<image v-else  @error="errorImage" :style="`border: 2px solid ${COLOR_ONCE[god.level]};`" class="image new-god"
 			:src="`/static/${god.shishen_id}.png`">
-		</image>
+		</image> -->
 	</view>
 	<text class="text gradient"
 		:style="`background-image: -webkit-linear-gradient(top, ${COLOR[god.level]});`">{{god.name}}</text>
@@ -14,17 +12,20 @@
 
 <script setup lang="ts">
 	import { ref, watch } from 'vue';
-	import { COLOR, COLOR_ONCE } from '@/config'
 	import { godsType } from '@/store/modules/gods';
-	type props = {
+	import { COLOR, COLOR_ONCE } from '@/config'
+	type propsType = {
 		god : godsType
 	}
-	const { god } = defineProps<props>()
-	const haveError = ref(false)
-	const errorImage = () => {
-		haveError.value = !haveError.value
-	}
+	const props = defineProps<propsType>()
+	const src = ref('')
+	watch(() => props.god, (god) => {
+		src.value = `https://cbg-yys.res.netease.com/game_res/hero/${god.shishen_id}/${god.shishen_id}.png`
 
+	}, { immediate: true, deep: true })
+	const errorImage = (e) => {
+		src.value = `/static/${props.god.shishen_id}.png`
+	}
 </script>
 
 <style lang="scss" scoped>

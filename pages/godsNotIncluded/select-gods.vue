@@ -8,19 +8,20 @@
 				<uni-grid-item v-for="item in _myGacha.newGods" :key="item.shishen_id" @click="changeUpGod(item)">
 					<gods-avatar :god="item" />
 					<view class="radio">
-						<radio value="1" :checked="_myGacha['summonedDesignated'].shishen_id === item.shishen_id" />
+						<radio value="1" class="radio"
+							:checked="_myGacha['summonedDesignated'].shishen_id === item.shishen_id" />
 					</view>
 				</uni-grid-item>
 			</uni-grid>
 
 		</view>
 		<view class="select-illustrated">
-			<text>请设置你的图鉴（修改图鉴会重置抽卡进度）</text>
+			<text>请设置初始图鉴（修改图鉴会重置抽卡进度）</text>
 		</view>
 		<scroll-view class="select-god-list" scroll-y="true">
 			<view class="gods" v-for="lv in level">
 				<yysIcon :title="lv" class="icon" />
-				<uni-grid :column="5" :showBorder="false" :square="false" >
+				<uni-grid :column="5" :showBorder="false" :square="false">
 					<uni-grid-item v-for="item in getReversed(godsData[lv])" :key="item.shishen_id">
 						<view :class="{
 							active:!updataFormModel[lv][item.shishen_id].have
@@ -40,7 +41,8 @@
 </template>
 
 <script lang="ts" setup>
-	import {		ref, watch
+	import {
+		watch
 	} from 'vue';
 	import godsAvatar from '@/components/gods-avatar.vue'
 	import yysIcon from '@/components/yys-icon.vue'
@@ -49,9 +51,9 @@
 	const emits = defineEmits(['close', 'changeHaveGods', 'getUpGod'])
 	const props = defineProps({
 		myGacha: {},
-		godsData:{}
+		godsData: {}
 	})
-		const updataFormModel = defineModel()
+	const updataFormModel = defineModel()
 	const _myGacha = props.myGacha as noIncluded
 	function closeDialog() {
 		emits('close')
@@ -67,6 +69,7 @@
 
 	// 改变图鉴
 	function changeHaveGods(item : godsType) {
+
 		if (_myGacha.newGods.some(ite => ite.shishen_id === item.shishen_id)) return
 		const level = item.level as 'SSR' | 'SP'
 		updataFormModel.value[level][item.shishen_id].have = !updataFormModel.value[level][item.shishen_id].have
@@ -91,8 +94,12 @@
 <style scoped lang="scss">
 	.select-god-list {
 		padding-bottom: 10px;
-		max-height: calc(100vh - 340px);
+		max-height: 40vh;
 
+	}
+
+	.radio {
+		pointer-events: none;
 	}
 
 	.new-gods {

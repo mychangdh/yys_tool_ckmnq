@@ -31,7 +31,7 @@
 				</view>
 			</template>
 			<template #otherBtns>
-				<button type="primary" class="setting-illustrated" @click="open">点击设置图鉴（默认真全图）</button>
+				<button type="primary" class="setting-illustrated" @click="open">设置定向UP式神和图鉴（默认真全图）</button>
 			</template>
 		</cardMessage>
 
