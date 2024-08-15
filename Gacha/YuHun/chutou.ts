@@ -39,22 +39,22 @@ export default class Chutou extends Yuhun {
 	}
 	init(config : configType) {
 		if (config.isTwo) this.location = 2
-		if (config.haveSpeed) this.SubAttributeList.push(new SubAttribute('speed'))
+		if (config.haveSpeed) this.SubAttributeList.push(new SubAttribute('speedAdditionVal'))
 		this.getSubAttributes(config.isMaxAtt ? 4 : getRandomElement([2, 3, 4]))
-		if (config.isSpeed && this.location === 2) this.MainAttribute = 'speed'
+		if (config.isSpeed && this.location === 2) this.MainAttribute = 'speedAdditionVal'
 		else this.getMainAttribute()
 		this.level = 0
 	}
 	aggrandizement(level : number) {
 		if (!this.isAddSpeed) return super.aggrandizement(level)
-		if (this.SubAttributeList.every(item => item.name !== 'speed')) return super.aggrandizement(level)
+		if (this.SubAttributeList.every(item => item.name !== 'speedAdditionVal')) return super.aggrandizement(level)
 		let temporaryLevel = this.level || 0
 		this.MainAttributeValue = this.MainInitAttributeValue + this.MainAttributeAdd * level
 		this.showMainAttributeValue = String(this.MainAttributeValue) + haveProbability(this.MainAttribute)
 		while (temporaryLevel < level) {
 			temporaryLevel++
 			if (temporaryLevel % 3 === 0) {
-				this.SubAttributeList.push(new SubAttribute('speed'))
+				this.SubAttributeList.push(new SubAttribute('speedAdditionVal'))
 			}
 		}
 		this.transShowValue()

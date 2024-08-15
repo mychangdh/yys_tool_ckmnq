@@ -11,19 +11,19 @@ export function randomNum(n : number, m : number) {
 }
 export function haveProbability(str : attributeType) {
 	switch (str) {
-		case "attack":
-		case "health":
-		case "defense":
-		case "speed":
+		case "attackAdditionVal":
+		case "maxHpAdditionVal":
+		case "defenseAdditionVal":
+		case "speedAdditionVal":
 			return ''
 		default:
 			return '%'
 	}
 }
 export function judgmentHead(yuhun : YuHun) {
-	if (yuhun.MainAttribute !== 'speed') return false
+	if (yuhun.MainAttribute !== 'speedAdditionVal') return false
 	const num = yuhun.SubAttributeList.filter(item => {
-		return item.name === 'speed'
+		return item.name === 'speedAdditionVal'
 	})
 	return num.length === 6
 }

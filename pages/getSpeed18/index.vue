@@ -74,7 +74,7 @@
 		if (!yuhuns) return 0
 		const arr : number[] = []
 		yuhuns.forEach(item => {
-			const speedList = item.SubAttributeList.filter(ite => ite.name === 'speed').map(ite => ite.value)
+			const speedList = item.SubAttributeList.filter(ite => ite.name === 'speedAdditionVal').map(ite => ite.value)
 			arr.push(speedList.reduce((a, b) => (a + b)))
 		})
 		return arr.sort((a, b) => b - a)

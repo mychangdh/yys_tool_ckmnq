@@ -50,22 +50,22 @@ export default class YuHun {
 		const noralRes = getRandomElement(nomralAttributes)
 		switch (this.location) {
 			case 1:
-				this.MainAttribute = 'attack'
+				this.MainAttribute = 'attackAdditionVal'
 				break
 			case 2:
-				this.MainAttribute = res ? noralRes : 'speed'
+				this.MainAttribute = res ? noralRes : 'speedAdditionVal'
 				break
 			case 3:
-				this.MainAttribute = 'defense'
+				this.MainAttribute = 'defenseAdditionVal'
 				break
 			case 4:
-				this.MainAttribute = res ? noralRes : getRandomElement(['effectHits', 'effectResistant'])
+				this.MainAttribute = res ? noralRes : getRandomElement(['debuffEnhance', 'debuffResist'])
 				break
 			case 5:
-				this.MainAttribute = 'health'
+				this.MainAttribute = 'maxHpAdditionVal'
 				break
 			case 6:
-				this.MainAttribute = res ? noralRes : getRandomElement(['critical', 'criticalDamage'])
+				this.MainAttribute = res ? noralRes : getRandomElement(['critRateAdditionVal', 'critPowerAdditionVal'])
 				break
 		}
 	}
@@ -98,23 +98,23 @@ export default class YuHun {
 		if (!value) return
 		this.MainAttributeName = allAttributeName[value]
 		switch (value) {
-			case 'attack':
+			case 'attackAdditionVal':
 				this.MainInitAttributeValue = 81
 				this.MainAttributeAdd = 27
 				break
-			case 'health':
+			case 'maxHpAdditionVal':
 				this.MainInitAttributeValue = 342
 				this.MainAttributeAdd = 114
 				break
-			case 'defense':
+			case 'defenseAdditionVal':
 				this.MainInitAttributeValue = 14
 				this.MainAttributeAdd = 6
 				break
-			case 'speed':
+			case 'speedAdditionVal':
 				this.MainInitAttributeValue = 12
 				this.MainAttributeAdd = 3
 				break
-			case 'criticalDamage':
+			case 'critPowerAdditionVal':
 				this.MainInitAttributeValue = 14
 				this.MainAttributeAdd = 5
 				break
