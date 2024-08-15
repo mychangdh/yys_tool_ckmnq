@@ -29,3 +29,11 @@ export const getYuHun = () => request({
 	url: '/getYuHun',
 	method:'GET',
 })
+
+export const getAnalyzAccount = (url) => request({
+	url: '/getAnalyzAccount',
+	method:'GET',
+	data:{
+		url
+	}
+})
