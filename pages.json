@@ -64,6 +64,14 @@
 				"enablePullDownRefresh" : false,
 				"navigationBarTitleText" : "御魂分析"
 			}
+		},
+		{
+			"path" : "pages/account-details/search-cbg",
+			"style" : 
+			{
+				"enablePullDownRefresh" : false,
+				"navigationBarTitleText" : "搜索链接"
+			}
 		}
 
 	],

@@ -19,7 +19,7 @@
 								type="primary" /></view>
 					</uni-group>
 					<uni-group title="藏宝阁相关" mode="card">
-						<view class="group-item" @click="goPath('/pages/account-details/index')"><uni-tag text="账号御魂分析"
+						<view class="group-item" @click="goPath('/pages/account-details/search-cbg')"><uni-tag text="账号御魂分析"
 								type="primary" /></view>	
 					</uni-group>
 				</uni-col>

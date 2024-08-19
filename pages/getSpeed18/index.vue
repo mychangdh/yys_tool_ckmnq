@@ -27,14 +27,13 @@
 </template>
 
 <script setup lang="ts">
-	import { getYuHun } from '@/requests'
 	import yuhunDetail from '@/components/yuhun-detail.vue'
-	import { ref, nextTick } from 'vue';
-	import { onLoad } from '@dcloudio/uni-app'
+	import { ref, nextTick, computed } from 'vue';
 	import { getRandomElement } from '@/Gacha/function';
 	import YuHun from 'Gacha/YuHun/chutou';
 	import { judgmentHead } from '@/function';
-	const yuhunList = ref([])
+	import store from '@/store'
+	const yuhunList = computed(()=>store.state.yuhuns.yuhuns)
 	const randomYuhunList = ref([])
 	const config = ref(['isMaxAtt', 'isTwo', 'isSpeed', 'haveSpeed'])
 	const n = ref(10)
@@ -119,23 +118,7 @@
 			item(15)
 		})
 	}
-	onLoad(() => {
-		uni.getStorage({
-			key: 'yuhuns'
-		}).then(res => {
-			if (res.data) yuhunList.value = res.data
-		}).finally(() => {
-			if (!yuhunList.value || !yuhunList.value.length) getYuHun().then((data : any) => {
-				yuhunList.value = data
-				uni.setStorage({
-					key: 'yuhuns',
-					data
-				})
-			})
-		})
 
-
-	})
 </script>
 
 <style lang="scss" scoped>

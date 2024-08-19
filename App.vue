@@ -7,12 +7,13 @@
 	});
 	(async () => {
 		const oldtime = uni.getStorageSync('saveTime')
-		// 1000分钟后清除
-		if (!oldtime || (new Date().getTime() - +oldtime >= 6000000)) {
+		// 10000分钟后清除
+		if (!oldtime || (new Date().getTime() - +oldtime >= 60000000)) {
 			uni.setStorageSync('saveTime', new Date().getTime())
 			uni.removeStorageSync('Gods')
 		}
 		await Store.dispatch('getGods')
+		await Store.dispatch('getYuhuns')
 		await nextTick(uni.hideLoading)
 		console.log('app加载完成')
 	})()
