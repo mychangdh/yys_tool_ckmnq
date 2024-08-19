@@ -93,6 +93,13 @@
                     "secure" : false,
                     "changeOrigin" : true
                 },
+				"/cgi/api/" : {
+				    "target" : "http://www.cdhtsl8.cn/",
+				    "ws" : false,
+				    "secure" : false,
+				    "changeOrigin" : true
+					
+				},
                 "optimization" : {
                     "treeShaking" : {
                         "enable" : true

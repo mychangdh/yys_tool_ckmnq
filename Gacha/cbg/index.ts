@@ -12,6 +12,12 @@ export class AccountDetails {
 	heads : cbgYuhunType[] = []
 	// 非头满速
 	not2FullSpeed : cbgYuhunType[] = []
+	attackHidYuhun : {
+		[key in number]: {
+			score : number,
+			data : cbgYuhunType
+		}[]
+	} = {}
 	constructor(data : accountDetailsType) {
 		this.yuhuns = data.yuhunList
 		data.yuhunList.forEach(item => {
@@ -20,7 +26,7 @@ export class AccountDetails {
 		})
 		this.heads = this.getHead()
 		this.not2FullSpeed = this.getNot2FullSpeed()
-		this.getHidAttYuhun()
+		this.attackHidYuhun = this.getHidAttYuhun()
 	}
 	// 头
 	getHead() {
@@ -51,6 +57,6 @@ export class AccountDetails {
 		return arr
 	}
 	getHidAttYuhun() {
-		getAttackHidYuhun(this.yuhuns)
+		return getAttackHidYuhun(this.yuhuns)
 	}
 }

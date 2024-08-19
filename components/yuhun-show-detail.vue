@@ -9,14 +9,14 @@
 			</view>
 			<view class="name">
 				{{yuhunData.name}}+{{yuhunData.level}}
-				<view class="gouyu">
+				<!-- <view class="gouyu">
 					<image src="/static/gouyu.png" />
 					<image src="/static/gouyu.png" />
 					<image src="/static/gouyu.png" />
 					<image src="/static/gouyu.png" />
 					<image src="/static/gouyu.png" />
 					<image src="/static/gouyu.png" />
-				</view>
+				</view> -->
 			</view>
 		</view>
 		<view class="att">
@@ -73,7 +73,7 @@
 
 	.yuhun {
 		border-radius: 5px;
-		max-width: 170px;
+		width: 170px;
 		max-height: 200px;
 		background-color: #cbb59c;
 		border: 2px solid #765227;
@@ -97,18 +97,6 @@
 			}
 		}
 
-
-		.yuhun-effect {
-			color: #807263;
-			margin-top: 5px;
-			font-size: 12px;
-			height: 60px;
-			overflow: auto;
-
-			.two_piece_effect {
-				margin-bottom: 2px;
-			}
-		}
 
 		.gouyu {
 			margin-top: 2px;

@@ -1,29 +1,49 @@
 <template>
-	<view v-if="myAnalyzAccount">
-		<speedDetail :yuhun="myAnalyzAccount" :detailList="detailList" />
+	<view class="page" v-if="myAnalyzAccount">
+		<uni-segmented-control class="segmented-control" :current="current" :values="data" @clickItem="clickItem"
+			styleType="button" />
+		<view class="page">
+			<view>
+				<base-message v-show="current===0" :yuhun="myAnalyzAccount" :detailList="detailList" />
+				<speed-detail v-show="current===1" :yuhun="myAnalyzAccount" />
+				<attack-detail v-show="current===2" :yuhun="myAnalyzAccount" />
+				<speedDetail v-show="current===3" :yuhun="myAnalyzAccount" :detailList="detailList" />
+			</view>
+		</view>
 	</view>
 </template>
 
 <script setup lang="ts">
-	import { ref } from 'vue';
+	import { ref, nextTick } from 'vue';
 	import { AccountDetails } from '@/Gacha/cbg'
 	import { getAnalyzAccount } from '@/requests'
-	import speedDetail from './speed-detail.vue'
+	import speedDetail from './components/speed-detail.vue'
+	import attackDetail from './components/attack-detail.vue'
+	import baseMessage from './components/base-message.vue'
 	import { onLoad } from '@dcloudio/uni-app'
 	import type { accountDetailsType } from '@/Gacha/cbg/type';
-	type detailType = accountDetailsT2ype['resource'][string][]
+	type detailType = accountDetailsType['resource'][string][]
 	// 列表的形式
 	const detailList = ref([] as detailType)
-	const url = ref('https://yys.cbg.163.com/cgi/mweb/equip/35/202408160101616-35-5YEHDVAOB026Y?view_loc=equip_list%7Ctag_key%3A%7B%22is_from_ad_reco%22%3A%200,%20%22tag%22%3A%20%22latest%22%7D&reco_request_id=1723743644293Lws_I&tag=latest')
 	let myAnalyzAccount = ref<AccountDetails | null>(null)
-
+	const current = ref(0)
+	const data : string[] = ['基本信息', '速度御魂', 'pve御魂', '其他']
+	function clickItem(item : any) {
+		current.value = item.currentIndex
+		show.value = false
+		setTimeout(() => {
+			show.value = true
+		}, 300)
+	}
 	onLoad((option : any) => {
+		console.log(option,223);
 		uni.showLoading({
 			title: "正在加载中..."
 		})
 		serchMessage(option.url)
 	})
 
+	const show = ref(false)
 	function serchMessage(url : string) {
 		getAnalyzAccount(url).then((res) => {
 			try {
@@ -31,6 +51,7 @@
 				detailList.value = Object.values(reponse.resource)
 				detailList.value.reverse()
 				myAnalyzAccount.value = new AccountDetails(reponse)
+				show.value = true
 			}
 			catch {
 				uni.showToast({
@@ -38,10 +59,10 @@
 					icon: 'error',
 					duration: 2000
 				}).then(() => {
-					setTimeout(uni.navigateBack, 1500)
+					setTimeout(uni.navigateTo, 1500)
 				})
 			}
-			uni.hideLoading()
+			nextTick(uni.hideLoading)
 		}).catch(err => {
 			uni.hideLoading()
 			uni.showToast({
@@ -53,6 +74,16 @@
 	}
 </script>
 <style scoped lang="scss">
+	.segmented-control {
+		max-width: 600px;
+		margin: 10px auto;
+	}
+
+	.page {
+		height: 94vh;
+		overflow: hidden;
+	}
+
 	.search-cbg {
 		height: 400px;
 		margin: auto;
