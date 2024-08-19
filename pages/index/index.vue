@@ -18,10 +18,10 @@
 						<view class="group-item" @click="goPath('/pages/getSpeed18/index')"><uni-tag text="出头模式"
 								type="primary" /></view>
 					</uni-group>
-					<uni-group title="藏宝阁相关" mode="card">
+				<!-- 	<uni-group title="藏宝阁相关" mode="card">
 						<view class="group-item" @click="goPath('/pages/account-details/search-cbg')"><uni-tag text="账号御魂分析"
 								type="primary" /></view>	
-					</uni-group>
+					</uni-group> -->
 				</uni-col>
 				<uni-col :sm="24" :md="12">
 					<uni-group title="图鉴" mode="card">
