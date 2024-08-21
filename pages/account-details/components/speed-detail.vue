@@ -3,18 +3,16 @@
 		<view class="title">
 			头数量：{{myAnalyzAccount.heads.length}}
 		</view>
-		<scroll-view class="scroll-view">
-			<view class="yuhun-list">
-				<yuhun-show-detail class="dobule-speed-yuhun" hidAtt="速度" v-for="item in myAnalyzAccount.heads"
-					:yuhun="item" />
-			</view>
-		</scroll-view>
+		<view class="yuhun-list">
+			<yuhun-show-detail class="dobule-speed-yuhun" hidAtt="速度" v-for="item in myAnalyzAccount.heads"
+				:yuhun="item" />
+		</view>
 		<view class="title">
 			其他位置满速数量：{{myAnalyzAccount.not2FullSpeed.length}}
 		</view>
 		<uni-segmented-control :current="dobuleSpeedCurrent" :values="dobuleSpeedData"
 			@clickItem="dobuleSpeedOnClickItem" styleType="text" />
-		<view class="yuhun-list">
+		<view class="yuhun-list dobule-speed-yuhun-list">
 			<yuhun-show-detail class="dobule-speed-yuhun" hidAtt="速度" v-for="item in myAnalyzAccount.not2FullSpeed"
 				:yuhun="item" v-show="item.pos === dobuleSpeedValue[dobuleSpeedCurrent]" />
 		</view>
@@ -50,14 +48,21 @@
 	}
 
 	.speed-page {
-		height: calc(100vh - 130px);
+		height: calc(100vh - 50px);
 	}
-	.yuhun-list{
+
+	.yuhun-list {
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
-		.dobule-speed-yuhun{
+
+		.dobule-speed-yuhun {
 			margin: 10px;
 		}
+
+	}
+
+	.dobule-speed-yuhun-list {
+		padding-bottom: 100px;
 	}
 </style>

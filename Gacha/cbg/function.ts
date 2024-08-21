@@ -1,7 +1,8 @@
 import { allAttributeName } from '@/Gacha/YuHun/Attribute'
 import { cbgYuhunType } from './type'
 // 攻击类型御魂
-const attackTypeList = [300083, 300086, 300048, 300030, 300029, 300031, 300026, 300036, 300022, 300007, 300075, 300074] as const
+export const attackTypeList = [300083, 300086, 300048, 300030, 300029, 300031, 300026, 300036, 300022, 300007, 300075, 300074] as const
+export const bossTypeList = [300077, 300052, 300050, 300051, 300053, 300054, 300091] as const
 type keyType = typeof attackTypeList[number]
 const attackAtts = ['critRateAdditionVal', 'critPowerAdditionVal', 'attackAdditionRate'] as const
 function isRightMainAtt(yuhun : cbgYuhunType) {
@@ -25,7 +26,6 @@ export function getAttackHidYuhun(yuhuns : cbgYuhunType[]) {
 	})
 	attackYuhuns.forEach(item => {
 		if (!isRightMainAtt(item)) return
-		if (!attackTypeList.includes(item.yuhun_id as any)) return
 		const subAtts = item.data.subAtts.atts
 		const effectiveAtts = subAtts.filter(item => attackAtts.includes(item as any))
 		if (!result[item.yuhun_id as keyType]) result[item.yuhun_id as keyType] = []
@@ -48,4 +48,39 @@ export function findAttValue(item : cbgYuhunType, att : keyof typeof allAttribut
 		value: findData?.value || 0,
 		showValue: findData?.showValue || 0
 	}
+}
+
+// 筛选逢魔御魂
+const bossAtts = ['critRateAdditionVal',  'attackAdditionRate']
+export function getBossHidYuhun(yuhuns : cbgYuhunType[]) {
+	const result = {} as {
+		[key in keyType]: {
+			score : number,
+			data : cbgYuhunType
+		}[]
+	}
+	// 筛选逢魔御魂
+	const bossYuhuns = yuhuns.filter(item => {
+		return bossTypeList.includes(item.yuhun_id as any)
+	})
+
+	bossYuhuns.forEach(item => {
+		if (!isRightMainAtt(item)) return
+		const subAtts = item.data.subAtts.atts
+		const singleAtts = item.data.single_attr
+		const effectiveAtts = subAtts.filter(item => attackAtts.includes(item as any))
+		if (!result[item.yuhun_id as keyType]) result[item.yuhun_id as keyType] = []
+
+		result[item.yuhun_id as keyType].push({
+			score: effectiveAtts.length + (bossAtts.includes(singleAtts?.id) ? 3 : 0),
+			data: item
+		})
+	
+	})
+	Object.keys(result).forEach((key) => {
+		result[parseInt(key) as keyof typeof result].sort((a, b) => {
+			return b.score - a.score
+		})
+	})
+		return result
 }

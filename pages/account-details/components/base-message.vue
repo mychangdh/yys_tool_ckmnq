@@ -59,7 +59,7 @@
 				padding: 3px;
 
 				text {
-					width: 200px;
+					width: 250px;
 				}
 
 				.key {
@@ -67,7 +67,7 @@
 				}
 
 				.value {
-					margin-left: 70px;
+					margin-left: 60px;
 					text-align: left;
 				}
 			}

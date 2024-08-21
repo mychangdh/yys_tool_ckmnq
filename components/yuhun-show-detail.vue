@@ -39,6 +39,9 @@
 				</view>
 			</view>
 		</view>
+		<view class="single-att" v-if="yuhunData.data.single_attr">
+			固有属性{{yuhunData.data.single_attr?.name}}:{{yuhunData.data.single_attr?.value}}%
+		</view>
 	</view>
 </template>
 
@@ -68,13 +71,20 @@
 
 <style lang="scss" scoped>
 	.active {
-		color:#572cef;
+		color: #572cef;
+	}
+
+	.single-att {
+		border-top: 1px solid #ae8775;
+		padding-top: 5px;
+		font-weight: 700;
+		font-size: 12px;
+		color: #807263;
 	}
 
 	.yuhun {
 		border-radius: 5px;
 		width: 170px;
-		max-height: 200px;
 		background-color: #cbb59c;
 		border: 2px solid #765227;
 		padding: 20px 14px;

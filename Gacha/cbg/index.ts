@@ -1,6 +1,6 @@
 
-import { accountDetailsType, cbgYuhunType } from './type'
-import { getAttackHidYuhun, findAttValue } from './function'
+import { accountDetailsType, cbgYuhunType, cbgScoreType } from './type'
+import { getAttackHidYuhun, findAttValue, getBossHidYuhun } from './function'
 export class AccountDetails {
 	// 通过位置区分御魂
 	yuhunsByPos : {
@@ -12,12 +12,8 @@ export class AccountDetails {
 	heads : cbgYuhunType[] = []
 	// 非头满速
 	not2FullSpeed : cbgYuhunType[] = []
-	attackHidYuhun : {
-		[key in number]: {
-			score : number,
-			data : cbgYuhunType
-		}[]
-	} = {}
+	attackHidYuhun : cbgScoreType = {}
+	bossHidYuhun : cbgScoreType = {}
 	constructor(data : accountDetailsType) {
 		this.yuhuns = data.yuhunList
 		data.yuhunList.forEach(item => {
@@ -27,6 +23,7 @@ export class AccountDetails {
 		this.heads = this.getHead()
 		this.not2FullSpeed = this.getNot2FullSpeed()
 		this.attackHidYuhun = this.getHidAttYuhun()
+		this.bossHidYuhun = this.getHidBossYuhun()
 	}
 	// 头
 	getHead() {
@@ -58,5 +55,8 @@ export class AccountDetails {
 	}
 	getHidAttYuhun() {
 		return getAttackHidYuhun(this.yuhuns)
+	}
+	getHidBossYuhun() {
+		return getBossHidYuhun(this.yuhuns)
 	}
 }
