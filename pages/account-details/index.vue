@@ -47,7 +47,7 @@
 	function serchMessage(url : string) {
 		getAnalyzAccount(url).then((res) => {
 			try {
-				const reponse = res as accountDetailsType
+				const reponse = res.data as accountDetailsType
 				detailList.value = Object.values(reponse.resource)
 				detailList.value.reverse()
 				myAnalyzAccount.value = new AccountDetails(reponse)
