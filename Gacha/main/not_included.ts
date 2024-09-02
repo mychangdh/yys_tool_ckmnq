@@ -22,7 +22,7 @@ export class noIncluded extends Guarantees60 {
 	setProbabilityArray(isNotFull : boolean) {
 		super.setProbabilityArray(isNotFull)
 		this.probabilityArrays =
-			Guarantees60Data['SP'][isNotFull ? 'notFull' : 'full']
+			Guarantees60Data['SSR'][isNotFull ? 'notFull' : 'full']
 	}
 	getOnceResult() {
 		if (this.isIncluded) return super.getOnceResult()

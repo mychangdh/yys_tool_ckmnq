@@ -9,7 +9,7 @@
 </template>
 <script setup lang="ts">
 	import { ref } from 'vue';
-	const url = ref('https://yys.cbg.163.com/cgi/mweb/equip/36/202405151401616-36-ABAANQXT4GVQW?view_loc=equip_list%7Ctag_key%3A%7B%22is_from_ad_reco%22%3A%200,%20%22tag%22%3A%20%22general_rec_att_ltr%22%7D&reco_request_id=1724215031090KYw8S&tag=general_rec_att_ltr')
+	const url = ref('')
 	function serchMessage() {
 		if (!url.value.includes('yys.cbg.163.com')) return uni.showToast({
 			title: '地址错误！',
