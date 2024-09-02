@@ -1,24 +1,25 @@
 <template>
 	<view class="dialog">
-		<view class="select-illustrated">
-			<text>请选择定向式神（如果未收录抽到则自动转换为另一个）</text>
-		</view>
-		<view class="new-gods gods">
-			<uni-grid :column="2" :showBorder="false" :square="false">
-				<uni-grid-item v-for="item in _myGacha.newGods" :key="item.shishen_id" @click="changeUpGod(item)">
-					<gods-avatar :god="item" />
-					<view class="radio">
-						<radio value="1" class="radio"
-							:checked="_myGacha['summonedDesignated'].shishen_id === item.shishen_id" />
-					</view>
-				</uni-grid-item>
-			</uni-grid>
-
-		</view>
-		<view class="select-illustrated">
-			<text>请设置初始图鉴（修改图鉴会重置抽卡进度）</text>
-		</view>
 		<scroll-view class="select-god-list" scroll-y="true">
+			<view class="select-illustrated">
+				<text>请选择定向式神（如果未收录抽到则自动转换为另一个）</text>
+			</view>
+			<view class="new-gods gods">
+				<uni-grid :column="2" :showBorder="false" :square="false">
+					<uni-grid-item v-for="item in _myGacha.newGods" :key="item.shishen_id" @click="changeUpGod(item)">
+						<gods-avatar :god="item" />
+						<view class="radio">
+							<radio value="1" class="radio"
+								:checked="_myGacha['summonedDesignated'].shishen_id === item.shishen_id" />
+						</view>
+					</uni-grid-item>
+				</uni-grid>
+
+			</view>
+			<view class="select-illustrated">
+				<text>请设置初始图鉴（修改图鉴会重置抽卡进度）</text>
+			</view>
+
 			<view class="gods" v-for="lv in level">
 				<yysIcon :title="lv" class="icon" />
 				<uni-grid :column="5" :showBorder="false" :square="false">
@@ -37,6 +38,7 @@
 			</view>
 		</scroll-view>
 		<button type="warn" class="close-dialog" @click="closeDialog">关闭</button>
+
 	</view>
 </template>
 
@@ -93,8 +95,10 @@
 
 <style scoped lang="scss">
 	.select-god-list {
+		padding-top: 5px;
+		padding-bottom: 5px;
 		padding-bottom: 10px;
-		max-height: 40vh;
+		height: calc(var(--vh, 1vh) * 100 - 135px);
 
 	}
 
