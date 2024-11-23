@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-	import { nextTick } from "vue"
+	import { nextTick, onMounted } from "vue"
 	import Store from '@/store'
 	uni.showLoading({
 		title: "正在获取式神信息。。",
@@ -15,7 +15,17 @@
 		await Store.dispatch('getGods')
 		await Store.dispatch('getYuhuns')
 		await nextTick(uni.hideLoading)
-		console.log('app加载完成')
+		console.log('加载完成')
 	})()
-	console.log('页面加载完毕')
+	function setVh() {
+		let vh = window.innerHeight * 0.01
+		document.documentElement.style.setProperty('--vh', `${vh}px`)
+	}
+	onMounted(setVh)
+	uni.onWindowResize((res) => {
+		setVh()
+		window.addEventListener('resize', () => {
+			setVh()
+		})
+	})
 </script>

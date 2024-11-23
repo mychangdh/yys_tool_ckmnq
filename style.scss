@@ -12,12 +12,10 @@ box-sizing: border-box;
 			-webkit-text-fill-color: transparent;
 		}
 body{
-	overflow-x: auto ;
+	overflow-x:hidden;
 	min-width: 340px;
 } 
-.page{
-	width: 100vw;
-}
+
 /* #ifdef H5 */
 *::-webkit-scrollbar {
 	display: none;

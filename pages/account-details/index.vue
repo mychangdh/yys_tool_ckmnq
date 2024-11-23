@@ -2,12 +2,12 @@
 	<view class="page" v-if="myAnalyzAccount">
 		<uni-segmented-control class="segmented-control" :current="current" :values="data" @clickItem="clickItem"
 			styleType="button" />
-		<view class="page">
-			<view>
+		<view>
+			<view class="cbg-message">
 				<base-message v-show="current===0" :yuhun="myAnalyzAccount" :detailList="detailList" />
 				<speed-detail v-show="current===1" :yuhun="myAnalyzAccount" />
 				<attack-detail v-show="current===2" :yuhun="myAnalyzAccount" />
-				<speedDetail v-show="current===3" :yuhun="myAnalyzAccount" :detailList="detailList" />
+				<bossYuhunDetail v-show="current===3" :yuhun="myAnalyzAccount"  />
 			</view>
 		</view>
 	</view>
@@ -20,6 +20,7 @@
 	import speedDetail from './components/speed-detail.vue'
 	import attackDetail from './components/attack-detail.vue'
 	import baseMessage from './components/base-message.vue'
+	import bossYuhunDetail from './components/boss-yuhun-detail.vue'
 	import { onLoad } from '@dcloudio/uni-app'
 	import type { accountDetailsType } from '@/Gacha/cbg/type';
 	type detailType = accountDetailsType['resource'][string][]
@@ -27,35 +28,36 @@
 	const detailList = ref([] as detailType)
 	let myAnalyzAccount = ref<AccountDetails | null>(null)
 	const current = ref(0)
-	const data : string[] = ['基本信息', '速度御魂', 'pve御魂', '其他']
+	const data : string[] = ['基本信息', '速度御魂', 'pve御魂','逢魔御魂']
 	function clickItem(item : any) {
 		current.value = item.currentIndex
-		show.value = false
-		setTimeout(() => {
-			show.value = true
-		}, 300)
 	}
 	onLoad((option : any) => {
-		console.log(option,223);
 		uni.showLoading({
 			title: "正在加载中..."
 		})
 		serchMessage(option.url)
 	})
 
-	const show = ref(false)
+
+	// function serchMessage() {
+	// 	detailList.value = Object.values(dataJSON.resource)
+	// 	detailList.value.reverse()
+	// 	myAnalyzAccount.value = new AccountDetails(dataJSON)
+	// 	uni.hideLoading()
+	// }
 	function serchMessage(url : string) {
-		getAnalyzAccount(url).then((res) => {
+		getAnalyzAccount(url).then((res:any) => {
 			try {
-				const reponse = res as accountDetailsType
+				const reponse = res.data as accountDetailsType
 				detailList.value = Object.values(reponse.resource)
 				detailList.value.reverse()
 				myAnalyzAccount.value = new AccountDetails(reponse)
-				show.value = true
+
 			}
 			catch {
 				uni.showToast({
-					title: '地址错误',
+					title: res.data,
 					icon: 'error',
 					duration: 2000
 				}).then(() => {
@@ -66,7 +68,7 @@
 		}).catch(err => {
 			uni.hideLoading()
 			uni.showToast({
-				title: err,
+				title: res.data,
 				icon: 'error',
 				duration: 2000
 			})
@@ -80,8 +82,11 @@
 	}
 
 	.page {
-		height: 94vh;
-		overflow: hidden;
+		height: calc(100vh - 50px);
+		max-width: 800px;
+		margin: auto;
+		padding: 5px;
+		overflow-y: hidden;
 	}
 
 	.search-cbg {

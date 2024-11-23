@@ -1,31 +1,31 @@
 <template>
 	<view class="page-attack">
 		<view class="title">
-			pve御魂大体评分
+			逢魔御魂大体评分
 			<view class="tip">
 			</view>
 		</view>
 		<view class="score-total">
-			<view class="score-item" v-for="key in attackTypeList">
+			<view class="score-item" v-for="key in bossTypeList">
 				<view>{{getYuhunName(key)}}</view>
-				<view class="score">{{getSorces(myAnalyzAccount.attackHidYuhun[key])}}分</view>
+				<view class="score">{{getSorces(myAnalyzAccount.bossHidYuhun[key])}}分</view>
 			</view>
 		</view>
 		<view class="title">
-			pve高收益御魂
+			高收益逢魔御魂
 			<view class="tip">
-				(只看暴击爆伤攻击加成,评分大于4分,满收益为8分)
+				(只看暴击爆伤攻击加成,评分大于4分,满收益为11分)
 			</view>
 		</view>
 		<uni-segmented-control class="segmented-control" :current="current" :values="data" @clickItem="onClickItem"
 			styleType="text" />
 		<scroll-view class="scroll-view-attack" scroll-y="true">
-			<view v-for="key in attackTypeList">
+			<view v-for="key in bossTypeList">
 				<view class="title">
 					{{getYuhunName(key)}}
 				</view>
-				<view class="detail" v-if="myAnalyzAccount.attackHidYuhun[key]">
-					<view class="yuhun-detail" v-for="ite in myAnalyzAccount.attackHidYuhun[key]"
+				<view class="detail" v-if="myAnalyzAccount.bossHidYuhun[key]">
+					<view class="yuhun-detail" v-for="ite in myAnalyzAccount.bossHidYuhun[key]"
 						v-show="((ite.data.pos === (current+1))&& ite.score>=5)">
 						<view class="score">
 							{{ite.score}}分
@@ -41,7 +41,7 @@
 <script setup lang="ts">
 	import { computed, ref } from 'vue';
 	import { AccountDetails } from '@/Gacha/cbg'
-	import { attackTypeList } from '@/Gacha/cbg/function'
+	import { bossTypeList } from '@/Gacha/cbg/function'
 	import yuhunShowDetail from '@/components/yuhun-show-detail.vue'
 	import store from '@/store';
 	import { getSorces } from './function'

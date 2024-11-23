@@ -1,3 +1,4 @@
+export const version = '2.3.1'
 export const COLOR = {
 	SSR: '#db5f13,#e0941c,#f0e321',
 	SP: '#f8313b,#fd7f8e,#f8aaac',
