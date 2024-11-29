@@ -7,8 +7,9 @@
 			<uni-row>
 				<uni-col :sm="24" :md="12">
 					<uni-group title="抽卡模拟" mode="card">
-						<view class="group-item" @click="goPath('/pages/godsNotIncluded/index')"><uni-tag text="周年庆模式"
-								type="primary" /></view>
+						<!-- 	<view class="group-item" @click="goPath('/pages/godsNotIncluded/index')">
+					<uni-tag text="周年庆模式"
+								type="primary" /></view> -->
 						<view class="group-item" @click="goPath('/pages/guarantees60/index')"><uni-tag text="60保底模式"
 								type="primary" /></view>
 						<view class="group-item" @click="goPath('/pages/up3/index')"><uni-tag text="3up模式"
@@ -19,17 +20,17 @@
 								type="primary" /></view>
 					</uni-group>
 					<uni-group title="藏宝阁相关" mode="card">
-						<view class="group-item" @click="goPath('/pages/account-details/search-cbg')"><uni-tag
+						<view class="group-item" @click="goPath('/pages/accountDetails/searchCbg')"><uni-tag
 								text="账号御魂分析" type="primary" /></view>
 					</uni-group>
 				</uni-col>
 				<uni-col :sm="24" :md="12">
 					<uni-group title="图鉴" mode="card">
-						<view class="group-item" @click="goPath('/pages/illustrated/illustrated')"><uni-tag
+						<view class="group-item" @click="goPath('/pages/illustrated/index')"><uni-tag
 								text="查看式神图鉴" type="primary" /></view>
 					</uni-group>
 					<uni-group title="萌新养成推荐" mode="card">
-						<view class="group-item" @click="goPath('/pages/godsRecommend/godsRecommend')"><uni-tag
+						<view class="group-item" @click="goPath('/pages/godsRecommend/index')"><uni-tag
 								text="式神推荐" type="primary" /></view>
 					</uni-group>
 				</uni-col>
@@ -55,7 +56,6 @@
 			url,
 		})
 	}
-	
 </script>
 <style lang="scss" scoped>
 	.beian {

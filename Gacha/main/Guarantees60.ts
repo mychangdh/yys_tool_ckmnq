@@ -46,7 +46,7 @@ export class Guarantees60 extends Gacha {
 		this.setProbabilityArray(isNotFull)
 		this._isNotFull = isNotFull
 	}
-	// 对保底450当期的判断，正常来说不用做判断
+	// 对保底450/800当期的判断，正常来说不用做判断
 	get probability() {
 		if (this.result.length === this.prguaranteesCurrent - 1) return 1
 		return super.probability

@@ -30,7 +30,7 @@
 	import yuhunDetail from '@/components/yuhun-detail.vue'
 	import { ref, nextTick, computed } from 'vue';
 	import { getRandomElement } from '@/Gacha/function';
-	import YuHun from 'Gacha/YuHun/chutou';
+	import YuHun from '@/Gacha/YuHun/Chutou';
 	import { judgmentHead } from '@/function';
 	import store from '@/store'
 	const yuhunList = computed(()=>store.state.yuhuns.yuhuns)

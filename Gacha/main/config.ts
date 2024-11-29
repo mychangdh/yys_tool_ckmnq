@@ -167,7 +167,7 @@ export const Guarantees60Data : { [key in 'SSR' | 'SP']: { [key in 'notFull' | '
 }
 
 // 3up的出货概率
-export const UP_3Data : { [key in 'SSR' | 'SP']: { [key in 'notFull' | 'full']: probabilityType[] } } = {
+export const UP3Data : { [key in 'SSR' | 'SP']: { [key in 'notFull' | 'full']: probabilityType[] } } = {
 	SSR:  {
 		// SSR的非全图概率
 		notFull: [

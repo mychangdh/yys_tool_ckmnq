@@ -1,4 +1,4 @@
-import { allAttributeName } from '../YuHun/Attribute'
+import { allAttributeName } from '../YuHun/attribute'
 export interface attType {
 	id : keyof typeof allAttributeName,
 	name : string,

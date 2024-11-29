@@ -1,5 +1,5 @@
-import SubAttribute, { allAttributeName } from './Attribute'
-import { attributeNameType, attributeType } from './Attribute'
+import SubAttribute, { allAttributeName } from './attribute'
+import { attributeNameType, attributeType } from './attribute'
 import { getRandomElement } from '@/Gacha/function'
 
 import { nomralAttributes, attackAttributeValues, defenseAttributeValues, functionalAttributes } from './attributesClassify'

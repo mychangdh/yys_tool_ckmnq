@@ -1,4 +1,4 @@
-import { attributeType } from "./Attribute"
+import { attributeType } from "./attribute"
 
 //攻击类属性
 export const attackAttributeValues : attributeType[] = ['attackAdditionVal', 'attackAdditionRate', 'critRateAdditionVal', 'critPowerAdditionVal']

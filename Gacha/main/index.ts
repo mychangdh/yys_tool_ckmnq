@@ -48,8 +48,13 @@ export class Gacha {
 	}
 	// 展示概率和实际概率，因为展示的概率要比实际的多1抽
 	getProbability(isShow = false) {
+		//已经出金了就不再进行计算了，直接固定下来就行了
 		if (this.isSummonedDesignated) return this._probability
 		for (let i = 0; i < this.probabilityArrays.length - 1; i++) {
+			/*
+			这段是为了得到具体的概率，找到符合概率数组区间的值，+ +show是将show转为数字，
+			true为1false为0，因为显示的概率比实际的多了1抽
+			*/
 			if (this.probabilityArrays[i + 1].value >= (this.currentGachasNumber + +isShow)) {
 				return this.probabilityArrays[i].probavility
 			}
@@ -58,15 +63,14 @@ export class Gacha {
 	}
 	// 获得当期式神真正的的定向概率
 	get probability() {
-		this._probability = this.getProbability()
-		return this._probability
+		return this.getProbability()
 	}
 	// 只是为了展示的概率
 	get showProbability() {
 		return this.getProbability(true)
 	}
 	// 抽卡一次的结果,传入true则必定出金
-	getOnceResult(isGolden = false, goldenGods ?: godsType[]) : resultType {
+	getOnceResult(isGolden = false) : resultType {
 		let randomNum = Math.random()
 		// 获取概率up
 		this.currentGachasNumber++

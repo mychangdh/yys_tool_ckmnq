@@ -16,7 +16,7 @@
 			icon: 'error'
 		})
 		uni.navigateTo({
-			url: `/pages/account-details/index?url=${url.value}`
+			url: `/pages/accountDetails/index?url=${url.value}`
 		})
 	}
 </script>

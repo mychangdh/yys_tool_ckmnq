@@ -22,7 +22,7 @@
 		document.documentElement.style.setProperty('--vh', `${vh}px`)
 	}
 	onMounted(setVh)
-	uni.onWindowResize((res) => {
+	uni.onWindowResize(() => {
 		setVh()
 		window.addEventListener('resize', () => {
 			setVh()

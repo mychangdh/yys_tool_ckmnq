@@ -2,9 +2,9 @@ import { Gacha } from "."
 import { godsType } from "@/store/modules/gods"
 import { computed } from 'vue'
 import Store from '@/store'
-import { UP_3Data } from "./config"
+import { UP3Data } from "./config"
 const { value: { SP, SSR, SR, R } } = computed(() => Store.state.gods)
-export class UP_3 extends Gacha {
+export class UP3 extends Gacha {
 	// 是否为非玩家全图玩家
 	_isNotFull : boolean = false
 	// 保底数量，-1则无保底
@@ -38,7 +38,7 @@ export class UP_3 extends Gacha {
 	set isNotFull(isNotFull) {
 		if (this.summonedDesignated)
 			this.probabilityArrays =
-				UP_3Data[this.summonedDesignated.level as 'SP' | 'SSR'][isNotFull ? 'notFull' : 'full']
+				UP3Data[this.summonedDesignated.level as 'SP' | 'SSR'][isNotFull ? 'notFull' : 'full']
 		this.prguaranteesCurrent = isNotFull ? -1 : 600
 		this._isNotFull = isNotFull
 	}

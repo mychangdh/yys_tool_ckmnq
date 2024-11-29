@@ -1,5 +1,5 @@
 <template>
-	<cardMessage :gacha="UP_3" @changeCardType="changeCardType">
+	<cardMessage :gacha="UP3" @changeCardType="changeCardType">
 		<template v-slot:information="{myGacha,currentGodNumber}">
 			<view class="gacha-information-item">
 				<text class="text">概率UP：</text>
@@ -19,8 +19,8 @@
 </template>
 <script lang="ts" setup>
 	import cardMessage from '@/components/cards-message.vue'
-	import { UP_3 } from '@/Gacha/main/up_3'
-	const changeCardType = (myGacha : UP_3) => {
+	import { UP3 } from '@/Gacha/main/UP3'
+	const changeCardType = (myGacha : UP3) => {
 		switch (myGacha.cardType) {
 			case '全部卡池':
 				myGacha.cardType = '旭华召唤'

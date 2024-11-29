@@ -1,6 +1,6 @@
 import { getRandomElement } from '@/Gacha/function'
 import Yuhun from './'
-import SubAttribute, { attributeType } from './Attribute'
+import SubAttribute, { attributeType } from './attribute'
 import { haveProbability } from '@/function'
 type configType = {
 	yuhun_id : number

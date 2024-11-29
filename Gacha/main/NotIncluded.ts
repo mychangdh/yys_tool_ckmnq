@@ -3,7 +3,7 @@ import { godsType } from '../../store/modules/gods';
 import { Guarantees60 } from './Guarantees60'
 import { getRandomElement } from '../function';
 import { levelType, resultType } from '.';
-export class noIncluded extends Guarantees60 {
+export class NotIncluded extends Guarantees60 {
 	// 是否未收录触发了
 	_isIncluded : boolean = false
 	// 未收录式神

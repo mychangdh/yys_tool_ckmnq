@@ -24,7 +24,7 @@
 			}
 		},
 		{
-			"path" : "pages/illustrated/illustrated",
+			"path" : "pages/illustrated/index",
 			"style" : 
 			{
 				"navigationBarTitleText" : "图鉴",
@@ -34,7 +34,7 @@
 			}
 		},
 		{
-			"path" : "pages/godsRecommend/godsRecommend",
+			"path" : "pages/godsRecommend/index",
 			"style" : 
 			{
 				"navigationBarTitleText" : "式神推荐",
@@ -58,7 +58,7 @@
 			}
 		},
 		{
-			"path" : "pages/account-details/index",
+			"path" : "pages/accountDetails/index",
 			"style" : 
 			{
 				"enablePullDownRefresh" : false,
@@ -66,7 +66,7 @@
 			}
 		},
 		{
-			"path" : "pages/account-details/search-cbg",
+			"path" : "pages/accountDetails/searchCbg",
 			"style" : 
 			{
 				"enablePullDownRefresh" : false,
