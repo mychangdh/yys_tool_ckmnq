@@ -63,7 +63,7 @@
 					<view class="old-data">
 						{{
 							changeData.oldData.SubAttribute.length>index?
-						changeData.oldData.SubAttribute[index].value:0
+						changeData.oldData.SubAttribute[index].showValue:0
 						}}
 					</view>
 					<view class="point">
@@ -71,7 +71,7 @@
 					</view>
 					<view class="new-data"
 						:style="`color:${item.haveChange?'#a72c01':'black'};font-weight:${item.haveChange?'700':'400'}`">
-						{{item.value}}
+						{{item.showValue}}
 					</view>
 				</view>
 			</view>
@@ -167,7 +167,7 @@
 		5: '135deg',
 		6: '90deg'
 	}
-	const changeData = ref<null | {}>(null)
+	const changeData = ref<any>(null)
 	const yuhun_location = computed(() => postion[yuhun.value.location])
 	function aggrandizement() {
 		if (!yuhun.value) return
@@ -256,6 +256,7 @@
 				margin-top: 2px;
 				display: flex;
 				justify-content: center;
+				font-weight: 700;
 
 				.aggrandizement-num-box {
 					margin: 0 0px;

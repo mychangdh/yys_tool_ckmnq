@@ -18,7 +18,7 @@ export default class YuHun {
 	/** 位置  */
 	private _location : 1 | 2 | 3 | 4 | 5 | 6 = 1
 	/** 主属性  */
-	private _MainAttribute : attributeType | undefined
+	private _MainAttribute : attributeType = "attackAdditionVal"
 	/** 主属性名称  */
 	MainAttributeName : attributeNameType = '攻击'
 	/** 主属性初始数值  */
@@ -145,68 +145,70 @@ export default class YuHun {
 				return this.showSubAttributeList.map(item => {
 					return {
 						name: item.nickname,
-						value: item.showValue,
+						showValue: item.showValue,
+						value: item.value,
 						haveChange: false
 					}
 				})
 			})()
 		}
 	}
+	// 加工强化函数
 	aggrandizementLevel(level : number) {
 		// 记录强化前的数据
 		const oldData = this.getYuhunData()
+		// 只要level变化就会触发level的set事件就会触发强化过程
 		this.level = level
 		const newData = this.getYuhunData()
-		newData.SubAttribute = newData.SubAttribute.map(item => {
-			const res = oldData.SubAttribute.find(ite => ite.name === item.name)
-			item.haveChange = !res || (parseFloat(res.value) < parseFloat(item.value))
-			return item
+		// 对比强化前后的数据，找出改变的属性
+		newData.SubAttribute = newData.SubAttribute.map(newItem => {
+			const oldItem = oldData.SubAttribute.find(ite => ite.name === newItem.name)
+			newItem.haveChange = !oldItem || (oldItem.value < newItem.value)
+			return newItem
 		})
 		return {
 			oldData,
 			newData
 		}
 	}
-	transShowValue() {
+	// 加工成可以展示的数据
+	processingValue() {
 		this.showSubAttributeList = []
 		this.SubAttributeList.forEach(item => {
 			const sameAtt = this.showSubAttributeList.find(ite => ite.name === item.name)
 			if (sameAtt) {
 				sameAtt.value += item.value
-				const haveP = sameAtt.showValue.includes('%') ? '%' : ''
-				sameAtt.showValue = sameAtt.value.toFixed(2) + haveP
+				sameAtt.showValue = sameAtt.value.toFixed(2) + haveProbability(sameAtt.name)
 			}
 			else this.showSubAttributeList.push(Object.assign({}, item))
 		})
 	}
+		// 强化到多少级的函数
 	aggrandizement(level : number) {
-
 		let temporaryLevel = this.level || 0
 		this.MainAttributeValue = this.MainInitAttributeValue + this.MainAttributeAdd * level
 		this.showMainAttributeValue = String(this.MainAttributeValue) + haveProbability(this.MainAttribute)
 		while (temporaryLevel < level) {
 			temporaryLevel++
-			if (temporaryLevel % 3 === 0) {
-				// 不满条
-				if (this.SubAttributeList.length < 4) {
-					const randAtt = getRandomElement(Object.keys(allAttributeName)) as keyof typeof allAttributeName
-					const att = new SubAttribute(randAtt)
-					const sameAtt = this.SubAttributeList.find(item => item.name === randAtt)
-					if (sameAtt) {
-						sameAtt.value += att.value
-						const haveP = sameAtt.showValue.includes('%') ? '%' : ''
-						sameAtt.showValue = sameAtt.value.toFixed(2) + haveP
-					}
-					else this.SubAttributeList.push(att)
-				}
-				else {
-					const att = getRandomElement(this.SubAttributeList).name
-					this.SubAttributeList.push(new SubAttribute(att))
-				}
-
+			if (temporaryLevel % 3) continue
+			// 满条
+			if (this.SubAttributeList.length >= 4) {
+				const att = getRandomElement(this.SubAttributeList).name
+				this.SubAttributeList.push(new SubAttribute(att))
+				continue
 			}
+			// 不满条的处理方式
+			const randAtt = getRandomElement(Object.keys(allAttributeName)) as keyof typeof allAttributeName
+			const att = new SubAttribute(randAtt)
+			const sameAtt = this.SubAttributeList.find(item => item.name === randAtt)
+			if (sameAtt) {
+				sameAtt.value += att.value
+				sameAtt.showValue = sameAtt.value.toFixed(2) + haveProbability(sameAtt.name)
+			}
+			else this.SubAttributeList.push(att)
+
 		}
-		this.transShowValue()
+		this.processingValue()
 
 	}
 }

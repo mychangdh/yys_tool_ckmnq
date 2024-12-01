@@ -15,10 +15,12 @@ export const allAttributeName = {
 export type attributeType = keyof typeof allAttributeName
 export type attributeNameType = typeof allAttributeName[attributeType]
 
+// 副属性类
 export default class SubAttribute {
 	name : attributeType
 	nickname : attributeNameType
 	value : number = 0
+	// 用来展示用的数值，包含百分比，用string类型
 	showValue : string = ''
 	constructor(name : attributeType) {
 		this.name = name
@@ -26,7 +28,7 @@ export default class SubAttribute {
 		this.getSubAttributes()
 	}
 
-	//得到副属性
+	//得到副属性,副属性的值严格按照属性表随机生成
 	getSubAttributes() {
 		switch (this.name) {
 			case "attackAdditionVal":

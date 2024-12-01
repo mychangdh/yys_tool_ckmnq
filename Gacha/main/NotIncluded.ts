@@ -51,7 +51,7 @@ export class NotIncluded extends Guarantees60 {
 		this.isIncluded = true
 		if (this.newGods.every(item => item.shishen_id !== res.shishen_id)) return
 		const otherGod = this.newGods.find(item => item.shishen_id !== res.shishen_id)
-		this.selectGod(otherGod.shishen_id)
+		if (otherGod) this.selectGod(otherGod.shishen_id)
 
 	}
 	// 手动选择定向式神
