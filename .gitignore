@@ -2,3 +2,5 @@ unpackage
 node_modules
 .vite
 yarn.lock
+./components/beian.vue
+./components/beian-icon.png
