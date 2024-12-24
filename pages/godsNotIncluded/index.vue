@@ -7,7 +7,7 @@
 		</uni-popup>
 		<view>
 		</view>
-		<cardMessage @init="init" :gacha="noIncluded" @changeCardType="changeCardType" @resert="resert">
+		<cardMessage @init="init" :gacha="NotIncluded" @changeCardType="changeCardType" @resert="resert">
 			<template v-slot:information="{myGacha,currentGodNumber}">
 
 				<view class="gacha-information-item">
@@ -39,13 +39,13 @@
 </template>
 <script lang="ts" setup>
 	import cardMessage from '@/components/cards-message.vue'
-	import { noIncluded } from '@/Gacha/main/not_included'
+	import { NotIncluded } from '@/Gacha/main/NotIncluded'
 	import selectGods from './select-gods.vue'
 	import { computed, ref, watch } from 'vue';
 	import store from '../../store';
 	import { godsType } from '../../store/modules/gods';
 	const popup = ref<HTMLElement | null>(null)
-	const changeCardType = (myGacha : noIncluded) => {
+	const changeCardType = (myGacha : NotIncluded) => {
 		switch (myGacha.cardType) {
 			case '旭华召唤':
 				myGacha.cardType = '瑶归召唤'
@@ -57,10 +57,10 @@
 	}
 	// 重置函数
 	let restart = () => { }
-	const myGacha = ref<noIncluded | null>(null)
+	const myGacha = ref<NotIncluded | null>(null)
 	const godsData = computed(() => store.state.gods)
 	const form = ref({} as formType)
-	const init = (gacha : noIncluded, res : () => void) => {
+	const init = (gacha : NotIncluded, res : () => void) => {
 		myGacha.value = gacha
 		restart = res
 		if (JSON.stringify(form.value) !== '{}') return

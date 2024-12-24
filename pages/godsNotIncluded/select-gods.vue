@@ -49,14 +49,14 @@
 	import godsAvatar from '@/components/gods-avatar.vue'
 	import yysIcon from '@/components/yys-icon.vue'
 	import { godsType } from '@/store/modules/gods';
-	import { noIncluded } from '@/Gacha/main/not_included';
+	import { NotIncluded } from '@/Gacha/main/NotIncluded';
 	const emits = defineEmits(['close', 'changeHaveGods', 'getUpGod'])
 	const props = defineProps({
 		myGacha: {},
 		godsData: {}
 	})
 	const updataFormModel = defineModel()
-	const _myGacha = props.myGacha as noIncluded
+	const _myGacha = props.myGacha as NotIncluded
 	function closeDialog() {
 		emits('close')
 	}
