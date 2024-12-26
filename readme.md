@@ -7,7 +7,7 @@
 这两行代码。
 
 # 使用步骤
-1.去克隆[抽卡模拟器后端](https://github.com/mychangdh/yys_tool_ckmnq_back.git)项目，然后自己搭建一个数据库运行在本地。
+1. 去克隆[抽卡模拟器后端](https://github.com/mychangdh/yys_tool_ckmnq_back.git)项目，然后自己搭建一个数据库运行在本地。
 
 2. 使用 yarn 安装依赖
 
