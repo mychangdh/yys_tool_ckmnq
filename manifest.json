@@ -88,13 +88,13 @@
             "https" : false,
             "proxy" : {
                 "/ckmnqapi" : {
-                    "target" : "http://www.cdhtsl8.cn/",
+                    "target" : "http://localhost:4231/",
                     "ws" : false,
                     "secure" : false,
                     "changeOrigin" : true
                 },
 				"/cgi/api/" : {
-				    "target" : "http://www.cdhtsl8.cn/",
+				    "target" : "http://localhost:4231/",
 				    "ws" : false,
 				    "secure" : false,
 				    "changeOrigin" : true
